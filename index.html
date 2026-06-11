@@ -73,7 +73,7 @@
         }
 
         .glass-sidebar {
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
             border-right: 1px solid rgba(255, 255, 255, 0.4);
@@ -178,34 +178,44 @@
         }
         
         #writerContent {
-            min-height: 550px;
+            min-height: 500px;
             outline: none !important;
             position: relative;
         }
 
         /* Стилизация заголовков в обход сброса Tailwind CSS */
         #writerContent h1 {
-            font-size: 2.25rem !important;
+            font-size: 1.75rem !important;
             font-weight: 850 !important;
-            margin-top: 1.75rem !important;
+            margin-top: 1.5rem !important;
             margin-bottom: 0.75rem !important;
             color: #0f172a !important;
             line-height: 1.25 !important;
             display: block !important;
         }
+        @media (min-width: 768px) {
+            #writerContent h1 {
+                font-size: 2.25rem !important;
+            }
+        }
         #writerContent h2 {
-            font-size: 1.75rem !important;
+            font-size: 1.5rem !important;
             font-weight: 750 !important;
-            margin-top: 1.5rem !important;
+            margin-top: 1.25rem !important;
             margin-bottom: 0.625rem !important;
             color: #1e293b !important;
             line-height: 1.3 !important;
             display: block !important;
         }
+        @media (min-width: 768px) {
+            #writerContent h2 {
+                font-size: 1.75rem !important;
+            }
+        }
         #writerContent h3 {
-            font-size: 1.375rem !important;
+            font-size: 1.2rem !important;
             font-weight: 650 !important;
-            margin-top: 1.25rem !important;
+            margin-top: 1.1rem !important;
             margin-bottom: 0.5rem !important;
             color: #334155 !important;
             line-height: 1.35 !important;
@@ -361,12 +371,14 @@
         /* Умный самоскрывающийся Dock */
         .dock-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%) translateY(0);
             z-index: 100;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
             opacity: 1;
+            width: calc(100% - 24px);
+            max-width: 440px;
         }
         .dock-hidden {
             transform: translateX(-50%) translateY(120px);
@@ -379,7 +391,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 80px;
+            height: 60px;
             z-index: 90;
             background: transparent;
             pointer-events: auto;
@@ -440,22 +452,55 @@
             z-index: 49;
             background: transparent;
         }
+
+        /* Специфические фиксы для мобильных тач-устройств */
+        @media (max-width: 767px) {
+            .glass-sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100%;
+                z-index: 100;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 20px 0 30px rgba(0,0,0,0.1);
+            }
+            .glass-sidebar.mobile-open {
+                left: 0;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(4px);
+                z-index: 99;
+            }
+            .sidebar-overlay.mobile-open {
+                display: block;
+            }
+            /* Мягкие адаптивные карточки для мобильных */
+            .ios-card {
+                padding: 1rem !important;
+                border-radius: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col relative overflow-hidden">
 
     <!-- Задний фон с красивыми цветными сферами -->
-    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-1 text-slate-800"></div>
     <div class="ambient-glow-2"></div>
     <div class="ambient-glow-3"></div>
 
     <!-- Floating Selection Formatting Toolbar (С кнопками маркерной заливки) -->
-    <div id="floatingFormatMenu" class="hidden absolute bg-black/80 text-white rounded-2xl shadow-2xl px-3 py-2 flex flex-col gap-2 z-[60] select-none border border-white/10 backdrop-blur-xl animate-pop-up min-w-[310px]">
-        <div class="flex items-center gap-1.5 justify-between">
-            <button onmousedown="event.preventDefault(); applyCustomHeader('h1')" class="px-2 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H1</button>
-            <button onmousedown="event.preventDefault(); applyCustomHeader('h2')" class="px-2 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H2</button>
-            <button onmousedown="event.preventDefault(); applyCustomHeader('h3')" class="px-2 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H3</button>
-            <button onmousedown="event.preventDefault(); transformToParagraph()" class="px-2 py-1 text-[11px] hover:bg-white/10 rounded-lg ios-btn">Текст</button>
+    <div id="floatingFormatMenu" class="hidden absolute bg-black/80 text-white rounded-2xl shadow-2xl px-3 py-2 flex flex-col gap-2 z-[60] select-none border border-white/10 backdrop-blur-xl animate-pop-up min-w-[280px] max-w-[90vw]">
+        <div class="flex items-center gap-1.5 justify-between flex-wrap">
+            <button onmousedown="event.preventDefault(); applyCustomHeader('h1')" class="px-1.5 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H1</button>
+            <button onmousedown="event.preventDefault(); applyCustomHeader('h2')" class="px-1.5 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H2</button>
+            <button onmousedown="event.preventDefault(); applyCustomHeader('h3')" class="px-1.5 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H3</button>
+            <button onmousedown="event.preventDefault(); transformToParagraph()" class="px-1.5 py-1 text-[11px] hover:bg-white/10 rounded-lg ios-btn">Текст</button>
             
             <div class="w-px h-4 bg-white/20"></div>
 
@@ -499,17 +544,26 @@
     <!-- Зона триггера развертывания меню у левого края экрана -->
     <div id="leftScreenTrigger" class="screen-left-trigger hidden"></div>
 
+    <!-- Мобильная подложка/оверлей для закрытия меню -->
+    <div id="sidebarOverlay" class="sidebar-overlay md:hidden" onclick="toggleMobileSidebar()"></div>
+
     <!-- Главная структура приложения -->
     <div class="flex h-screen overflow-hidden w-full z-10 relative">
         
         <!-- Sidebar Navigation -->
-        <div id="sidebarContainer" class="flex relative h-full flex-shrink-0 transition-all duration-500 ease-in-out w-64">
-            <aside id="sidebar" class="flex flex-col w-full glass-sidebar z-30 overflow-hidden">
+        <div id="sidebarContainer" class="glass-sidebar flex relative h-full flex-shrink-0 transition-all duration-500 ease-in-out w-0 md:w-64">
+            <aside id="sidebar" class="flex flex-col w-full overflow-hidden">
                 <!-- macOS Window Controls -->
-                <div class="px-6 pt-5 pb-4 flex items-center space-x-2">
-                    <button onclick="closeAllTabs()" class="w-3.5 h-3.5 rounded-full bg-red-400 hover:bg-red-500 transition-colors ios-btn" title="Закрыть все вкладки"></button>
-                    <button onclick="collapseAllFolders()" class="w-3.5 h-3.5 rounded-full bg-yellow-400 hover:bg-yellow-500 transition-colors ios-btn" title="Свернуть все папки"></button>
-                    <span class="w-3.5 h-3.5 rounded-full bg-green-400 inline-block opacity-75"></span>
+                <div class="px-6 pt-5 pb-4 flex items-center justify-between">
+                    <div class="flex space-x-2">
+                        <button onclick="closeAllTabs()" class="w-3.5 h-3.5 rounded-full bg-red-400 hover:bg-red-500 transition-colors ios-btn" title="Закрыть все вкладки"></button>
+                        <button onclick="collapseAllFolders()" class="w-3.5 h-3.5 rounded-full bg-yellow-400 hover:bg-yellow-500 transition-colors ios-btn" title="Свернуть все папки"></button>
+                        <span class="w-3.5 h-3.5 rounded-full bg-green-400 inline-block opacity-75"></span>
+                    </div>
+                    <!-- Закрытие бокового меню кнопкой на мобильных -->
+                    <button onclick="toggleMobileSidebar()" class="md:hidden p-1 bg-white/50 hover:bg-white/85 text-slate-700 rounded-lg">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
                 </div>
 
                 <!-- Список папок в левом меню -->
@@ -527,39 +581,39 @@
 
         <!-- Главная рабочая область -->
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden relative transition-all duration-500 ease-in-out">
-            <header class="h-16 px-6 flex items-center justify-between z-20 bg-transparent">
-                <div class="flex items-center space-x-3 flex-1">
-                    <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="md:hidden p-2 text-slate-600 hover:bg-white/45 rounded-xl">
+            <header class="h-16 px-4 md:px-6 flex items-center justify-between z-20 bg-transparent gap-2">
+                <div class="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
+                    <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="md:hidden p-2 text-slate-600 hover:bg-white/45 rounded-xl flex-shrink-0">
                         <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
                     <!-- Apple-style Вкладки -->
-                    <div id="tabsContainer" class="flex items-center space-x-1.5 bg-transparent p-1 rounded-2xl text-xs"></div>
+                    <div id="tabsContainer" class="flex items-center space-x-1.5 bg-transparent p-1 rounded-2xl text-xs overflow-x-auto no-scrollbar scroll-smooth max-w-full"></div>
                 </div>
             </header>
 
             <!-- Основной контент со скроллом -->
-            <div id="workspaceContentScroll" class="flex-1 overflow-y-auto p-6 pb-24 space-y-6 relative transition-all duration-500 ease-in-out">
+            <div id="workspaceContentScroll" class="flex-1 overflow-y-auto p-4 md:p-6 pb-28 space-y-6 relative transition-all duration-500 ease-in-out">
                 
                 <!-- Контейнер для центрирования содержимого при скрытом сайдбаре -->
                 <div id="centeredLayoutContainer" class="mx-auto transition-all duration-500 ease-in-out w-full max-w-full">
                     
                     <!-- ================= TAB: DASHBOARD ================= -->
-                    <div id="tab-dashboard" class="space-y-6 tab-content animate-pop-up flex flex-col justify-center min-h-[80vh]">
+                    <div id="tab-dashboard" class="space-y-6 tab-content animate-pop-up flex flex-col justify-center min-h-[75vh]">
                         
                         <!-- Умный Google-Style Поиск на Главной -->
                         <div class="max-w-2xl mx-auto my-auto px-1 w-full flex flex-col items-center justify-center">
-                            <div class="relative flex items-center p-1.5 bg-white/40 border border-white/50 rounded-3xl shadow-xl backdrop-blur-2xl w-full">
+                            <div class="relative flex items-center p-1 md:p-1.5 bg-white/40 border border-white/50 rounded-3xl shadow-xl backdrop-blur-2xl w-full">
                                 <span class="pl-4 text-slate-450">
                                     <i data-lucide="search" class="w-5 h-5 text-slate-500"></i>
                                 </span>
-                                <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Введите запрос" class="w-full bg-transparent border-none outline-none px-3 py-3 text-sm text-slate-800 placeholder-slate-500 font-medium">
+                                <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Введите запрос" class="w-full bg-transparent border-none outline-none px-3 py-2 md:py-3 text-sm text-slate-800 placeholder-slate-500 font-medium">
                             </div>
                             <!-- Результаты Умного Поиска -->
-                            <div id="smartSearchResults" class="hidden mt-3 bg-white/85 border border-white/50 rounded-3xl p-4 shadow-2xl max-h-72 overflow-y-auto backdrop-blur-xl space-y-2 w-full"></div>
+                            <div id="smartSearchResults" class="hidden mt-3 bg-white/85 border border-white/50 rounded-3xl p-4 shadow-2xl max-h-72 overflow-y-auto backdrop-blur-xl space-y-2 w-full z-20"></div>
                         </div>
 
                         <!-- Сетка Недавних Заметок -->
-                        <div class="mt-auto pt-10">
+                        <div class="mt-auto pt-8">
                             <div id="recentNotesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                         </div>
                     </div>
@@ -568,16 +622,16 @@
                     <div id="tab-analytics" class="space-y-6 tab-content hidden animate-pop-up">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h1 class="text-2xl font-extrabold tracking-tight text-slate-800">Аналитика и Продуктивность 📊</h1>
-                                <p class="text-slate-500 text-xs font-medium">Статистика твоей работы и база знаний в деталях</p>
+                                <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800">Аналитика 📊</h1>
+                                <p class="text-slate-550 text-xs font-medium">Статистика твоей работы и база знаний</p>
                             </div>
                         </div>
 
                         <!-- Панель статистики -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="statisticsContainer"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="statisticsContainer"></div>
 
                         <!-- Дополнительные Метрики Продуктивности -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <!-- Скорость печати -->
                             <div class="bg-white/35 border border-white/50 rounded-4xl p-5 shadow-sm backdrop-blur-xl flex flex-col justify-between">
                                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-3">
@@ -641,7 +695,7 @@
                         </div>
 
                         <!-- График активности -->
-                        <div class="bg-white/30 border border-white/50 rounded-4xl p-6 shadow-sm flex flex-col justify-between backdrop-blur-xl relative overflow-hidden">
+                        <div class="bg-white/30 border border-white/50 rounded-4xl p-4 md:p-6 shadow-sm flex flex-col justify-between backdrop-blur-xl relative overflow-hidden">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                                     <i data-lucide="trending-up" class="w-4 h-4 text-blue-500"></i> Тренды активности
@@ -681,7 +735,7 @@
                                 <h2 class="font-bold text-sm text-slate-800">Интерактивный граф связей</h2>
                             </div>
                         </div>
-                        <div class="flex-1 bg-white/30 rounded-4xl overflow-hidden relative border border-white/40 min-h-[500px] backdrop-blur-xl">
+                        <div class="flex-1 bg-white/30 rounded-4xl overflow-hidden relative border border-white/40 min-h-[400px] md:min-h-[500px] backdrop-blur-xl">
                             <canvas id="graphCanvas" class="w-full h-full block cursor-grab"></canvas>
                         </div>
                     </div>
@@ -704,18 +758,18 @@
                         <!-- Сетка заметок текущей папки -->
                         <div class="space-y-3">
                             <h3 id="notesFolderListHeader" class="text-xs font-extrabold text-slate-400 uppercase tracking-wider hidden">Заметки</h3>
-                            <div id="allNotesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                            <div id="allNotesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                         </div>
                     </div>
 
                     <!-- ================= TAB: LIBRARY SYSTEM VIEW ================= -->
                     <div id="tab-library-tab" class="space-y-4 tab-content hidden animate-pop-up">
-                        <div class="flex justify-between items-center">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
-                                <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Моя Библиотека 📚</h1>
+                                <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Библиотека 📚</h1>
                                 <p class="text-slate-400 text-xs font-medium">Конспекты прочитанных и текущих книг</p>
                             </div>
-                            <button onclick="openBookModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-2xl text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-blue-500/10">
+                            <button onclick="openBookModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-2xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/10 w-full sm:w-auto">
                                 <i data-lucide="plus" class="w-4 h-4"></i> Добавить книгу
                             </button>
                         </div>
@@ -724,12 +778,12 @@
 
                     <!-- ================= TAB: GOALS SYSTEM VIEW ================= -->
                     <div id="tab-goals-tab" class="space-y-4 tab-content hidden animate-pop-up">
-                        <div class="flex justify-between items-center">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Мои Цели 🎯</h1>
                                 <p class="text-slate-400 text-xs font-medium">Трекер результатов и дедлайны</p>
                             </div>
-                            <button onclick="openGoalModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-2xl text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-blue-500/10">
+                            <button onclick="openGoalModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-2xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/10 w-full sm:w-auto">
                                 <i data-lucide="plus" class="w-4 h-4"></i> Поставить цель
                             </button>
                         </div>
@@ -738,61 +792,56 @@
 
                     <!-- ================= TAB: TODO VIEW ================= -->
                     <div id="tab-todo-tab" class="space-y-4 tab-content hidden animate-pop-up">
-                        <div class="flex justify-between items-center">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Список дел ⚡</h1>
                                 <p class="text-slate-400 text-xs font-medium">Твои задачи на сегодня</p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <input id="todoInput" type="text" placeholder="Новая задача..." class="px-4 py-2 text-xs bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-550">
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <input id="todoInput" type="text" placeholder="Новая задача..." class="flex-1 sm:flex-none px-4 py-2 text-xs bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-550">
                                 <button onclick="addTodoTask()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-2xl text-xs font-semibold ios-btn">
                                     <i data-lucide="plus" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
-                        <div id="todosContainer" class="bg-white/35 border border-white/50 rounded-4xl p-6 shadow-sm divide-y divide-slate-100 space-y-2 backdrop-blur-xl animate-pop-up"></div>
+                        <div id="todosContainer" class="bg-white/35 border border-white/50 rounded-4xl p-4 md:p-6 shadow-sm divide-y divide-slate-100 space-y-2 backdrop-blur-xl animate-pop-up"></div>
                     </div>
 
                     <!-- ================= TAB: SOUNDS VIEW ================= -->
                     <div id="tab-sounds-tab" class="space-y-4 tab-content hidden animate-pop-up">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+                        <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-3">
                             <div>
                                 <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Звуки для видео 🎵</h1>
                                 <p class="text-slate-400 text-xs font-medium">Каталог эффектов</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <button onclick="promptForRootSoundPath()" class="ios-btn border border-slate-200 px-3.5 py-2 rounded-2xl text-xs font-semibold text-slate-600 flex items-center gap-1.5 bg-white shadow-sm">
+                                <button onclick="promptForRootSoundPath()" class="ios-btn border border-slate-200 px-3 py-2 rounded-2xl text-xs font-semibold text-slate-600 flex items-center justify-center gap-1.5 bg-white shadow-sm flex-1 sm:flex-none">
                                     <i data-lucide="folder-cog" class="w-4 h-4"></i> Папка на ПК
                                 </button>
-                                <div class="relative w-48">
+                                <div class="relative w-full sm:w-48 flex-1 sm:flex-none">
                                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                                         <i data-lucide="search" class="w-3.5 h-3.5"></i>
                                     </span>
                                     <input id="soundSearch" type="text" oninput="renderSounds()" placeholder="Поиск звуков..." class="w-full pl-8 pr-3 py-2 text-xs bg-white border border-slate-200 rounded-2xl outline-none">
                                 </div>
-                                <button onclick="openSoundModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-2xl text-xs font-semibold flex items-center gap-1">
+                                <button onclick="openSoundModal()" class="ios-btn bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-2xl text-xs font-semibold flex items-center justify-center gap-1 w-full sm:w-auto">
                                     <i data-lucide="music" class="w-4 h-4"></i> Добавить
                                 </button>
                             </div>
                         </div>
-                        <div class="bg-blue-50/40 text-blue-700 p-3 px-4 rounded-2xl text-xs border border-blue-100/50 flex justify-between items-center backdrop-blur-sm">
+                        <div class="bg-blue-50/40 text-blue-700 p-3 px-4 rounded-2xl text-xs border border-blue-100/50 flex flex-col sm:flex-row justify-between sm:items-center gap-2 backdrop-blur-sm">
                             <span id="currentSoundFolderPath">Папка звуков по умолчанию: /MyBrain/Assets/Audio</span>
-                            <button onclick="promptForRootSoundPath()" class="underline hover:no-underline font-medium">Изменить</button>
+                            <button onclick="promptForRootSoundPath()" class="underline hover:no-underline font-medium text-left">Изменить</button>
                         </div>
                         <div id="soundsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
                     </div>
 
                     <!-- ================= INLINE WRITER ================= -->
                     <div id="inlineWriter" class="hidden space-y-4 animate-pop-up">
-                        <div class="flex items-center justify-between border-b border-slate-200/30 pb-3">
-                            <div class="flex items-center space-x-2"></div>
-                            <div class="flex items-center space-x-2"></div>
-                        </div>
-
                         <!-- Рабочая область -->
                         <div class="space-y-4 w-full">
                             <div class="flex items-center justify-between gap-3 relative">
-                                <input id="writerTitle" type="text" placeholder="Заголовок..." oninput="autoSaveCurrentNote()" class="flex-1 bg-transparent border-b border-transparent hover:border-slate-200/50 focus:border-blue-550 text-2xl font-extrabold outline-none py-1.5 transition-colors text-slate-900">
+                                <input id="writerTitle" type="text" placeholder="Заголовок..." oninput="autoSaveCurrentNote()" class="flex-1 bg-transparent border-b border-transparent hover:border-slate-200/50 focus:border-blue-550 text-xl md:text-2xl font-extrabold outline-none py-1.5 transition-colors text-slate-900">
                                 
                                 <!-- Настройки заметки (macOS Popover) -->
                                 <div class="relative select-none z-[45]">
@@ -800,7 +849,7 @@
                                         <i data-lucide="sliders" class="w-4.5 h-4.5"></i>
                                     </button>
                                     
-                                    <div id="writerSettingsDropdown" class="hidden absolute right-0 top-12 bg-white/95 border border-slate-200/60 shadow-2xl p-5 rounded-3xl min-w-[340px] max-w-[360px] flex flex-col gap-4 backdrop-blur-md">
+                                    <div id="writerSettingsDropdown" class="hidden absolute right-0 top-12 bg-white/95 border border-slate-200/60 shadow-2xl p-5 rounded-3xl min-w-[280px] sm:min-w-[340px] max-w-[360px] flex flex-col gap-4 backdrop-blur-md">
                                         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
                                             <h4 class="font-bold text-xs text-slate-900 uppercase tracking-wider">Параметры заметки</h4>
                                             <button onclick="toggleWriterSettingsDropdown(event)" class="text-slate-400 hover:text-slate-700 text-xs">Готово</button>
@@ -899,7 +948,7 @@
                             <!-- Editor Canvas Area -->
                             <div id="editorWorkspace" class="relative bg-white/90 border border-slate-200/50 rounded-4xl shadow-sm transition-all overflow-visible backdrop-blur-md">
                                 <canvas id="drawingCanvas"></canvas>
-                                <div id="writerContent" contenteditable="true" oninput="autoSaveCurrentNote()" placeholder="Просто начни писать сюда свои мысли..." class="relative w-full min-h-[550px] p-8 outline-none text-slate-800 leading-relaxed text-[15px] z-10"></div>
+                                <div id="writerContent" contenteditable="true" oninput="autoSaveCurrentNote()" placeholder="Просто начни писать сюда свои мысли..." class="relative w-full min-h-[450px] md:min-h-[550px] p-5 md:p-8 outline-none text-slate-800 leading-relaxed text-[15px] z-10"></div>
                             </div>
                         </div>
                     </div>
@@ -912,40 +961,40 @@
 
             <!-- macOS Dock -->
             <div class="dock-container" id="macOSDock">
-                <div class="flex items-center gap-3 px-5 py-3 bg-white/50 border border-white/60 shadow-2xl rounded-3xl backdrop-blur-2xl">
+                <div class="flex items-center justify-between gap-1 md:gap-3 px-3 md:px-5 py-2.5 bg-white/50 border border-white/60 shadow-2xl rounded-3xl backdrop-blur-2xl">
                     
                     <!-- Левая группа инструментов -->
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 md:gap-2">
                         <button onclick="createNewFolderPrompt()" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Создать папку">
-                            <i data-lucide="folder-plus" class="w-4.5 h-4.5"></i>
+                            <i data-lucide="folder-plus" class="w-4 md:w-4.5 h-4 md:h-4.5"></i>
                         </button>
                         <button onclick="createNewNoteInline()" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Создать заметку">
-                            <i data-lucide="file-plus" class="w-4.5 h-4.5"></i>
+                            <i data-lucide="file-plus" class="w-4 md:w-4.5 h-4 md:h-4.5"></i>
                         </button>
                         <button onclick="collapseAllFolders()" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Свернуть все папки">
-                            <i data-lucide="minus-square" class="w-4.5 h-4.5"></i>
+                            <i data-lucide="minus-square" class="w-4 md:w-4.5 h-4 md:h-4.5"></i>
                         </button>
                         <button onclick="closeAllTabs()" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Закрыть все вкладки">
-                            <i data-lucide="x-circle" class="w-4.5 h-4.5"></i>
+                            <i data-lucide="x-circle" class="w-4 md:w-4.5 h-4 md:h-4.5"></i>
                         </button>
                         <button onclick="openFolderManagerModal()" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Настройки папок и импорт/экспорт">
-                            <i data-lucide="sliders" class="w-4.5 h-4.5"></i>
+                            <i data-lucide="sliders" class="w-4 md:w-4.5 h-4 md:h-4.5"></i>
                         </button>
                     </div>
 
                     <!-- Тонкий прозрачный разделитель -->
-                    <div class="w-px h-8 bg-slate-900/10"></div>
+                    <div class="w-px h-6 md:h-8 bg-slate-900/10"></div>
 
                     <!-- Правая группа -->
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 md:gap-2">
                         <button onclick="switchTab('dashboard')" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Главная страница">
-                            <i data-lucide="layout-dashboard" class="w-4.5 h-4.5 text-slate-900"></i>
+                            <i data-lucide="layout-dashboard" class="w-4 md:w-4.5 h-4 md:h-4.5 text-slate-900"></i>
                         </button>
                         <button onclick="switchTab('analytics')" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Аналитика и Метрики">
-                            <i data-lucide="bar-chart-2" class="w-4.5 h-4.5 text-emerald-600"></i>
+                            <i data-lucide="bar-chart-2" class="w-4 md:w-4.5 h-4 md:h-4.5 text-emerald-600"></i>
                         </button>
                         <button onclick="switchTab('graph-tab')" class="p-2 hover:bg-white/40 rounded-xl text-slate-700 transition shadow-sm ios-btn" title="Граф связей">
-                            <i data-lucide="network" class="w-4.5 h-4.5 text-indigo-600"></i>
+                            <i data-lucide="network" class="w-4 md:w-4.5 h-4 md:h-4.5 text-indigo-600"></i>
                         </button>
                     </div>
 
@@ -958,7 +1007,7 @@
     <!-- ================= MODALS SECTION ================= -->
     <!-- Folder Management -->
     <div id="folderManagerModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-lg shadow-2xl flex flex-col max-h-[80vh] backdrop-blur-xl animate-pop-up">
+        <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh] backdrop-blur-xl animate-pop-up">
             <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2">
                     <i data-lucide="settings" class="w-5 h-5 text-blue-500"></i> Управление Папками
@@ -971,9 +1020,9 @@
             <div id="folderManagerList" class="flex-1 overflow-y-auto my-4 space-y-3.5 pr-1 text-xs"></div>
 
             <div class="border-t border-slate-100 pt-4 mb-4 space-y-3">
-                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Резервная копия (JSON со всеми данными и картинками)</h4>
-                <div class="flex items-center gap-3">
-                    <button onclick="exportDataToJSON()" class="ios-btn bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1.5">
+                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Резервная копия</h4>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <button onclick="exportDataToJSON()" class="ios-btn bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs px-4 py-2 rounded-xl font-bold flex items-center justify-center gap-1.5">
                         <i data-lucide="download" class="w-4 h-4"></i> Экспортировать базу
                     </button>
                     <div class="flex flex-col">
@@ -998,22 +1047,22 @@
                 <div id="wikiModalNotesList" class="max-h-48 overflow-y-auto border border-slate-100 rounded-2xl p-2.5 space-y-1 bg-slate-50/50 text-xs"></div>
             </div>
             <div class="flex justify-end gap-2 mt-5">
-                <button onclick="closeWikiLinkModal()" class="px-4 py-2 text-xs text-slate-400 font-medium">Отмена</button>
+                <button onclick="closeWikiLinkModal()" class="px-4 py-2 text-xs text-slate-450 font-medium">Отмена</button>
             </div>
         </div>
     </div>
 
     <!-- Book Creation Modal -->
     <div id="bookModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
-            <h3 id="bookModalTitle" class="font-bold text-slate-900 mb-4">Добавить книгу</h3>
+        <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up max-h-[90vh] overflow-y-auto">
+            <h3 id="bookModalTitle" class="font-bold text-slate-900 mb-4 text-sm md:text-base">Добавить книгу</h3>
             <div class="space-y-3 text-xs">
                 <input id="bookTitleInput" type="text" placeholder="Название книги" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none">
                 <input id="bookAuthorInput" type="text" placeholder="Автор" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none">
                 <input id="bookCoverInput" type="text" placeholder="Ссылка на обложку" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none">
                 <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-1">
                     <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Или выберите файл:</label>
-                    <input type="file" id="bookCoverFileInput" accept="image/*" onchange="handleBookCoverUpload(event)" class="text-[10px]">
+                    <input type="file" id="bookCoverFileInput" accept="image/*" onchange="handleBookCoverUpload(event)" class="text-[10px] w-full">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -1028,7 +1077,7 @@
                 <textarea id="bookCommentInput" placeholder="Короткий комментарий" rows="2" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none resize-none"></textarea>
             </div>
             <div class="flex justify-end gap-2 mt-5">
-                <button onclick="closeBookModal()" class="px-3.5 py-2 text-xs text-slate-400 font-semibold">Отмена</button>
+                <button onclick="closeBookModal()" class="px-3.5 py-2 text-xs text-slate-450 font-semibold">Отмена</button>
                 <button id="bookModalSubmitBtn" onclick="saveBook()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-5 py-2 rounded-2xl font-bold ios-btn">Добавить</button>
             </div>
         </div>
@@ -1036,7 +1085,7 @@
 
     <!-- Goal Creation Modal -->
     <div id="goalModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
+        <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
             <h3 id="goalModalTitle" class="font-bold text-slate-900 mb-4">Поставить цель</h3>
             <div class="space-y-3 text-xs">
                 <input id="goalTitleInput" type="text" placeholder="Какую цель ставим?" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none">
@@ -1047,15 +1096,15 @@
                 </div>
             </div>
             <div class="flex justify-end gap-2 mt-5">
-                <button onclick="closeGoalModal()" class="px-3.5 py-2 text-xs text-slate-400 font-semibold">Отмена</button>
+                <button onclick="closeGoalModal()" class="px-3.5 py-2 text-xs text-slate-450 font-semibold">Отмена</button>
                 <button id="goalModalSubmitBtn" onclick="saveGoal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-5 py-2 rounded-2xl font-bold ios-btn">Поставить</button>
             </div>
         </div>
     </div>
 
-    <!-- Sound Creation Modal -->
+    <!-- Goal Creation Modal -->
     <div id="soundModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
+        <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
             <h3 class="font-bold text-slate-900 mb-4">Добавить звук</h3>
             <div class="space-y-3 text-xs">
                 <input id="soundTitleInput" type="text" placeholder="Название звука" class="w-full px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl outline-none">
@@ -1067,16 +1116,16 @@
                 </div>
             </div>
             <div class="flex justify-end gap-2 mt-5">
-                <button onclick="closeSoundModal()" class="px-3.5 py-2 text-xs text-slate-400 font-semibold">Отмена</button>
+                <button onclick="closeSoundModal()" class="px-3.5 py-2 text-xs text-slate-450 font-semibold">Отмена</button>
                 <button onclick="saveSoundItem()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-5 py-2 rounded-2xl font-bold ios-btn">Сохранить</button>
             </div>
         </div>
     </div>
 
     <!-- Toast Notification -->
-    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-50 text-xs backdrop-blur-md border border-white/10">
-        <i id="toastIcon" data-lucide="check-circle-2" class="w-4.5 h-4.5 text-emerald-400"></i>
-        <span id="toastMessage" class="font-semibold">Успешно</span>
+    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-50 text-xs backdrop-blur-md border border-white/10 max-w-[90vw]">
+        <i id="toastIcon" data-lucide="check-circle-2" class="w-4.5 h-4.5 text-emerald-400 flex-shrink-0"></i>
+        <span id="toastMessage" class="font-semibold truncate">Успешно</span>
     </div>
 
     <script>
@@ -1390,7 +1439,9 @@
             setupAutoHideDock(); 
             lucide.createIcons();
 
-            const sidebarHidden = localStorage.getItem('brain_sidebar_hidden') === 'true';
+            // Автоопределение скрытия сайдбара в зависимости от сохраненных настроек или ширины экрана
+            const isMobile = window.innerWidth < 768;
+            const sidebarHidden = isMobile ? true : (localStorage.getItem('brain_sidebar_hidden') === 'true');
             applySidebarState(sidebarHidden);
 
             setInterval(() => {
@@ -1481,6 +1532,21 @@
             applySidebarState(!isSidebarHidden);
         }
 
+        function toggleMobileSidebar() {
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) return;
+            const container = document.getElementById('sidebarContainer');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (container.classList.contains('mobile-open')) {
+                container.classList.remove('mobile-open');
+                overlay.classList.remove('mobile-open');
+            } else {
+                container.classList.add('mobile-open');
+                overlay.classList.add('mobile-open');
+            }
+        }
+
         function applySidebarState(hide) {
             const container = document.getElementById('sidebarContainer');
             const toggleIcon = document.getElementById('toggleSidebarIcon');
@@ -1489,6 +1555,21 @@
             const centeredLayout = document.getElementById('centeredLayoutContainer');
 
             isSidebarHidden = hide;
+
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                // На мобильных скрываем сайдбар классическим способом, чтобы заработал мобильный drawer
+                container.style.width = '0px';
+                container.style.opacity = '';
+                container.style.pointerEvents = '';
+                if (leftTrigger) leftTrigger.classList.add('hidden');
+                if (centeredLayout) {
+                    centeredLayout.classList.remove('max-w-5xl');
+                    centeredLayout.classList.add('max-w-full');
+                }
+                return;
+            }
 
             if (hide) {
                 container.style.width = '0px';
@@ -1545,7 +1626,7 @@
                 clearTimeout(dockTimer);
                 dockTimer = setTimeout(() => {
                     dock.classList.add('dock-hidden');
-                }, 2000);
+                }, 3000); // 3 секунды для комфортного тача
             };
 
             dock.addEventListener('mouseenter', showDock);
@@ -1553,6 +1634,15 @@
 
             dock.addEventListener('mouseleave', startHideTimer);
             triggerZone.addEventListener('mouseleave', startHideTimer);
+
+            // Обработка тач-событий на мобильных
+            document.addEventListener('touchstart', (e) => {
+                if (e.clientY > window.innerHeight - 80) {
+                    showDock();
+                } else {
+                    startHideTimer();
+                }
+            });
 
             startHideTimer();
         }
@@ -1693,14 +1783,6 @@
                 autoSaveCurrentNote();
             }
         }
-
-        window.toggleMobileSidebar = function() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.toggle('hidden');
-                sidebar.classList.toggle('flex');
-            }
-        };
 
         // Загрузка из IndexedDB
         async function loadDatabase() {
@@ -1900,7 +1982,7 @@
                 const isActive = tab.id === activeTabId;
                 const tabEl = document.createElement('div');
                 
-                tabEl.className = `flex items-center space-x-2 px-3.5 py-1.5 transition-all duration-300 text-[11px] font-bold rounded-xl cursor-pointer border ios-btn ${
+                tabEl.className = `flex items-center space-x-2 px-3.5 py-1.5 transition-all duration-300 text-[11px] font-bold rounded-xl cursor-pointer border ios-btn flex-shrink-0 ${
                     isActive 
                     ? 'bg-gradient-to-r from-white/60 to-white/40 border-white/65 text-slate-900 shadow-lg backdrop-blur-md' 
                     : 'bg-white/20 border-white/30 text-slate-500 hover:text-slate-800 hover:bg-white/35 backdrop-blur-sm shadow-sm'
@@ -1918,7 +2000,7 @@
 
                 tabEl.innerHTML = `
                     <i data-lucide="${iconName}" class="w-3.5 h-3.5 flex-shrink-0"></i>
-                    <span class="truncate max-w-[100px]">${tab.title}</span>
+                    <span class="truncate max-w-[80px] sm:max-w-[100px]">${tab.title}</span>
                     ${tab.id !== 'dashboard' ? `
                         <button onclick="event.stopPropagation(); closeTab('${tab.id}')" class="p-0.5 rounded-full hover:bg-slate-200/50 text-slate-400 hover:text-slate-700 transition">
                             <i data-lucide="x" class="w-2.5 h-2.5"></i>
@@ -1928,6 +2010,12 @@
                 container.appendChild(tabEl);
             });
             lucide.createIcons();
+            
+            // Автоматический скролл к активной вкладке
+            const activeTabElement = container.querySelector('.text-slate-900');
+            if (activeTabElement) {
+                container.scrollLeft = activeTabElement.offsetLeft - container.offsetWidth / 2 + activeTabElement.offsetWidth / 2;
+            }
         }
 
         function triggerTabSwitch(tabId) {
@@ -2000,6 +2088,12 @@
 
             if (tab.type === 'analytics' || tab.type === 'graph') {
                 setTimeout(initGraph, 120);
+            }
+
+            // На мобильных закрываем боковое меню после перехода
+            const sidebar = document.getElementById('sidebarContainer');
+            if (sidebar.classList.contains('mobile-open')) {
+                toggleMobileSidebar();
             }
         }
 
@@ -2140,8 +2234,8 @@
                 row.className = `p-4 rounded-3xl border flex flex-col gap-2 transition ${isHidden ? 'bg-slate-100/50 opacity-60 border-slate-200' : 'bg-white/80 border-slate-200'}`;
                 row.innerHTML = `
                     <div class="flex items-center justify-between gap-3">
-                        <input type="text" value="${f.name}" oninput="updateFolderName('${f.id}', this.value)" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800" placeholder="Имя папки">
-                        <div class="flex items-center space-x-1.5">
+                        <input type="text" value="${f.name}" oninput="updateFolderName('${f.id}', this.value)" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 min-w-0" placeholder="Имя папки">
+                        <div class="flex items-center space-x-1 flex-shrink-0">
                             <button onclick="toggleFolderChevron('${f.id}')" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600" title="Переключатель">
                                 <i data-lucide="${chevronIcon}" class="w-4 h-4 ${disableChevron ? 'text-rose-500' : 'text-emerald-500'}"></i>
                             </button>
@@ -2156,16 +2250,16 @@
                         </div>
                     </div>
                     ${!isSystem ? `
-                        <div class="flex items-center justify-between gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-100">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Родительская папка (Подпапка в):</span>
-                            <select onchange="updateFolderParent('${f.id}', this.value)" class="bg-white border border-slate-200 text-[10px] rounded-lg px-2 py-1 outline-none max-w-[180px]">
+                        <div class="flex items-center justify-between gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-100 flex-wrap">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Родительская папка:</span>
+                            <select onchange="updateFolderParent('${f.id}', this.value)" class="bg-white border border-slate-200 text-[10px] rounded-lg px-2 py-1 outline-none w-full sm:w-auto max-w-full">
                                 ${parentOptions}
                             </select>
                         </div>
                     ` : ''}
                     <div class="flex flex-wrap items-center gap-1.5 bg-slate-50/50 p-2 rounded-2xl border border-slate-100">
                         <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Цвет папки</span>
-                        ${colorButtons}
+                        <div class="flex items-center gap-1 flex-wrap">${colorButtons}</div>
                     </div>
                 `;
                 list.appendChild(row);
@@ -2356,9 +2450,9 @@
                 resultsBox.innerHTML += `<div class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider mb-1">Документы и Заметки (${matchedNotes.length})</div>`;
                 matchedNotes.forEach(n => {
                     resultsBox.innerHTML += `
-                        <div onclick="openOrFocusTab('${n.id}', '${n.title.replace(/'/g, "\\'")}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center">
-                            <span class="font-bold text-xs text-slate-800">${n.title}</span>
-                            <span class="text-[10px] text-slate-400">Перейти →</span>
+                        <div onclick="openOrFocusTab('${n.id}', '${n.title.replace(/'/g, "\\'")}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center mb-1.5">
+                            <span class="font-bold text-xs text-slate-800 truncate pr-2">${n.title}</span>
+                            <span class="text-[10px] text-slate-400 flex-shrink-0">Перейти →</span>
                         </div>
                     `;
                 });
@@ -2368,9 +2462,9 @@
                 resultsBox.innerHTML += `<div class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider mt-3 mb-1">Книжная библиотека (${matchedBooks.length})</div>`;
                 matchedBooks.forEach(b => {
                     resultsBox.innerHTML += `
-                        <div onclick="openOrFocusTab('${b.noteId}', 'Конспект: ${b.title}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center">
-                            <span class="font-bold text-xs text-slate-800">📖 ${b.title} — <span class="text-slate-500">${b.author}</span></span>
-                            <span class="text-[10px] text-slate-400">${b.progress}% конспект →</span>
+                        <div onclick="openOrFocusTab('${b.noteId}', 'Конспект: ${b.title}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center mb-1.5">
+                            <span class="font-bold text-xs text-slate-800 truncate pr-2">📖 ${b.title} — <span class="text-slate-500 font-normal">${b.author}</span></span>
+                            <span class="text-[10px] text-slate-400 flex-shrink-0">${b.progress}% конспект →</span>
                         </div>
                     `;
                 });
@@ -2380,9 +2474,9 @@
                 resultsBox.innerHTML += `<div class="text-[10px] font-extrabold text-rose-600 uppercase tracking-wider mt-3 mb-1">Мои цели и фокус (${matchedGoals.length})</div>`;
                 matchedGoals.forEach(g => {
                     resultsBox.innerHTML += `
-                        <div onclick="openOrFocusTab('${g.noteId}', 'Цель: ${g.title}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center">
-                            <span class="font-bold text-xs text-slate-800">🎯 ${g.title}</span>
-                            <span class="text-[10px] text-slate-400">Дедлайн: ${g.deadline} →</span>
+                        <div onclick="openOrFocusTab('${g.noteId}', 'Цель: ${g.title}', 'note')" class="p-2.5 bg-white/40 hover:bg-white/80 rounded-2xl cursor-pointer transition border border-white/50 flex justify-between items-center mb-1.5">
+                            <span class="font-bold text-xs text-slate-800 truncate pr-2">🎯 ${g.title}</span>
+                            <span class="text-[10px] text-slate-400 flex-shrink-0">Дедлайн: ${g.deadline} →</span>
                         </div>
                     `;
                 });
@@ -2401,7 +2495,7 @@
                 if (!editor || !query) return;
                 
                 let text = editor.innerHTML;
-                text = text.replace(/<mark class="bg-yellow-200 text-slate-900 font-bold p-0.5 rounded-md">/g, '').replace(/<\/removeFormat>/g, '');
+                text = text.replace(/<removeFormat>/g, '').replace(/<\/removeFormat>/g, '');
                 
                 const regex = new RegExp(`(${query})`, 'gi');
                 editor.innerHTML = text.replace(regex, '<mark class="bg-yellow-200 text-slate-900 font-bold p-0.5 rounded-md">$1</mark>');
@@ -2942,6 +3036,18 @@
                 imageDragOffset.y = e.clientY - rect.top;
                 el.style.zIndex = 100;
             });
+            // Тач-поддержка переноса картинок
+            el.addEventListener('touchstart', function(e) {
+                if (e.target.closest('.image-toolbar') || e.target.classList.contains('image-resize-handle') || isDrawingMode) return;
+                activeDragImage = el;
+                el.classList.add('active-drag');
+                
+                const rect = el.getBoundingClientRect();
+                const touch = e.touches[0];
+                imageDragOffset.x = touch.clientX - rect.left;
+                imageDragOffset.y = touch.clientY - rect.top;
+                el.style.zIndex = 100;
+            }, { passive: true });
         }
 
         document.addEventListener('mousemove', function(e) {
@@ -2961,7 +3067,34 @@
             }
         });
 
+        document.addEventListener('touchmove', function(e) {
+            if (activeDragImage) {
+                const workspace = document.getElementById('editorWorkspace');
+                const workspaceRect = workspace.getBoundingClientRect();
+                const touch = e.touches[0];
+                
+                let x = touch.clientX - workspaceRect.left - imageDragOffset.x + workspace.scrollLeft;
+                let y = touch.clientY - workspaceRect.top - imageDragOffset.y + workspace.scrollTop;
+                
+                x = Math.max(0, x);
+                y = Math.max(0, y);
+                
+                activeDragImage.style.position = 'absolute';
+                activeDragImage.style.left = x + 'px';
+                activeDragImage.style.top = y + 'px';
+            }
+        }, { passive: true });
+
         document.addEventListener('mouseup', function() {
+            if (activeDragImage) {
+                activeDragImage.classList.remove('active-drag');
+                activeDragImage.style.zIndex = 40;
+                activeDragImage = null;
+                autoSaveCurrentNote();
+            }
+        });
+
+        document.addEventListener('touchend', function() {
             if (activeDragImage) {
                 activeDragImage.classList.remove('active-drag');
                 activeDragImage.style.zIndex = 40;
@@ -3067,36 +3200,56 @@
             let startX = 0;
             let startWidth = 0;
 
-            document.addEventListener('mousedown', function(e) {
-                const resizeHandle = e.target.closest('.image-resize-handle');
-                const wrapper = e.target.closest('.editor-image-wrapper');
+            const onStart = (clientX, target) => {
+                const resizeHandle = target.closest('.image-resize-handle');
+                const wrapper = target.closest('.editor-image-wrapper');
 
                 if (resizeHandle && wrapper) {
-                    e.preventDefault();
-                    e.stopPropagation();
                     activeResizeEl = wrapper;
-                    startX = e.clientX;
+                    startX = clientX;
                     startWidth = wrapper.offsetWidth;
                     document.body.style.cursor = 'se-resize';
                 }
+            };
+
+            document.addEventListener('mousedown', function(e) {
+                onStart(e.clientX, e.target);
             });
 
-            document.addEventListener('mousemove', function(e) {
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 0) {
+                    onStart(e.touches[0].clientX, e.target);
+                }
+            }, { passive: true });
+
+            const onMove = (clientX) => {
                 if (activeResizeEl) {
-                    e.preventDefault();
-                    const dx = e.clientX - startX;
+                    const dx = clientX - startX;
                     const newW = Math.max(80, startWidth + dx);
                     activeResizeEl.style.width = newW + 'px';
                 }
+            };
+
+            document.addEventListener('mousemove', function(e) {
+                onMove(e.clientX);
             });
 
-            document.addEventListener('mouseup', function() {
+            document.addEventListener('touchmove', function(e) {
+                if (activeResizeEl && e.touches.length > 0) {
+                    onMove(e.touches[0].clientX);
+                }
+            }, { passive: true });
+
+            const onEnd = () => {
                 if (activeResizeEl) {
                     activeResizeEl = null;
                     document.body.style.cursor = '';
                     autoSaveCurrentNote(); 
                 }
-            });
+            };
+
+            document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchend', onEnd);
         }
 
         function initDrawingCanvas() {
@@ -3105,10 +3258,19 @@
             ctx = canvas.getContext('2d');
             window.addEventListener('resize', resizeCanvas);
 
+            // Регистрация мыши и тача
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseleave', stopDrawing);
+
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) startDrawing(e.touches[0]);
+            }, { passive: true });
+            canvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) draw(e.touches[0]);
+            }, { passive: true });
+            canvas.addEventListener('touchend', stopDrawing);
         }
 
         function resizeCanvas() {
@@ -3732,7 +3894,7 @@
                     <div class="flex flex-col justify-between h-full z-10 w-2/3">
                         <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">${c.title}</span>
                         <span class="text-2xl font-black tracking-tight block my-1 text-slate-800">${c.value}</span>
-                        <span class="text-[10px] text-slate-500 font-medium block">
+                        <span class="text-[10px] text-slate-505 font-medium block">
                             <span class="${changeColor}">${c.change}% за неделю</span>
                         </span>
                     </div>
@@ -4046,7 +4208,7 @@
                         <div class="flex justify-between items-start mb-2">
                             <h4 class="font-extrabold text-xs text-slate-800 truncate max-w-[95%]">${note.title || 'Без названия'}</h4>
                         </div>
-                        <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">${strippedContent}</p>
+                        <p class="text-xs text-slate-505 line-clamp-3 leading-relaxed">${strippedContent}</p>
                     </div>
                 </div>
             `;
@@ -4343,6 +4505,33 @@
                 }
             });
 
+            // Навешивание touchstart для мобильного перетаскивания
+            canvasElement.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 0) return;
+                const m = getMouse(e.touches[0]);
+                const tx = (m.x - panX) / zoomVal;
+                const ty = (m.y - panY) / zoomVal;
+
+                let clicked = null;
+                for (let n of forceSimulatedNodes) {
+                    const dist = Math.sqrt((n.x - tx)**2 + (n.y - ty)**2);
+                    if (dist < n.size + 8) {
+                        clicked = n;
+                        break;
+                    }
+                }
+
+                dragOffsetTotal = 0;
+                if (clicked) {
+                    activeGraphNode = clicked;
+                    clicked.isDragging = true;
+                    start = { x: m.x, y: m.y };
+                } else {
+                    isDrag = true;
+                    start = { x: m.x - panX, y: m.y - panY };
+                }
+            }, { passive: true });
+
             canvasElement.addEventListener('mousemove', (e) => {
                 const m = getMouse(e);
                 const tx = (m.x - panX) / zoomVal;
@@ -4373,7 +4562,27 @@
                 }
             });
 
-            canvasElement.addEventListener('mouseup', () => {
+            canvasElement.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 0) return;
+                const m = getMouse(e.touches[0]);
+                const tx = (m.x - panX) / zoomVal;
+                const ty = (m.y - panY) / zoomVal;
+
+                if (isDrag) {
+                    panX = m.x - start.x;
+                    panY = m.y - start.y;
+                } else if (activeGraphNode && activeGraphNode.isDragging) {
+                    const dx = m.x - start.x;
+                    const dy = m.y - start.y;
+                    dragOffsetTotal += Math.sqrt(dx*dx + dy*dy);
+
+                    activeGraphNode.x = (m.x - panX) / zoomVal;
+                    activeGraphNode.y = (m.y - panY) / zoomVal;
+                    start = { x: m.x, y: m.y };
+                }
+            }, { passive: true });
+
+            const onEnd = () => {
                 if (activeGraphNode) {
                     activeGraphNode.isDragging = false;
                     if (dragOffsetTotal < 10) {
@@ -4387,7 +4596,10 @@
                 }
                 isDrag = false;
                 activeGraphNode = null;
-            });
+            };
+
+            canvasElement.addEventListener('mouseup', onEnd);
+            canvasElement.addEventListener('touchend', onEnd);
 
             canvasElement.addEventListener('wheel', (e) => {
                 e.preventDefault();
