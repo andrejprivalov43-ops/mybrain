@@ -96,6 +96,16 @@
             }
         }
 
+        /* Оптимизация мобильного сайдбара во избежание лагов размытия */
+        @media (max-width: 767px) {
+            .glass-sidebar {
+                background: rgba(255, 255, 255, 0.98) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                box-shadow: 20px 0 40px rgba(0, 0, 0, 0.15);
+            }
+        }
+
         /* Decorative Background Ambient Glows */
         .ambient-glow-1 {
             position: absolute;
@@ -175,26 +185,21 @@
             }
         }
 
-        /* Dashboard Colors */
-        .glow-card-blue {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.25) 100%);
-            border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(20px);
+        /* Apple Glass Widgets for Analytics */
+        .glass-widget {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .glow-card-cyan {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(8, 145, 178, 0.25) 100%);
-            border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(20px);
-        }
-        .glow-card-pink {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.25) 100%);
-            border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(20px);
-        }
-        .glow-card-red {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.25) 100%);
-            border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(20px);
+        .glass-widget:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.5);
         }
 
         #writerContent:empty:before {
@@ -475,8 +480,8 @@
     <div class="ambient-glow-2"></div>
     <div class="ambient-glow-3"></div>
 
-    <!-- Floating Selection Formatting Toolbar -->
-    <div id="floatingFormatMenu" class="hidden absolute bg-black/80 text-white rounded-2xl shadow-2xl px-3 py-2 flex flex-col gap-2 z-[60] select-none border border-white/10 backdrop-blur-xl animate-pop-up min-w-[280px] max-w-[90vw]">
+    <!-- Floating Selection Formatting Toolbar (С выбором своего цвета) -->
+    <div id="floatingFormatMenu" class="hidden absolute bg-black/85 text-white rounded-2xl shadow-2xl px-3 py-2.5 flex flex-col gap-2.5 z-[60] select-none border border-white/10 backdrop-blur-xl animate-pop-up min-w-[310px] max-w-[90vw]">
         <div class="flex items-center gap-1.5 justify-between overflow-x-auto no-scrollbar">
             <button onmousedown="event.preventDefault(); applyCustomHeader('h1')" class="px-2 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H1</button>
             <button onmousedown="event.preventDefault(); applyCustomHeader('h2')" class="px-2 py-1 text-xs font-black hover:bg-white/10 rounded-lg ios-btn">H2</button>
@@ -491,30 +496,37 @@
             
             <div class="w-px h-4 bg-white/20"></div>
 
-            <button onmousedown="event.preventDefault(); promptForWikiLink()" class="p-1 hover:bg-white/10 rounded-lg text-blue-450 ios-btn">
+            <button onmousedown="event.preventDefault(); promptForWikiLink()" class="p-1 hover:bg-white/10 rounded-lg text-blue-400 ios-btn">
                 <i data-lucide="link" class="w-3.5 h-3.5"></i>
             </button>
         </div>
 
-        <div class="flex flex-col gap-1 border-t border-white/10 pt-2">
-            <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-1.5 border-t border-white/10 pt-2 text-xs">
+            <!-- Выбор цвета букв и маркера -->
+            <div class="flex items-center justify-between gap-2 flex-wrap">
                 <div class="flex items-center gap-1.5">
                     <span class="text-[9px] text-white/50 font-bold uppercase mr-1">Буквы:</span>
-                    <button onmousedown="event.preventDefault(); formatColor('#ef4444')" class="w-3 h-3 rounded-full bg-rose-500 border border-white/20 hover:scale-110 transition-transform" title="Красный text"></button>
-                    <button onmousedown="event.preventDefault(); formatColor('#3b82f6')" class="w-3 h-3 rounded-full bg-blue-500 border border-white/20 hover:scale-110 transition-transform" title="Синий text"></button>
-                    <button onmousedown="event.preventDefault(); formatColor('#10b981')" class="w-3 h-3 rounded-full bg-emerald-500 border border-white/20 hover:scale-110 transition-transform" title="Зеленый text"></button>
-                    <button onmousedown="event.preventDefault(); formatColor('#0f172a')" class="w-3 h-3 rounded-full bg-slate-900 border border-white/20 hover:scale-110 transition-transform" title="Темный text"></button>
+                    <input type="color" onchange="handleCustomColorSelect(this.value)" class="w-5 h-5 rounded-md border-0 p-0 cursor-pointer bg-transparent" title="Свой цвет букв">
+                    <button onmousedown="event.preventDefault(); formatColor('#ef4444')" class="w-3 h-3 rounded-full bg-rose-500 border border-white/20 hover:scale-110 transition-transform" title="Красный"></button>
+                    <button onmousedown="event.preventDefault(); formatColor('#3b82f6')" class="w-3 h-3 rounded-full bg-blue-500 border border-white/20 hover:scale-110 transition-transform" title="Синий"></button>
+                    <button onmousedown="event.preventDefault(); formatColor('#10b981')" class="w-3 h-3 rounded-full bg-emerald-500 border border-white/20 hover:scale-110 transition-transform" title="Зеленый"></button>
                 </div>
                 <button onmousedown="event.preventDefault(); resetDocFormat()" class="px-2 py-0.5 text-[9px] bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">Сброс</button>
             </div>
             
-            <div class="flex items-center gap-1.5 mt-1 border-t border-white/5 pt-1.5">
+            <div class="flex items-center gap-1.5 mt-0.5 border-t border-white/5 pt-1.5 flex-wrap">
                 <span class="text-[9px] text-white/50 font-bold uppercase mr-1">Маркер:</span>
-                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#fecaca')" class="w-3.5 h-3.5 rounded bg-red-200 border border-white/20 hover:scale-110 transition-transform" title="Розовое выделение"></button>
-                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#bfdbfe')" class="w-3.5 h-3.5 rounded bg-blue-200 border border-white/20 hover:scale-110 transition-transform" title="Голубое выделение"></button>
-                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#bbf7d0')" class="w-3.5 h-3.5 rounded bg-green-200 border border-white/20 hover:scale-110 transition-transform" title="Салатовое выделение"></button>
-                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#fef08a')" class="w-3.5 h-3.5 rounded bg-yellow-250 border border-white/20 hover:scale-110 transition-transform" title="Желтое выделение"></button>
-                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', 'transparent')" class="w-3.5 h-3.5 rounded bg-transparent border border-white/40 flex items-center justify-center hover:scale-110 transition-transform text-[8px] text-white/70" title="Убрать маркер">✕</button>
+                <input type="color" onchange="handleCustomHighlightSelect(this.value)" class="w-5 h-5 rounded-md border-0 p-0 cursor-pointer bg-transparent" title="Свой цвет маркера">
+                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#fecaca')" class="w-3.5 h-3.5 rounded bg-red-200 border border-white/20 hover:scale-110 transition-transform" title="Розовый маркер"></button>
+                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#bfdbfe')" class="w-3.5 h-3.5 rounded bg-blue-200 border border-white/20 hover:scale-110 transition-transform" title="Голубой маркер"></button>
+                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', '#bbf7d0')" class="w-3.5 h-3.5 rounded bg-green-200 border border-white/20 hover:scale-110 transition-transform" title="Зеленый маркер"></button>
+                <button onmousedown="event.preventDefault(); formatDoc('hiliteColor', 'transparent')" class="w-3.5 h-3.5 rounded bg-transparent border border-white/40 flex items-center justify-center hover:scale-110 transition-transform text-[8px] text-white/70" title="Убрать">✕</button>
+            </div>
+
+            <!-- Контейнер для отображения последних 5 цветов -->
+            <div class="flex items-center gap-1.5 mt-1 border-t border-white/5 pt-1.5">
+                <span class="text-[9px] text-white/50 font-bold uppercase mr-1">Недавние:</span>
+                <div id="recentColorsContainer" class="flex items-center gap-1.5"></div>
             </div>
         </div>
     </div>
@@ -522,8 +534,8 @@
     <!-- Screen Edge Trigger for Desktop menu -->
     <div id="leftScreenTrigger" class="screen-left-trigger hidden"></div>
 
-    <!-- Mobile Sidebar Blur Backdrop Overlay -->
-    <div id="mobileSidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/45 backdrop-blur-sm z-40 hidden md:hidden"></div>
+    <!-- Mobile Sidebar Backdrop Overlay (Оптимизирован для предотвращения лагов) -->
+    <div id="mobileSidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
 
     <!-- App Shell Frame Container -->
     <div class="flex h-screen overflow-hidden w-full z-10 relative">
@@ -536,11 +548,11 @@
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
 
-                <!-- macOS Decorative Window Controls -->
+                <!-- macOS Decorative Window Controls (С функционалом зеленой кнопки) -->
                 <div class="px-6 pt-5 pb-4 flex items-center space-x-2">
                     <button onclick="closeAllTabs()" class="w-3.5 h-3.5 rounded-full bg-red-400 hover:bg-red-500 transition-colors ios-btn" title="Закрыть все вкладки"></button>
                     <button onclick="collapseAllFolders()" class="w-3.5 h-3.5 rounded-full bg-yellow-400 hover:bg-yellow-500 transition-colors ios-btn" title="Свернуть все папки"></button>
-                    <span class="w-3.5 h-3.5 rounded-full bg-green-400 inline-block opacity-75"></span>
+                    <button onclick="toggleFullscreen()" class="w-3.5 h-3.5 rounded-full bg-green-400 hover:bg-green-500 transition-colors ios-btn" title="Полноэкранный режим"></button>
                 </div>
 
                 <!-- Folders and Notes Nav Container -->
@@ -558,13 +570,14 @@
 
         <!-- Main Application Workspace Viewport -->
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden relative transition-all duration-500 ease-in-out">
-            <header class="h-16 px-4 md:px-6 flex items-center justify-between z-20 bg-transparent gap-2">
+            <!-- Header (Всегда сверху и липкий на мобильных телефонах) -->
+            <header class="h-16 px-4 md:px-6 flex items-center justify-between z-20 bg-white/60 backdrop-blur-md border-b border-white/30 sticky top-0 gap-2 flex-shrink-0">
                 <div class="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
                     <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="md:hidden p-2 text-slate-600 hover:bg-white/45 rounded-xl flex-shrink-0">
                         <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
                     <!-- Apple-style Tabs (Swipeable/scrollable horizontally on Mobile screen) -->
-                    <div id="tabsContainer" class="flex items-center space-x-1.5 bg-transparent p-1 rounded-2xl text-xs overflow-x-auto no-scrollbar max-w-full"></div>
+                    <div id="tabsContainer" class="flex items-center space-x-1.5 bg-transparent p-1 rounded-2xl text-xs overflow-x-auto no-scrollbar max-w-full flex-nowrap"></div>
                 </div>
             </header>
 
@@ -574,7 +587,7 @@
                 <div id="centeredLayoutContainer" class="mx-auto transition-all duration-500 ease-in-out w-full max-w-full">
                     
                     <!-- ================= TAB: DASHBOARD ================= -->
-                    <div id="tab-dashboard" class="space-y-6 tab-content animate-pop-up flex flex-col justify-center min-h-[70vh] md:min-h-[80vh]">
+                    <div id="tab-dashboard" class="space-y-6 tab-content animate-pop-up flex flex-col justify-center min-h-[60vh] md:min-h-[70vh]">
                         
                         <!-- Smooth Search Bar on Main Page -->
                         <div class="max-w-2xl mx-auto my-auto px-1 w-full flex flex-col items-center justify-center">
@@ -582,14 +595,9 @@
                                 <span class="pl-4 text-slate-450">
                                     <i data-lucide="search" class="w-5 h-5 text-slate-500"></i>
                                 </span>
-                                <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Введите запрос во Второй Мозг..." class="w-full bg-transparent border-none outline-none px-3 py-2.5 md:py-3 text-sm text-slate-800 placeholder-slate-500 font-medium">
+                                <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Найти заметку" class="w-full bg-transparent border-none outline-none px-3 py-2.5 md:py-3 text-sm text-slate-800 placeholder-slate-500 font-medium">
                             </div>
                             <div id="smartSearchResults" class="hidden mt-3 bg-white/85 border border-white/50 rounded-3xl p-4 shadow-2xl max-h-72 overflow-y-auto backdrop-blur-xl space-y-2 w-full"></div>
-                        </div>
-
-                        <!-- Horizontal Grid of Recent Documents -->
-                        <div class="mt-auto pt-6 md:pt-10">
-                            <div id="recentNotesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
                         </div>
                     </div>
 
@@ -602,12 +610,12 @@
                             </div>
                         </div>
 
-                        <!-- Statistics Grid Cards -->
+                        <!-- Statistics Grid Cards (Все в едином стиле жидкого стекла) -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" id="statisticsContainer"></div>
 
                         <!-- Secondary Metrics Block -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white/35 border border-white/50 rounded-4xl p-5 shadow-sm backdrop-blur-xl flex flex-col justify-between">
+                            <div class="glass-widget flex flex-col justify-between">
                                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-3">
                                     <i data-lucide="gauge" class="w-4 h-4 text-emerald-500"></i> Скорость печати
                                 </h3>
@@ -627,7 +635,7 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white/35 border border-white/50 rounded-4xl p-5 shadow-sm backdrop-blur-xl flex flex-col justify-between">
+                            <div class="glass-widget flex flex-col justify-between">
                                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-3">
                                     <i data-lucide="clock" class="w-4 h-4 text-indigo-500"></i> Сессия & Активность
                                 </h3>
@@ -649,7 +657,7 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white/35 border border-white/50 rounded-4xl p-5 shadow-sm backdrop-blur-xl flex flex-col justify-between">
+                            <div class="glass-widget flex flex-col justify-between">
                                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-3">
                                     <i data-lucide="activity" class="w-4 h-4 text-rose-500"></i> Жизненный цикл заметок
                                 </h3>
@@ -663,38 +671,6 @@
                                         <div id="hotNotesList" class="space-y-1 mt-1 text-slate-800 font-bold"></div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Graphical Activity Chart Frame -->
-                        <div class="bg-white/30 border border-white/50 rounded-4xl p-4 md:p-6 shadow-sm flex flex-col justify-between backdrop-blur-xl relative overflow-hidden">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="trending-up" class="w-4 h-4 text-blue-500"></i> Тренды активности
-                                </h3>
-                            </div>
-                            <div class="h-44 w-full relative flex items-end">
-                                <svg id="chartSvg" class="w-full h-full" viewBox="0 0 400 120" preserveAspectRatio="none">
-                                    <defs>
-                                        <linearGradient id="chartGradBlue" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
-                                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <line x1="0" y1="30" x2="400" y2="30" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3" />
-                                    <line x1="0" y1="60" x2="400" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3" />
-                                    <line x1="0" y1="90" x2="400" y2="90" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3" />
-                                    <path id="chartPathFill" d="" fill="url(#chartGradBlue)" />
-                                    <path id="chartPathStroke" d="" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
-                                    <g id="chartPointsGroup"></g>
-                                </svg>
-                                <div id="chartTooltip" class="absolute hidden bg-slate-900/95 backdrop-blur-md text-white px-2.5 py-1 rounded-xl text-[9px] font-bold shadow-lg border border-white/10 z-15 transition-all pointer-events-none">
-                                    <span id="chartTooltipVal">0</span>
-                                    <span class="block text-[7px] text-slate-400 font-medium" id="chartTooltipDay">День</span>
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-[9px] text-slate-400 font-semibold px-2 mt-2">
-                                <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
                             </div>
                         </div>
                     </div>
@@ -872,7 +848,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Editor Control Bar -->
+                            <!-- Editor Control Bar (С поддержкой удобного режима рисования) -->
                             <div class="flex flex-wrap gap-2 items-center bg-white/40 p-2 rounded-2xl border border-white/45 shadow-sm font-sans backdrop-blur-xl select-none">
                                 <div class="flex items-center gap-1 bg-white/20 border border-white/35 backdrop-blur-md p-1 rounded-xl">
                                     <button onclick="triggerInlineImageUpload()" class="p-1.5 hover:bg-white/30 rounded-lg flex items-center justify-center text-slate-900 transition" title="Вставить картинку напрямую">
@@ -905,6 +881,11 @@
                                             <option value="8">8px</option>
                                             <option value="12">12px</option>
                                         </select>
+                                        
+                                        <!-- Удобная кнопка выхода из режима рисования в виде крестика -->
+                                        <button onclick="toggleCanvasMode()" class="p-1.5 bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 rounded-lg flex items-center gap-1 transition font-bold text-xs px-2.5" title="Выйти из рисования">
+                                            <i data-lucide="x" class="w-4 h-4"></i> Выйти
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -968,23 +949,8 @@
     </div>
 
     <!-- ================= MODALS SECTION ================= -->
-    <!-- Custom macOS-style Confirm Dialog -->
-    <div id="customConfirmModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[100] flex items-center justify-center p-4 hidden">
-        <div class="bg-white/95 rounded-3xl border border-white/50 p-5 w-full max-w-sm shadow-2xl backdrop-blur-xl animate-pop-up text-center">
-            <div class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                <i data-lucide="help-circle" class="w-6 h-6 text-rose-500"></i>
-            </div>
-            <h3 id="confirmTitle" class="font-bold text-slate-900 mb-1 text-sm md:text-base">Подтверждение</h3>
-            <p id="confirmMessage" class="text-xs text-slate-500 mb-5 leading-normal"></p>
-            <div class="flex gap-2.5">
-                <button id="confirmCancelBtn" class="flex-1 py-2.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl transition ios-btn">Отмена</button>
-                <button id="confirmOkBtn" class="flex-1 py-2.5 text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-2xl transition ios-btn shadow-md shadow-rose-500/10">Подтвердить</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Folder Management Dialog -->
-    <div id="folderManagerModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="folderManagerModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh] backdrop-blur-xl animate-pop-up">
             <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2 text-sm md:text-base">
@@ -1016,7 +982,7 @@
     </div>
 
     <!-- Wiki Link Popover -->
-    <div id="wikiLinkModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="wikiLinkModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-sm shadow-2xl backdrop-blur-xl animate-pop-up">
             <h3 class="font-bold text-slate-900 mb-1">Связать элемент</h3>
             <p class="text-[11px] text-slate-400 mb-4 leading-normal">Выделенный фрагмент превратится в кликабельную ссылку на выбранную заметку или папку.</p>
@@ -1031,7 +997,7 @@
     </div>
 
     <!-- Book Creation Modal -->
-    <div id="bookModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="bookModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up max-h-[90vh] overflow-y-auto">
             <h3 id="bookModalTitle" class="font-bold text-slate-900 mb-4 text-sm md:text-base">Добавить книгу</h3>
             <div class="space-y-3 text-xs">
@@ -1062,7 +1028,7 @@
     </div>
 
     <!-- Goal Creation Modal -->
-    <div id="goalModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="goalModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-white/95 rounded-4xl border border-white/50 p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up">
             <h3 id="goalModalTitle" class="font-bold text-slate-900 mb-4">Поставить цель</h3>
             <div class="space-y-3 text-xs">
@@ -1081,7 +1047,7 @@
     </div>
 
     <!-- Sound Creation Modal -->
-    <div id="soundModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div id="soundModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-white/95 rounded-4xl border border-white/50 p-5 md:p-6 w-full max-w-md shadow-2xl backdrop-blur-xl animate-pop-up max-h-[90vh] overflow-y-auto">
             <h3 class="font-bold text-slate-900 mb-4">Добавить звук</h3>
             <div class="space-y-3 text-xs">
@@ -1101,7 +1067,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-50 text-xs backdrop-blur-md border border-white/10">
+    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-[150] text-xs backdrop-blur-md border border-white/10">
         <i id="toastIcon" data-lucide="check-circle-2" class="w-4.5 h-4.5 text-emerald-400"></i>
         <span id="toastMessage" class="font-semibold">Успешно</span>
     </div>
@@ -1113,36 +1079,6 @@
 
         function generateUniqueId(prefix = '') {
             return (prefix ? prefix + '-' : '') + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
-        }
-
-        // Custom macOS modal instead of default window.confirm
-        function showCustomConfirm(title, message, onOk) {
-            const modal = document.getElementById('customConfirmModal');
-            const titleEl = document.getElementById('confirmTitle');
-            const msgEl = document.getElementById('confirmMessage');
-            const okBtn = document.getElementById('confirmOkBtn');
-            const cancelBtn = document.getElementById('confirmCancelBtn');
-
-            if (!modal || !titleEl || !msgEl || !okBtn || !cancelBtn) return;
-
-            titleEl.innerText = title;
-            msgEl.innerText = message;
-            modal.classList.remove('hidden');
-
-            const cleanUp = () => {
-                modal.classList.add('hidden');
-                okBtn.onclick = null;
-                cancelBtn.onclick = null;
-            };
-
-            okBtn.onclick = () => {
-                onOk();
-                cleanUp();
-            };
-
-            cancelBtn.onclick = () => {
-                cleanUp();
-            };
         }
 
         function initIndexedDB() {
@@ -1257,7 +1193,8 @@
             sessionStorage.setItem('visit_counted', 'true');
         }
 
-        let lastUsedColors = JSON.parse(localStorage.getItem('brain_recent_colors')) || [];
+        // Загрузка недавних цветов
+        let lastUsedColors = JSON.parse(localStorage.getItem('brain_recent_colors')) || ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
         let activeChartMetric = 'notes';
 
         const metricTrends = {
@@ -1383,7 +1320,6 @@
             
             buildFoldersUI();
             updateStatsAndControls();
-            renderRecentNotes();
             renderAllNotesList();
             renderBooks();
             renderGoals();
@@ -1408,7 +1344,7 @@
                 updateLiveSessionMetrics();
             }, 1000);
 
-            // Hide toggle handles cleanly on mobile, allow mouse actions on desktop
+            // Обработчик скрытия бокового меню на компьютерах
             document.addEventListener('mousemove', function(e) {
                 if (window.innerWidth < 768) return; 
                 const btn = document.getElementById('toggleSidebarBtn');
@@ -1479,8 +1415,25 @@
                 });
             }
 
+            // Добавление тач-событий для рисования на телефонах
+            if (canvas) {
+                canvas.addEventListener('touchstart', startDrawing, {passive: true});
+                canvas.addEventListener('touchmove', draw, {passive: true});
+                canvas.addEventListener('touchend', stopDrawing, {passive: true});
+            }
+
             triggerTabSwitch(activeTabId);
         };
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    showNotification("Ошибка входа в полноэкранный режим", false);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
 
         function toggleSidebar() {
             applySidebarState(!isSidebarHidden);
@@ -1592,9 +1545,9 @@
             if (!container) return;
             container.innerHTML = '';
 
-            lastUsedColors.forEach(color => {
+            lastUsedColors.slice(0, 5).forEach(color => {
                 const btn = document.createElement('button');
-                btn.className = "w-3.5 h-3.5 rounded-full border border-white/20 hover:scale-125 transition-transform flex-shrink-0";
+                btn.className = "w-4 h-4 rounded-full border border-white/30 hover:scale-125 transition-transform flex-shrink-0";
                 btn.style.backgroundColor = color;
                 btn.title = `Использовать ${color}`;
                 btn.onmousedown = function(e) {
@@ -1608,6 +1561,16 @@
         function handleCustomColorSelect(color) {
             if (!color) return;
             formatColor(color);
+            updateRecentColors(color);
+        }
+
+        function handleCustomHighlightSelect(color) {
+            if (!color) return;
+            formatDoc('hiliteColor', color);
+            updateRecentColors(color);
+        }
+
+        function updateRecentColors(color) {
             lastUsedColors = lastUsedColors.filter(c => c !== color);
             lastUsedColors.unshift(color);
             if (lastUsedColors.length > 5) lastUsedColors.pop();
@@ -1830,7 +1793,6 @@
                 
                 updateStatsAndControls();
                 buildFoldersUI();
-                renderRecentNotes();
                 renderAllNotesList();
                 renderBooks();
                 renderGoals();
@@ -1938,7 +1900,6 @@
 
             if (tab.type === 'dashboard') {
                 switchTabContent('dashboard');
-                renderRecentNotes();
             } else if (tab.type === 'analytics') {
                 switchTabContent('analytics');
                 renderStatistics();
@@ -2235,18 +2196,14 @@
             const folder = folders.find(f => f.id === id);
             if (!folder || folder.system) return;
 
-            showCustomConfirm(
-                "Удалить папку?", 
-                `Вы уверены, что хотите полностью удалить папку "${folder.name}"? Это действие необратимо.`,
-                () => {
-                    notes.forEach(n => { if (n.folderId === id) n.folderId = ''; });
-                    folders.forEach(f => { if (f.parentId === id) f.parentId = ''; });
-                    folders = folders.filter(f => f.id !== id);
-                    saveDatabase();
-                    openFolderManagerModal();
-                    showNotification("Папка удалена");
-                }
-            );
+            if (confirm(`Вы уверены, что хотите полностью удалить папку "${folder.name}"? Это действие необратимо.`)) {
+                notes.forEach(n => { if (n.folderId === id) n.folderId = ''; });
+                folders.forEach(f => { if (f.parentId === id) f.parentId = ''; });
+                folders = folders.filter(f => f.id !== id);
+                saveDatabase();
+                openFolderManagerModal();
+                showNotification("Папка удалена");
+            }
         }
 
         function dragNoteOver(e) {
@@ -2311,7 +2268,7 @@
             if (note) {
                 note.folderId = ''; 
                 saveDatabase();
-                showNotification(`Заметка перенесена в корень`);
+                showNotification("Заметка перенесена в корень");
             }
         }
 
@@ -2507,6 +2464,7 @@
             }
         }
 
+        // Изменение дизайна подпапок в меню (убрана стрелочка, изменен размер)
         function renderFolderTree(folder, allFolders, depth = 0) {
             const isCollapsed = collapsedFolders[folder.id] || false;
             const disableChevron = folder.disableChevron || false;
@@ -2524,9 +2482,8 @@
             folderBox.setAttribute('ondragleave', 'dragNoteLeave(event)');
             folderBox.setAttribute('ondrop', `dropNoteOnFolder(event, '${folder.id}')`);
 
-            folderBox.style.marginLeft = `${depth * 12}px`;
+            // Интеграция одинакового дизайна и выравнивания подпапок и заметок (без стрелочки "↳")
             const folderColor = folder.color || '#3b82f6';
-            
             if (folder.color === '#ffffff') {
                 folderBox.style.background = 'rgba(255, 255, 255, 0.08)';
                 folderBox.style.border = '1px solid rgba(255, 255, 255, 0.35)';
@@ -2546,7 +2503,7 @@
                 <div class="sidebar-item-btn w-full justify-start text-left px-4 flex items-center relative cursor-pointer hover:bg-white/20 transition-colors" onclick="handleFolderClick('${folder.id}', '${folder.system || ''}')">
                     <div class="flex items-center min-w-0 h-full text-left">
                         <span class="text-xs font-bold truncate text-slate-900 flex items-center h-full text-left">
-                            ${depth > 0 ? '↳ ' : ''}${folder.name}
+                            ${folder.name}
                         </span>
                     </div>
                     ${showExpandButton ? `
@@ -2748,15 +2705,11 @@
         }
 
         function deleteSoundItem(id) {
-            showCustomConfirm(
-                "Удалить этот звук?",
-                "Вы уверены, что хотите убрать данный звуковой эффект из медиатеки?",
-                () => {
-                    sounds = sounds.filter(s => s.id !== id);
-                    saveDatabase();
-                    showNotification("Звук удален", false);
-                }
-            );
+            if (confirm("Вы уверены, что хотите убрать данный звуковой эффект из медиатеки?")) {
+                sounds = sounds.filter(s => s.id !== id);
+                saveDatabase();
+                showNotification("Звук удален", false);
+            }
         }
 
         let activeAudio = null;
@@ -3109,56 +3062,6 @@
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseleave', stopDrawing);
-            
-            canvas.addEventListener('touchstart', startDrawingTouch, { passive: false });
-            canvas.addEventListener('touchmove', drawTouch, { passive: false });
-            canvas.addEventListener('touchend', stopDrawing, { passive: false });
-        }
-
-        function getTouchPos(canvasDom, touchEvent) {
-            const rect = canvasDom.getBoundingClientRect();
-            return {
-                x: touchEvent.touches[0].clientX - rect.left,
-                y: touchEvent.touches[0].clientY - rect.top
-            };
-        }
-
-        function startDrawingTouch(e) {
-            if (!isDrawingMode) return;
-            e.preventDefault();
-            isDrawing = true;
-
-            if (canvas) {
-                if (drawingHistory.length >= 20) drawingHistory.shift();
-                drawingHistory.push(canvas.toDataURL());
-            }
-
-            ctx.beginPath();
-            const pos = getTouchPos(canvas, e);
-            ctx.moveTo(pos.x, pos.y);
-
-            currentBrushColor = document.getElementById('brushColor').value;
-            currentBrushSize = parseInt(document.getElementById('brushSize').value) || 4;
-
-            ctx.lineWidth = currentBrushSize;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            if (isEraserMode) {
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.strokeStyle = 'rgba(0,0,0,1)';
-            } else {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = currentBrushColor;
-            }
-        }
-
-        function drawTouch(e) {
-            if (!isDrawing || !isDrawingMode) return;
-            e.preventDefault();
-            const pos = getTouchPos(canvas, e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
         }
 
         function resizeCanvas() {
@@ -3241,7 +3144,12 @@
 
             ctx.beginPath();
             const rect = canvas.getBoundingClientRect();
-            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            
+            // Touch & Mouse Support
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            ctx.moveTo(clientX - rect.left, clientY - rect.top);
 
             currentBrushColor = document.getElementById('brushColor').value;
             currentBrushSize = parseInt(document.getElementById('brushSize').value) || 4;
@@ -3262,7 +3170,11 @@
         function draw(e) {
             if (!isDrawing || !isDrawingMode) return;
             const rect = canvas.getBoundingClientRect();
-            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            ctx.lineTo(clientX - rect.left, clientY - rect.top);
             ctx.stroke();
         }
 
@@ -3572,92 +3484,19 @@
         function deleteWriterNote() {
             if (!currentEditingNoteId) return;
 
-            showCustomConfirm(
-                "Удалить заметку?",
-                "Вы действительно хотите навсегда удалить эту заметку? Данные будут стерты из базы.",
-                () => {
-                    notes = notes.filter(n => n.id !== currentEditingNoteId);
-                    books.forEach(b => { if (b.noteId === currentEditingNoteId) b.noteId = null; });
-                    saveDatabase();
-                    showNotification("Заметка удалена.", false);
-                    closeTab(currentEditingNoteId);
-                }
-            );
+            if (confirm("Вы действительно хотите навсегда удалить эту заметку? Данные будут стерты из базы.")) {
+                notes = notes.filter(n => n.id !== currentEditingNoteId);
+                books.forEach(b => { if (b.noteId === currentEditingNoteId) b.noteId = null; });
+                saveDatabase();
+                showNotification("Заметка удалена.", false);
+                closeTab(currentEditingNoteId);
+            }
         }
 
         window.setActiveChartMetric = function(metricType) {
             activeChartMetric = metricType;
             drawDynamicWaveChart();
         };
-
-        function drawDynamicWaveChart() {
-            const pathFill = document.getElementById('chartPathFill');
-            const pathStroke = document.getElementById('chartPathStroke');
-            const pointsGroup = document.getElementById('chartPointsGroup');
-            if (!pathFill || !pathStroke || !pointsGroup) return;
-
-            const data = metricTrends[activeChartMetric] || [0, 0, 0, 0, 0, 0, 0];
-            const maxVal = Math.max(...data, 10);
-            const xCoords = [20, 80, 140, 200, 260, 320, 380];
-            const points = [];
-
-            for (let i = 0; i < 7; i++) {
-                const y = 110 - (data[i] / maxVal) * 80;
-                points.push({ x: xCoords[i], y: y, val: data[i], day: weekDays[i] });
-            }
-
-            let dPath = `M ${points[0].x} ${points[0].y}`;
-            for (let i = 0; i < points.length - 1; i++) {
-                const xc = (points[i].x + points[i + 1].x) / 2;
-                const yc = (points[i].y + points[i + 1].y) / 2;
-                dPath += ` Q ${points[i].x} ${points[i].y}, ${xc} ${yc}`;
-            }
-            dPath += ` T ${points[points.length - 1].x} ${points[points.length - 1].y}`;
-            pathStroke.setAttribute('d', dPath);
-
-            const dFill = `${dPath} L 380 120 L 20 120 Z`;
-            pathFill.setAttribute('d', dFill);
-
-            pointsGroup.innerHTML = '';
-            points.forEach((p) => {
-                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("cx", p.x);
-                circle.setAttribute("cy", p.y);
-                circle.setAttribute("r", "5");
-                circle.setAttribute("fill", "#ffffff");
-                circle.setAttribute("stroke", "#2563eb");
-                circle.setAttribute("stroke-width", "2.5");
-                circle.setAttribute("class", "cursor-pointer transition-transform duration-200");
-                
-                circle.addEventListener('mouseenter', (e) => {
-                    circle.setAttribute("r", "8");
-                    showChartTooltip(p.x, p.y, p.val, p.day);
-                });
-                circle.addEventListener('mouseleave', () => {
-                    circle.setAttribute("r", "5");
-                    hideChartTooltip();
-                });
-                pointsGroup.appendChild(circle);
-            });
-        }
-
-        function showChartTooltip(x, y, value, day) {
-            const tooltip = document.getElementById('chartTooltip');
-            const valEl = document.getElementById('chartTooltipVal');
-            const dayEl = document.getElementById('chartTooltipDay');
-            if (!tooltip || !valEl || !dayEl) return;
-
-            valEl.innerText = value;
-            dayEl.innerText = day;
-            tooltip.classList.remove('hidden');
-            tooltip.style.left = `${(x / 400) * 100 - 10}%`;
-            tooltip.style.top = `${y - 45}px`;
-        }
-
-        function hideChartTooltip() {
-            const tooltip = document.getElementById('chartTooltip');
-            if (tooltip) tooltip.classList.add('hidden');
-        }
 
         function updateLiveSessionMetrics() {
             const timeValEl = document.getElementById('sessionTimeVal');
@@ -3706,6 +3545,7 @@
             }
         }
 
+        // Изменение дизайна метрик на прозрачное жидкое стекло
         function renderStatistics() {
             const container = document.getElementById('statisticsContainer');
             if (!container) return;
@@ -3720,16 +3560,16 @@
             const connectionsCount = Math.round(totalConnections / 2) || totalConnections;
 
             const cards = [
-                { type: 'notes', title: 'Всего заметок', value: totalNotes, change: '+4', isUp: true, class: 'glow-card-blue', percentage: 75, color: '#3b82f6' },
-                { type: 'todos', title: 'Список задач', value: `${completedTodos}/${totalTodos}`, change: '+8', isUp: true, class: 'glow-card-cyan', percentage: totalTodos ? Math.round((completedTodos/totalTodos)*100) : 0, color: '#06b6d4' },
-                { type: 'books', title: 'Моя библиотека', value: totalBooks, change: '-1', isUp: false, class: 'glow-card-pink', percentage: 60, color: '#ec4899' },
-                { type: 'graph', title: 'Связи в графе', value: connectionsCount, change: '+15', isUp: true, class: 'glow-card-red', percentage: 85, color: '#f43f5e' }
+                { type: 'notes', title: 'Всего заметок', value: totalNotes, change: '+4', isUp: true, percentage: 75, color: '#3b82f6' },
+                { type: 'todos', title: 'Список задач', value: `${completedTodos}/${totalTodos}`, change: '+8', isUp: true, percentage: totalTodos ? Math.round((completedTodos/totalTodos)*100) : 0, color: '#06b6d4' },
+                { type: 'books', title: 'Моя библиотека', value: totalBooks, change: '-1', isUp: false, percentage: 60, color: '#ec4899' },
+                { type: 'graph', title: 'Связи в графе', value: connectionsCount, change: '+15', isUp: true, percentage: 85, color: '#f43f5e' }
             ];
 
             container.innerHTML = cards.map(c => {
                 const changeColor = c.isUp ? 'text-emerald-500 font-bold' : 'text-rose-500 font-bold';
                 return `
-                <div onclick="setActiveChartMetric('${c.type}')" class="${c.class} text-slate-800 p-5 rounded-4xl shadow-sm flex items-center justify-between transition-all duration-300 hover:scale-[1.03] cursor-pointer relative overflow-hidden">
+                <div onclick="setActiveChartMetric('${c.type}')" class="glass-widget text-slate-800 p-5 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] cursor-pointer relative overflow-hidden">
                     <div class="flex flex-col justify-between h-full z-10 w-2/3">
                         <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">${c.title}</span>
                         <span class="text-2xl font-black tracking-tight block my-1 text-slate-800">${c.value}</span>
@@ -3748,7 +3588,6 @@
             `;
             }).join('');
 
-            drawDynamicWaveChart();
             updateLiveSessionMetrics();
             lucide.createIcons();
         }
@@ -3857,21 +3696,17 @@
         }
 
         function deleteBook(id) {
-            showCustomConfirm(
-                "Удалить книгу?",
-                "Вы действительно хотите удалить эту книгу и связанный с ней конспект?",
-                () => {
-                    const book = books.find(b => b.id === id);
-                    if (book && book.coverBlobId) {
-                        const transaction = dbInstance.transaction(["blobs"], "readwrite");
-                        transaction.objectStore("blobs").delete(book.coverBlobId);
-                        revokeObjectUrl(book.coverBlobId);
-                    }
-                    books = books.filter(b => b.id !== id);
-                    saveDatabase();
-                    showNotification("Книга удалена.", false);
+            if (confirm("Вы действительно хотите удалить эту книгу и связанный с ней конспект?")) {
+                const book = books.find(b => b.id === id);
+                if (book && book.coverBlobId) {
+                    const transaction = dbInstance.transaction(["blobs"], "readwrite");
+                    transaction.objectStore("blobs").delete(book.coverBlobId);
+                    revokeObjectUrl(book.coverBlobId);
                 }
-            );
+                books = books.filter(b => b.id !== id);
+                saveDatabase();
+                showNotification("Книга удалена.", false);
+            }
         }
 
         function renderBooks() {
@@ -4028,15 +3863,11 @@
         }
 
         function deleteGoal(id) {
-            showCustomConfirm(
-                "Удалить цель?",
-                "Вы уверены, что хотите удалить выбранную цель и её параметры?",
-                () => {
-                    goals = goals.filter(g => g.id !== id);
-                    saveDatabase();
-                    showNotification("Цель удалена.", false);
-                }
-            );
+            if (confirm("Вы уверены, что хотите удалить выбранную цель и её параметры?")) {
+                goals = goals.filter(g => g.id !== id);
+                saveDatabase();
+                showNotification("Цель удалена.", false);
+            }
         }
 
         function generateNoteCardHtml(note, isRecent = false) {
@@ -4060,29 +3891,7 @@
         }
 
         function renderRecentNotes(filter = '') {
-            const container = document.getElementById('recentNotesGrid');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            const matched = notes.filter(n => !filter || (n.title && n.title.toLowerCase().includes(filter)));
-            const sortedByRecent = matched.filter(n => n.lastOpened).sort((a, b) => b.lastOpened - a.lastOpened);
-            const latest = sortedByRecent.slice(0, 3);
-
-            if (latest.length === 0) {
-                const fallback = matched.slice(-3).reverse();
-                if (fallback.length === 0) {
-                    container.innerHTML = '<p class="text-xs text-slate-400 text-center col-span-full py-4">Нет недавних записей</p>';
-                    return;
-                }
-                fallback.forEach(n => {
-                    container.innerHTML += generateNoteCardHtml(n, true);
-                });
-                return;
-            }
-
-            latest.forEach(n => {
-                container.innerHTML += generateNoteCardHtml(n, true);
-            });
+            // Deleted Recent Notes on Dashboard as per requested change 3
         }
 
         function renderAllNotesList(filter = '', specificFolderId = '') {
@@ -4247,6 +4056,7 @@
             loop();
         }
 
+        // Показ связей на графе связей красивыми синими полупрозрачными линиями
         function drawGraphCanvas(canvasElement, canvasCtx) {
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
@@ -4254,8 +4064,8 @@
             canvasCtx.translate(canvasElement.width / 2 + panX, canvasElement.height / 2 + panY);
             canvasCtx.scale(zoomVal, zoomVal);
 
-            canvasCtx.lineWidth = 1;
-            canvasCtx.strokeStyle = 'rgba(15, 23, 42, 0.08)';
+            canvasCtx.lineWidth = 1.5;
+            canvasCtx.strokeStyle = 'rgba(59, 130, 246, 0.4)'; // Синие выразительные связи
             graphLinks.forEach(l => {
                 const s = forceSimulatedNodes.find(n => n.id === l.source);
                 const t = forceSimulatedNodes.find(n => n.id === l.target);
@@ -4527,7 +4337,7 @@
             reader.readAsText(file);
         }
 
-        // Global variables exposure for template HTML actions click calls
+        // Global variables exposure
         window.closeAllTabs = closeAllTabs;
         window.collapseAllFolders = collapseAllFolders;
         window.toggleSidebar = toggleSidebar;
