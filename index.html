@@ -2,7 +2,7 @@
 <html lang="ru" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Второй Мозг — Личная База Знаний</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -73,7 +73,6 @@
             scrollbar-width: none;
         }
         
-        /* Glassmorphism Panels */
         .glass-panel {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(35px) saturate(210%);
@@ -143,7 +142,6 @@
             filter: blur(65px);
         }
 
-        /* Premium Interactive Cards */
         .ios-card {
             background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(25px) saturate(190%);
@@ -219,7 +217,6 @@
             }
         }
 
-        /* Rich Text Editor Styling */
         #writerContent h1 {
             font-size: 1.75rem !important;
             font-weight: 850 !important;
@@ -471,9 +468,21 @@
             z-index: 49;
             background: transparent;
         }
+
+        /* Фикс дрожания и прокрутки страницы на iOS при фокусе на инпутах */
+        html, body {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100% !important;
+            width: 100% !important;
+            overflow: hidden !important;
+        }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col relative overflow-hidden">
+<body class="text-slate-800 min-h-screen md:min-h-screen min-h-[100dvh] flex flex-col relative overflow-hidden">
 
     <!-- Ambient Glowing Orbs -->
     <div class="ambient-glow-1"></div>
@@ -534,12 +543,12 @@
     <!-- Screen Edge Trigger for Desktop menu -->
     <div id="leftScreenTrigger" class="screen-left-trigger hidden"></div>
 
-    <!-- Mobile Sidebar Backdrop Overlay (Оптимизирован для предотвращения лагов) -->
-    <div id="mobileSidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
-
     <!-- App Shell Frame Container -->
-    <div class="flex h-screen overflow-hidden w-full z-10 relative">
+    <div id="appShellContainer" class="flex h-screen md:h-screen h-[100dvh] overflow-hidden w-full z-10 relative">
         
+        <!-- Mobile Sidebar Backdrop Overlay (Оптимизирован для предотвращения лагов) -->
+        <div id="mobileSidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
         <!-- Sidebar Navigation Menu (Adaptive Desktop/Mobile) -->
         <div id="sidebarContainer" class="fixed inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 md:relative md:flex h-full flex-shrink-0 transition-all duration-500 ease-in-out w-64">
             <aside id="sidebar" class="flex flex-col w-full glass-sidebar z-30 overflow-hidden relative">
@@ -1343,6 +1352,43 @@
                 localStorage.setItem('brain_seconds_today', secondsSpent);
                 updateLiveSessionMetrics();
             }, 1000);
+
+            // Обработчик визуального вьюпорта для сохранения видимости верхней панели при вводе текста на мобильном телефоне
+            if (window.visualViewport) {
+                const header = document.querySelector('header');
+                const shell = document.getElementById('appShellContainer');
+                
+                const adjustViewportAndHeader = () => {
+                    if (window.innerWidth < 768) {
+                        if (shell) {
+                            // Ограничиваем высоту контейнера приложения доступной высотой над клавиатурой
+                            shell.style.height = `${window.visualViewport.height}px`;
+                        }
+                        if (header) {
+                            // Перемещаем шапку (translateY) точно на величину скролла визуального вьюпорта
+                            header.style.transform = `translateY(${window.visualViewport.offsetTop}px)`;
+                        }
+                    } else {
+                        if (shell) shell.style.height = '';
+                        if (header) header.style.transform = '';
+                    }
+                };
+
+                window.visualViewport.addEventListener('resize', adjustViewportAndHeader);
+                window.visualViewport.addEventListener('scroll', adjustViewportAndHeader);
+                
+                // Триггерим вычисление при фокусе в редактор заметок
+                const editorArea = document.getElementById('writerContent');
+                if (editorArea) {
+                    editorArea.addEventListener('focus', () => {
+                        setTimeout(adjustViewportAndHeader, 100);
+                        setTimeout(adjustViewportAndHeader, 350);
+                    });
+                    editorArea.addEventListener('blur', () => {
+                        setTimeout(adjustViewportAndHeader, 100);
+                    });
+                }
+            }
 
             // Обработчик скрытия бокового меню на компьютерах
             document.addEventListener('mousemove', function(e) {
@@ -2464,7 +2510,6 @@
             }
         }
 
-        // Изменение дизайна подпапок в меню (убрана стрелочка, изменен размер)
         function renderFolderTree(folder, allFolders, depth = 0) {
             const isCollapsed = collapsedFolders[folder.id] || false;
             const disableChevron = folder.disableChevron || false;
@@ -2482,7 +2527,6 @@
             folderBox.setAttribute('ondragleave', 'dragNoteLeave(event)');
             folderBox.setAttribute('ondrop', `dropNoteOnFolder(event, '${folder.id}')`);
 
-            // Интеграция одинакового дизайна и выравнивания подпапок и заметок (без стрелочки "↳")
             const folderColor = folder.color || '#3b82f6';
             if (folder.color === '#ffffff') {
                 folderBox.style.background = 'rgba(255, 255, 255, 0.08)';
@@ -2633,7 +2677,7 @@
             container.innerHTML = '';
 
             if (todos.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs text-center py-6">У вас нет активных задач! ⚡</p>`;
+                container.innerHTML = `<p class="text-slate-400 text-xs text-center py-6">У вас нет activeных задач! ⚡</p>`;
                 return;
             }
 
@@ -3540,12 +3584,11 @@
                 if (deadNotes.length > 0) {
                     deadNotesEl.innerHTML = deadNotes.map(n => `<div class="truncate">💀 ${n.title || 'Без названия'}</div>`).join('');
                 } else {
-                    deadNotesEl.innerHTML = `<div>Все заметки активны!</div>`;
+                    deadNotesEl.innerHTML = `<div>Все заметки activeны!</div>`;
                 }
             }
         }
 
-        // Изменение дизайна метрик на прозрачное жидкое стекло
         function renderStatistics() {
             const container = document.getElementById('statisticsContainer');
             if (!container) return;
@@ -3891,7 +3934,7 @@
         }
 
         function renderRecentNotes(filter = '') {
-            // Deleted Recent Notes on Dashboard as per requested change 3
+            // Deleted Recent Notes on Dashboard
         }
 
         function renderAllNotesList(filter = '', specificFolderId = '') {
@@ -4056,7 +4099,6 @@
             loop();
         }
 
-        // Показ связей на графе связей красивыми синими полупрозрачными линиями
         function drawGraphCanvas(canvasElement, canvasCtx) {
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
