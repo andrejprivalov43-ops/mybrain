@@ -491,6 +491,21 @@
             #fixedInputBar #chatMessageInputField { order: 2; }
             #fixedInputBar #attachmentBtnWrapper { order: 3; }
             #fixedInputBar #sendMessageBtn { order: 4; }
+
+            #activeChatTitleInput { transform: translate(4px, -1px) !important; }
+
+            #sidebarSearchRow { transform: translateY(-4px); }
+
+            .post-bubble-framed:not(.post-has-media) { max-width: calc(170% - 44ch) !important; }
+
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 309px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 309px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 354px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 354px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 309px !important; }
+            .post-bubble-framed.post-has-media { max-width: 72.25% !important; }
+            .post-media-only { max-width: 72.25% !important; }
         }
         @media (min-width: 768px) {
             #chatHeaderMobileAvatar { display: none !important; }
@@ -703,20 +718,20 @@
         <!-- CENTRAL SIDEBAR CONTAINER -->
         <div id="sidebarContainer" class="fixed inset-y-0 left-20 z-40 transform -translate-x-full md:translate-x-0 md:static md:flex h-full flex-shrink-0 transition-all duration-300 ease-in-out w-[354px] md:w-[439px] bg-white dark:bg-tg-darkSidebar border-r border-tg-lightBorder dark:border-tg-darkBorder flex flex-col">
             <div class="flex md:hidden items-center justify-between px-3 pt-3 pb-1 flex-shrink-0">
-                <button onclick="toggleSettingsDrawer()" title="Настройки" class="p-1.5 text-slate-500 dark:text-tg-darkTextMuted hover:text-slate-800 dark:hover:text-white rounded-full transition">
+                <button onclick="toggleSettingsDrawer()" title="Настройки" class="p-1.5 text-white hover:text-white rounded-full transition">
                     <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
                 <div class="flex items-center gap-1">
-                    <button onclick="createNewNoteInline()" title="Создать заметку" class="p-1.5 text-slate-500 dark:text-tg-darkTextMuted hover:text-slate-800 dark:hover:text-white rounded-full transition">
+                    <button onclick="createNewNoteInline()" title="Создать заметку" class="p-1.5 text-white hover:text-white rounded-full transition">
                         <i data-lucide="file-plus" class="w-5 h-5"></i>
                     </button>
-                    <button onclick="createNewFolderPrompt()" title="Создать папку" class="p-1.5 text-slate-500 dark:text-tg-darkTextMuted hover:text-slate-800 dark:hover:text-white rounded-full transition">
+                    <button onclick="createNewFolderPrompt()" title="Создать папку" class="p-1.5 text-white hover:text-white rounded-full transition">
                         <i data-lucide="folder-plus" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="p-3 pb-[14px] flex flex-col gap-2 h-12 justify-center">
+            <div id="sidebarSearchRow" class="p-3 pb-[14px] flex flex-col gap-2 h-12 justify-center">
                 <div class="flex items-center gap-2">
                     <div class="relative flex-1 flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
                         <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Поиск" class="w-full bg-transparent text-xs outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 pr-6">
@@ -2575,8 +2590,8 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap flex-shrink-0 bg-tg-lightActive dark:bg-white text-white dark:text-tg-darkBg transition'
-                        : 'px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap flex-shrink-0 bg-[#f1f5f9] dark:bg-[#24303f] text-slate-600 dark:text-tg-darkTextMuted transition';
+                        ? 'px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-tg-lightActive dark:bg-white text-white dark:text-tg-darkBg transition'
+                        : 'px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#f1f5f9] dark:bg-[#24303f] text-slate-600 dark:text-tg-darkTextMuted transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
                 });
