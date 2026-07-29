@@ -472,6 +472,10 @@
             #leftmostIconBar { display: none !important; }
             #mobileSidebarBackdrop { display: none !important; }
 
+            #appShellContainer { height: 100dvh !important; }
+
+            #cornerHoverMenu { display: none !important; }
+
             #sidebarContainer {
                 position: fixed;
                 inset: 0;
@@ -1869,6 +1873,45 @@
                     e.preventDefault();
                     e.stopPropagation();
                     openPostContextMenu(e, postElem.id);
+                }
+            });
+
+            let longPressTimer = null;
+            let longPressStartX = 0;
+            let longPressStartY = 0;
+
+            feed.addEventListener('touchstart', function(e) {
+                const postElem = e.target.closest('.post-item, .post-bubble-framed, .post-media-only');
+                if (!postElem) return;
+                const touch = e.touches[0];
+                longPressStartX = touch.clientX;
+                longPressStartY = touch.clientY;
+                longPressTimer = setTimeout(() => {
+                    longPressTimer = null;
+                    openPostContextMenu({ clientX: longPressStartX, clientY: longPressStartY, preventDefault: () => {}, stopPropagation: () => {} }, postElem.id);
+                }, 500);
+            }, { passive: true });
+
+            feed.addEventListener('touchmove', function(e) {
+                if (!longPressTimer) return;
+                const touch = e.touches[0];
+                if (Math.abs(touch.clientX - longPressStartX) > 10 || Math.abs(touch.clientY - longPressStartY) > 10) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
+            }, { passive: true });
+
+            feed.addEventListener('touchend', function() {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
+            });
+
+            feed.addEventListener('touchcancel', function() {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
                 }
             });
 
