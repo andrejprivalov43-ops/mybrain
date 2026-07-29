@@ -498,7 +498,40 @@
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
 
-            #sidebarSearchRow { transform: translateY(-4px); }
+            #sidebarSearchRow {
+                transform: none;
+                position: relative;
+                z-index: 30;
+                height: auto;
+                padding: 8px 12px;
+                background: rgba(255,255,255,0.55);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+            .dark #sidebarSearchRow {
+                background: rgba(23,33,43,0.55);
+            }
+            #searchInputBox { padding-top: 11px; padding-bottom: 11px; }
+            #smartDashboardSearch { text-align: center; }
+
+            #mobileTopIconsRow {
+                background: rgba(255,255,255,0.55);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+            .dark #mobileTopIconsRow {
+                background: rgba(23,33,43,0.55);
+            }
+            #mobileFolderTabsContainer {
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+
+            #sidebarListContainer .w-11 { width: 3.25rem !important; }
+            #sidebarListContainer .h-11 { height: 3.25rem !important; }
+            #sidebarListContainer h4 { font-size: 14px !important; }
+            #sidebarListContainer .note-preview-text { font-size: 14px !important; }
+            #notesAndSubfoldersContainer > div { padding-top: 10px !important; padding-bottom: 10px !important; }
 
             .post-bubble-framed:not(.post-has-media) { max-width: calc(170% - 44ch) !important; }
 
@@ -721,23 +754,10 @@
 
         <!-- CENTRAL SIDEBAR CONTAINER -->
         <div id="sidebarContainer" class="fixed inset-y-0 left-20 z-40 transform -translate-x-full md:translate-x-0 md:static md:flex h-full flex-shrink-0 transition-all duration-300 ease-in-out w-[354px] md:w-[439px] bg-white dark:bg-tg-darkSidebar border-r border-tg-lightBorder dark:border-tg-darkBorder flex flex-col">
-            <div class="flex md:hidden items-center justify-between px-3 pt-3 pb-1 flex-shrink-0">
-                <button onclick="toggleSettingsDrawer()" title="Настройки" class="p-1.5 text-white hover:text-white rounded-full transition">
-                    <i data-lucide="settings" class="w-5 h-5"></i>
-                </button>
-                <div class="flex items-center gap-1">
-                    <button onclick="createNewNoteInline()" title="Создать заметку" class="p-1.5 text-white hover:text-white rounded-full transition">
-                        <i data-lucide="file-plus" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="createNewFolderPrompt()" title="Создать папку" class="p-1.5 text-white hover:text-white rounded-full transition">
-                        <i data-lucide="folder-plus" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-
             <div id="sidebarSearchRow" class="p-3 pb-[14px] flex flex-col gap-2 h-12 justify-center">
                 <div class="flex items-center gap-2">
-                    <div class="relative flex-1 flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
+                    <div id="searchInputBox" class="relative flex-1 flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
+                        <i data-lucide="search" id="mobileSearchIcon" class="md:hidden w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 mr-1.5"></i>
                         <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Поиск" class="w-full bg-transparent text-xs outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 pr-6">
                         <button id="clearSearchBtn" onclick="clearSmartSearch()" title="Очистить" class="hidden absolute right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white p-0.5 rounded-full transition">
                             <i data-lucide="x" class="w-3.5 h-3.5"></i>
@@ -746,11 +766,25 @@
                 </div>
             </div>
 
-            <div id="mobileFolderTabsContainer" class="flex md:hidden items-center gap-2 px-3 pb-2 overflow-x-auto no-scrollbar flex-shrink-0"></div>
-
             <!-- Central list hides scrollbar while keeping mouse scroll -->
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
+                    <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-2 flex-shrink-0">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-400/40 text-white transition">
+                            <i data-lucide="settings" class="w-5.5 h-5.5"></i>
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-500/20 border border-slate-400/40 text-white transition">
+                                <i data-lucide="file-plus" class="w-5.5 h-5.5"></i>
+                            </button>
+                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-500/20 border border-slate-400/40 text-white transition">
+                                <i data-lucide="folder-plus" class="w-5.5 h-5.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="mobileFolderTabsContainer" class="flex md:hidden items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-400/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+
                     <div id="notesAndSubfoldersContainer" class="p-0 space-y-0"></div>
                 </div>
             </div>
@@ -2633,8 +2667,8 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-tg-lightActive dark:bg-white text-white dark:text-tg-darkBg transition'
-                        : 'px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#f1f5f9] dark:bg-[#24303f] text-slate-600 dark:text-tg-darkTextMuted transition';
+                        ? 'px-4 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-slate-400/30 text-white transition'
+                        : 'px-4 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-slate-300 transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
                 });
