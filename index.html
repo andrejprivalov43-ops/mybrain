@@ -491,12 +491,73 @@
 
             #chatHeaderMobileAvatar { display: flex; }
 
-            #fixedInputBar #emojiPickerBtn { order: 1; }
-            #fixedInputBar #chatMessageInputField { order: 2; }
-            #fixedInputBar #attachmentBtnWrapper { order: 3; }
-            #fixedInputBar #sendMessageBtn { order: 4; }
+            #fixedInputBar {
+                background: transparent !important;
+            }
+            #attachmentBtnWrapper > button {
+                background: rgba(148,163,184,0.18);
+            }
+            #mobileInputFieldWrap {
+                background: rgba(148,163,184,0.15);
+                border-radius: 9999px;
+                padding: 4px 4px 4px 14px;
+            }
+            #sendMessageBtn {
+                background: rgba(148,163,184,0.18);
+                border-radius: 9999px;
+                margin-left: 6px;
+            }
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
+
+            #noteActionsHeaderArea > button[onclick*="toggleNoteSettingsDropdown"] {
+                display: none !important;
+            }
+
+            #chatHeaderBar {
+                background: rgba(255,255,255,0.55);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+            .dark #chatHeaderBar {
+                background: rgba(23,33,43,0.55);
+            }
+            #mobileMenuBtn {
+                width: 38px;
+                height: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 9999px;
+                background: rgba(148,163,184,0.2);
+                border: 1px solid rgba(148,163,184,0.4);
+                color: #fff;
+                margin-left: 0;
+            }
+            #chatHeaderTitleWrapper {
+                background: rgba(148,163,184,0.15);
+                border-radius: 16px;
+                padding: 6px 12px;
+            }
+
+            #pinnedPostTopBar {
+                border-bottom: none;
+                border-radius: 16px;
+                margin: 5px 12px 0 12px;
+                width: auto;
+                background: rgba(255,255,255,0.55) !important;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+            .dark #pinnedPostTopBar {
+                background: rgba(23,33,43,0.55) !important;
+            }
+            #pinnedPostTopBar i[data-lucide="pin"] {
+                display: none !important;
+            }
+            #pinnedPostTopBar span:first-of-type {
+                color: #fff !important;
+            }
 
             #sidebarSearchRow {
                 transform: none;
@@ -511,10 +572,15 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.55);
             }
-            #searchInputBox { padding-top: 11px; padding-bottom: 11px; }
-            #smartDashboardSearch { text-align: center; }
+            #searchInputBox { padding-top: 11px; padding-bottom: 11px; justify-content: center; border-radius: 16px; }
+            #smartDashboardSearch { flex: 0 1 auto; width: auto; text-align: center; font-size: 14px !important; font-weight: 649 !important; }
+            #smartDashboardSearch::placeholder { font-weight: 649 !important; }
+            #mobileSearchIcon { margin-right: 0 !important; }
 
             #mobileTopIconsRow {
+                position: sticky;
+                top: 0;
+                z-index: 20;
                 background: rgba(255,255,255,0.55);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -527,25 +593,58 @@
                 -webkit-backdrop-filter: blur(20px);
             }
 
-            #sidebarListContainer .w-11 { width: 3.25rem !important; }
-            #sidebarListContainer .h-11 { height: 3.25rem !important; }
-            #sidebarListContainer h4 { font-size: 14px !important; }
-            #sidebarListContainer .note-preview-text { font-size: 14px !important; }
+            #mobileFolderTabsStickyWrap {
+                top: 50px;
+                background: rgba(255,255,255,0.55);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                margin-top: 2px;
+            }
+            .dark #mobileFolderTabsStickyWrap {
+                background: rgba(23,33,43,0.55);
+            }
+
+            .note-list-date {
+                top: -3px !important;
+            }
+
+            #workspaceContentScroll { padding-left: 14px; }
+
+            #sidebarListContainer .w-11 { width: 3.5rem !important; }
+            #sidebarListContainer .h-11 { height: 3.5rem !important; }
+            #sidebarListContainer h4 { font-size: 15px !important; }
+            #sidebarListContainer .note-preview-text { font-size: 15px !important; line-height: 1.4 !important; }
             #notesAndSubfoldersContainer > div { padding-top: 10px !important; padding-bottom: 10px !important; }
 
-            .post-bubble-framed:not(.post-has-media) { max-width: calc(170% - 44ch) !important; }
+            .post-bubble-framed:not(.post-has-media) { max-width: calc(192.1% - 49.72ch) !important; }
 
-            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 309px !important; }
-            .post-media-grid.grid-cols-2 { max-width: 309px !important; }
-            .post-media-grid.grid-cols-3 { max-width: 354px !important; }
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 354px !important; }
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 349px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 349px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 400px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 400px !important; }
             .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 309px !important; }
-            .post-bubble-framed.post-has-media { max-width: 72.25% !important; }
-            .post-media-only { max-width: 72.25% !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 349px !important; }
+            .post-bubble-framed.post-has-media { max-width: 81.64% !important; }
+            .post-media-only { max-width: 81.64% !important; }
+
+            #emojiPickerPanel {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: auto;
+                bottom: 0;
+                width: 100%;
+                height: 45vh;
+                z-index: 50;
+                border-left-width: 0;
+                border-top-width: 1px;
+                border-top-style: solid;
+                border-radius: 16px 16px 0 0;
+            }
         }
         @media (min-width: 768px) {
             #chatHeaderMobileAvatar { display: none !important; }
+            .time-badge { position: relative; top: 2px; font-size: 11px; }
         }
     </style>
 </head>
@@ -754,36 +853,38 @@
 
         <!-- CENTRAL SIDEBAR CONTAINER -->
         <div id="sidebarContainer" class="fixed inset-y-0 left-20 z-40 transform -translate-x-full md:translate-x-0 md:static md:flex h-full flex-shrink-0 transition-all duration-300 ease-in-out w-[354px] md:w-[439px] bg-white dark:bg-tg-darkSidebar border-r border-tg-lightBorder dark:border-tg-darkBorder flex flex-col">
-            <div id="sidebarSearchRow" class="p-3 pb-[14px] flex flex-col gap-2 h-12 justify-center">
-                <div class="flex items-center gap-2">
-                    <div id="searchInputBox" class="relative flex-1 flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
-                        <i data-lucide="search" id="mobileSearchIcon" class="md:hidden w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 mr-1.5"></i>
-                        <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Поиск" class="w-full bg-transparent text-xs outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 pr-6">
-                        <button id="clearSearchBtn" onclick="clearSmartSearch()" title="Очистить" class="hidden absolute right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white p-0.5 rounded-full transition">
-                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Central list hides scrollbar while keeping mouse scroll -->
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
-                    <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-2 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-400/40 text-white transition">
-                            <i data-lucide="settings" class="w-5.5 h-5.5"></i>
+                    <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-400/40 text-white transition">
+                            <i data-lucide="settings" class="w-5 h-5" stroke-width="1.75"></i>
                         </button>
-                        <div class="flex items-center gap-2">
-                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-500/20 border border-slate-400/40 text-white transition">
-                                <i data-lucide="file-plus" class="w-5.5 h-5.5"></i>
+                        <div class="flex items-center rounded-2xl bg-slate-500/20 border border-slate-400/40">
+                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
+                                <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.75"></i>
                             </button>
-                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-500/20 border border-slate-400/40 text-white transition">
-                                <i data-lucide="folder-plus" class="w-5.5 h-5.5"></i>
+                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
+                                <i data-lucide="folder-plus" class="w-5 h-5" stroke-width="1.75"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div id="mobileFolderTabsContainer" class="flex md:hidden items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-400/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+                    <div id="sidebarSearchRow" class="p-3 pt-1 md:pt-3 pb-[14px] flex flex-col gap-2 h-12 justify-center md:sticky md:top-0 md:z-10 md:bg-white md:dark:bg-tg-darkSidebar">
+                        <div class="flex items-center gap-2">
+                            <div id="searchInputBox" class="relative flex-1 flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
+                                <i data-lucide="search" id="mobileSearchIcon" class="md:hidden w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 mr-1.5"></i>
+                                <input id="smartDashboardSearch" type="text" oninput="handleSmartSearch(this.value)" placeholder="Поиск" class="w-full bg-transparent text-xs outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 pr-6">
+                                <button id="clearSearchBtn" onclick="clearSmartSearch()" title="Очистить" class="hidden absolute right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white p-0.5 rounded-full transition">
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="mobileFolderTabsStickyWrap" class="sticky top-0 z-10 md:hidden flex-shrink-0">
+                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-400/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+                    </div>
 
                     <div id="notesAndSubfoldersContainer" class="p-0 space-y-0"></div>
                 </div>
@@ -793,20 +894,18 @@
         <!-- MAIN WORKSPACE: TG Chat screen panel (RIGHT SIDE) -->
         <main class="flex-1 flex min-w-0 overflow-hidden relative tg-chat-bg">
             <div id="chatColumnWrapper" class="flex-1 flex flex-col min-w-0 overflow-hidden relative transition-all duration-300">
-            <header class="h-12 px-4 flex items-center justify-between bg-white dark:bg-tg-darkSidebar border-b border-tg-lightBorder dark:border-tg-darkBorder z-30 relative flex-shrink-0">
-                <div class="flex items-center space-x-3 min-w-0 flex-1">
-                    <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="md:hidden p-1.5 -ml-1 text-slate-600 dark:text-tg-darkText hover:text-white rounded-full flex-shrink-0">
-                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                    </button>
+            <header id="chatHeaderBar" class="h-12 px-4 flex items-center gap-2 bg-white dark:bg-tg-darkSidebar border-b border-tg-lightBorder dark:border-tg-darkBorder z-30 relative flex-shrink-0">
+                <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="order-1 md:hidden p-1.5 -ml-1 text-slate-600 dark:text-tg-darkText hover:text-white rounded-full flex-shrink-0">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </button>
 
-                    <div id="chatHeaderMobileAvatar" class="md:hidden w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 items-center justify-center text-xs font-bold text-slate-700 dark:text-white flex-shrink-0 overflow-hidden"></div>
-
-                    <div class="flex items-center gap-2 min-w-0 flex-1">
-                        <input id="activeChatTitleInput" type="text" oninput="handleNoteTitleChange(this.value)" placeholder="Название заметки..." class="font-medium text-[13px] md:text-[14px] -translate-y-[4px] -ml-[10px] bg-transparent border-b border-transparent focus:border-tg-lightBlue dark:focus:border-tg-darkBlue outline-none text-slate-800 dark:text-white truncate w-full max-w-xs md:max-w-md transition-colors" />
-                    </div>
+                <div id="chatHeaderTitleWrapper" class="order-2 flex items-center gap-2 min-w-0 flex-1">
+                    <input id="activeChatTitleInput" type="text" oninput="handleNoteTitleChange(this.value)" placeholder="Название заметки..." class="font-medium text-[13px] md:text-[14px] -translate-y-[4px] md:-translate-y-[1px] -ml-[10px] bg-transparent border-b border-transparent focus:border-tg-lightBlue dark:focus:border-tg-darkBlue outline-none text-slate-800 dark:text-white truncate w-full max-w-xs md:max-w-md transition-colors" />
                 </div>
 
-                <div id="noteActionsHeaderArea" class="hidden flex items-center gap-2">
+                <div id="chatHeaderMobileAvatar" onclick="toggleNoteSettingsDropdown(event)" class="order-3 md:hidden w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 items-center justify-center text-xs font-bold text-slate-700 dark:text-white flex-shrink-0 overflow-hidden cursor-pointer"></div>
+
+                <div id="noteActionsHeaderArea" class="order-4 hidden flex items-center gap-2">
                     <button onclick="toggleNoteSettingsDropdown(event)" class="p-1.5 hover:text-white text-slate-500 rounded-full transition">
                         <i data-lucide="more-vertical" class="w-5 h-5"></i>
                     </button>
@@ -918,18 +1017,20 @@
                 <div id="postEmojiSuggestPopup" class="hidden absolute bottom-full left-2 mb-1 max-w-[92%] bg-white dark:bg-[#17212b] border border-tg-lightBorder dark:border-[#202b36] rounded-2xl shadow-2xl px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar z-30"></div>
                 
                 <div id="editingPostBanner" class="hidden flex items-center justify-between px-3.5 py-2 bg-sky-500/10 border-b border-sky-500/20 text-xs">
-                    <div class="flex items-center gap-2">
-                        <div class="flex items-center gap-1.5 text-[#5eb5f7] font-bold">
-                            <i data-lucide="pencil" class="w-4 h-4"></i>
-                            <span>Редактирование поста</span>
+                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                        <i data-lucide="pencil" class="w-4 h-4 text-[#5eb5f7] flex-shrink-0"></i>
+                        <div class="flex flex-col min-w-0 flex-1">
+                            <span class="text-[#5eb5f7] font-bold"><span class="md:hidden">Редактирование</span><span class="hidden md:inline">Редактирование поста</span></span>
+                            <span id="editingPostPreviewText" class="md:hidden text-slate-500 dark:text-slate-300 font-normal text-[11px] truncate"></span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button onclick="savePostEditFromInput()" title="Сохранить изменения" class="px-2.5 py-1 bg-tg-lightActive dark:bg-tg-darkBlue text-white rounded-lg text-[12px] font-bold hover:opacity-90 transition flex items-center gap-1 shadow-sm">
+                        <button onclick="savePostEditFromInput()" title="Сохранить изменения" class="hidden md:flex px-2.5 py-1 bg-tg-lightActive dark:bg-tg-darkBlue text-white rounded-lg text-[12px] font-bold hover:opacity-90 transition items-center gap-1 shadow-sm">
                             <i data-lucide="check" class="w-3.5 h-3.5"></i> Сохранить
                         </button>
-                        <button onclick="cancelPostEdit()" title="Отмена" class="px-2 py-1 text-slate-400 hover:text-slate-600 dark:hover:text-white text-[12px] font-semibold transition">
-                            Отмена
+                        <button onclick="cancelPostEdit()" title="Отмена" class="p-1 md:px-2 md:py-1 text-slate-400 hover:text-slate-600 dark:hover:text-white text-[12px] font-semibold transition flex items-center justify-center">
+                            <i data-lucide="x" class="w-4 h-4 md:hidden"></i>
+                            <span class="hidden md:inline">Отмена</span>
                         </button>
                     </div>
                 </div>
@@ -965,13 +1066,15 @@
                         <input type="file" id="inlineImgInput" accept="image/*" multiple class="hidden" onchange="handleImageSelection(event)">
                     </div>
 
-                    <div id="chatMessageInputField" contenteditable="true" oninput="handleInputContentChange()" onkeydown="handleMessageInputKey(event)" class="flex-1 -ml-[5px] min-h-[20px] max-h-36 overflow-y-auto bg-transparent border-0 text-slate-800 dark:text-white outline-none text-[14px] py-0.5 pl-0 pr-2"></div>
+                    <div id="mobileInputFieldWrap" class="flex-1 flex items-center min-w-0">
+                        <div id="chatMessageInputField" contenteditable="true" oninput="handleInputContentChange()" onkeydown="handleMessageInputKey(event)" class="flex-1 -ml-[5px] min-h-[20px] max-h-36 overflow-y-auto bg-transparent border-0 text-slate-800 dark:text-white outline-none text-[14px] py-0.5 pl-0 pr-2"></div>
 
-                    <button id="emojiPickerBtn" onclick="toggleEmojiPickerPanel()" title="Эмодзи" class="p-2 text-slate-400 dark:text-tg-darkTextMuted hover:text-white rounded-full transition duration-200 transform hover:scale-110 flex-shrink-0">
-                        <i data-lucide="smile" class="w-[23px] h-[23px]"></i>
-                    </button>
+                        <button id="emojiPickerBtn" onclick="toggleEmojiPickerPanel()" title="Эмодзи" class="p-2 text-slate-400 dark:text-tg-darkTextMuted hover:text-white rounded-full transition duration-200 transform hover:scale-110 flex-shrink-0">
+                            <i data-lucide="smile" class="w-[23px] h-[23px]"></i>
+                        </button>
+                    </div>
 
-                    <button id="sendMessageBtn" onclick="handlePrimarySubmitAction()" title="Отправить" class="-ml-3 p-1.5 text-[rgb(92,108,124)] hover:text-white transition duration-200 transform hover:scale-110 active:scale-90 flex-shrink-0">
+                    <button id="sendMessageBtn" onclick="handlePrimarySubmitAction()" title="Отправить" class="md:-ml-3 p-1.5 text-[rgb(92,108,124)] hover:text-white transition duration-200 transform hover:scale-110 active:scale-90 flex-shrink-0">
                         <i data-lucide="send" class="w-6 h-6 fill-current rotate-45"></i>
                     </button>
                 </div>
@@ -2879,7 +2982,7 @@
                                     <h4 class="text-[12px] text-slate-800 dark:text-white truncate" style="font-weight:645">${escapeHtml(note.title || 'Без названия')}</h4>
                                     ${tagBadgeHtml}
                                 </div>
-                                <span class="text-[11px] text-[#707579] dark:text-[#7f91a4] font-medium flex-shrink-0 ml-2" style="position:relative; top:-1px;">${escapeHtml(displayDate)}</span>
+                                <span class="note-list-date text-[12px] md:text-[11px] text-[#707579] dark:text-[#7f91a4] font-medium flex-shrink-0 ml-2" style="position:relative; top:-1px;">${escapeHtml(displayDate)}</span>
                             </div>
                             <div class="flex items-center justify-between gap-1.5 min-w-0 h-4 overflow-hidden">
                                 <div class="flex items-center gap-1 min-w-0 flex-1">
@@ -4821,6 +4924,13 @@
 
             const banner = document.getElementById('editingPostBanner');
             if (banner) banner.classList.remove('hidden');
+
+            const previewSpan = document.getElementById('editingPostPreviewText');
+            if (previewSpan) {
+                let previewText = textContent ? textContent.innerText.trim() : '';
+                previewText = previewText.replace(/\d{1,2}:\d{2}$/, '').trim();
+                previewSpan.innerText = previewText;
+            }
         }
 
         function cancelPostEdit() {
@@ -5271,7 +5381,7 @@
                                     <h4 class="text-[12px] text-slate-800 dark:text-white truncate" style="font-weight:645">${escapeHtml(note.title || 'Без названия')}</h4>
                                     ${tagBadgeHtml}
                                 </div>
-                                <span class="text-[11px] text-[#707579] dark:text-[#7f91a4] font-medium flex-shrink-0 ml-2">${escapeHtml(displayDate)}</span>
+                                <span class="note-list-date text-[12px] md:text-[11px] text-[#707579] dark:text-[#7f91a4] font-medium flex-shrink-0 ml-2">${escapeHtml(displayDate)}</span>
                             </div>
                             <div class="flex items-center justify-between gap-1.5 min-w-0 h-4 overflow-hidden">
                                 <p class="note-preview-text text-[13px] text-[#707579] dark:text-[#7f91a4] truncate flex-1 min-w-0 leading-tight">${snippetHtml}</p>
