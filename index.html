@@ -474,6 +474,10 @@
 
             #appShellContainer { height: 100dvh !important; }
 
+            body { background-color: #000000 !important; }
+            #sidebarContainer { background-color: #000000 !important; }
+            .dark .tg-chat-bg::before { background-color: #000000 !important; }
+
             #cornerHoverMenu { display: none !important; }
 
             #sidebarContainer {
@@ -494,18 +498,29 @@
             #fixedInputBar {
                 background: transparent !important;
             }
+            #composerButtonsRow {
+                padding-bottom: 6px !important;
+            }
             #attachmentBtnWrapper > button {
                 background: rgba(148,163,184,0.18);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
             }
             #mobileInputFieldWrap {
                 background: rgba(148,163,184,0.15);
                 border-radius: 9999px;
-                padding: 4px 4px 4px 14px;
+                padding: 2px 4px 2px 14px;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
             }
             #sendMessageBtn {
-                background: rgba(148,163,184,0.18);
+                background: #3390ec;
                 border-radius: 9999px;
                 margin-left: 6px;
+                color: #fff !important;
+            }
+            #sendMessageBtn:hover {
+                color: #fff !important;
             }
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
@@ -515,12 +530,14 @@
             }
 
             #chatHeaderBar {
-                background: rgba(255,255,255,0.55);
+                background: rgba(255,255,255,0.3);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                height: 51px;
+                padding-bottom: 3px;
             }
             .dark #chatHeaderBar {
-                background: rgba(23,33,43,0.55);
+                background: rgba(23,33,43,0.3);
             }
             #mobileMenuBtn {
                 width: 38px;
@@ -531,6 +548,8 @@
                 border-radius: 9999px;
                 background: rgba(148,163,184,0.2);
                 border: 1px solid rgba(148,163,184,0.4);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 color: #fff;
                 margin-left: 0;
             }
@@ -538,6 +557,13 @@
                 background: rgba(148,163,184,0.15);
                 border-radius: 16px;
                 padding: 6px 12px;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                justify-content: center;
+            }
+            #activeChatTitleInput {
+                font-size: 16px !important;
+                text-align: center;
             }
 
             #pinnedPostTopBar {
@@ -575,12 +601,12 @@
             #searchInputBox { padding-top: 11px; padding-bottom: 11px; justify-content: center; border-radius: 16px; }
             #smartDashboardSearch { flex: 0 1 auto; width: auto; text-align: center; font-size: 14px !important; font-weight: 649 !important; }
             #smartDashboardSearch::placeholder { font-weight: 649 !important; }
-            #mobileSearchIcon { margin-right: 0 !important; }
+            #mobileSearchIcon { margin-right: -2px !important; }
 
             #mobileTopIconsRow {
                 position: sticky;
                 top: 0;
-                z-index: 20;
+                z-index: 40;
                 background: rgba(255,255,255,0.55);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -591,6 +617,8 @@
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                padding-top: 7px;
+                padding-bottom: 7px;
             }
 
             #mobileFolderTabsStickyWrap {
@@ -598,7 +626,7 @@
                 background: rgba(255,255,255,0.55);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                margin-top: 2px;
+                margin-top: 4px;
             }
             .dark #mobileFolderTabsStickyWrap {
                 background: rgba(23,33,43,0.55);
@@ -640,6 +668,25 @@
                 border-top-width: 1px;
                 border-top-style: solid;
                 border-radius: 16px 16px 0 0;
+            }
+            #emojiPickerGrid button {
+                padding: 2px !important;
+            }
+            #emojiSearchBox {
+                padding-top: 8px !important;
+                padding-bottom: 8px !important;
+            }
+            #emojiCategoryStrip {
+                order: -1;
+                border-top: none !important;
+                border-bottom: 1px solid #dfe5ec;
+            }
+            .dark #emojiCategoryStrip {
+                border-bottom-color: #101921;
+            }
+            #fixedInputBar {
+                position: relative;
+                z-index: 55;
             }
         }
         @media (min-width: 768px) {
@@ -857,15 +904,15 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-400/40 text-white transition">
-                            <i data-lucide="settings" class="w-5 h-5" stroke-width="1.75"></i>
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-600/40 text-white transition">
+                            <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
-                        <div class="flex items-center rounded-2xl bg-slate-500/20 border border-slate-400/40">
+                        <div class="flex items-center rounded-2xl bg-slate-500/20 border border-slate-600/40">
                             <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
-                                <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.75"></i>
+                                <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
                             <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
-                                <i data-lucide="folder-plus" class="w-5 h-5" stroke-width="1.75"></i>
+                                <i data-lucide="folder-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
                         </div>
                     </div>
@@ -883,7 +930,7 @@
                     </div>
 
                     <div id="mobileFolderTabsStickyWrap" class="sticky top-0 z-10 md:hidden flex-shrink-0">
-                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-400/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-600/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
                     </div>
 
                     <div id="notesAndSubfoldersContainer" class="p-0 space-y-0"></div>
@@ -900,7 +947,7 @@
                 </button>
 
                 <div id="chatHeaderTitleWrapper" class="order-2 flex items-center gap-2 min-w-0 flex-1">
-                    <input id="activeChatTitleInput" type="text" oninput="handleNoteTitleChange(this.value)" placeholder="Название заметки..." class="font-medium text-[13px] md:text-[14px] -translate-y-[4px] md:-translate-y-[1px] -ml-[10px] bg-transparent border-b border-transparent focus:border-tg-lightBlue dark:focus:border-tg-darkBlue outline-none text-slate-800 dark:text-white truncate w-full max-w-xs md:max-w-md transition-colors" />
+                    <input id="activeChatTitleInput" type="text" oninput="handleNoteTitleChange(this.value)" placeholder="Название заметки..." spellcheck="false" autocorrect="off" class="font-medium text-[13px] md:text-[14px] -translate-y-[4px] md:-translate-y-[1px] -ml-[10px] bg-transparent border-b border-transparent focus:border-tg-lightBlue dark:focus:border-tg-darkBlue outline-none text-slate-800 dark:text-white truncate w-full max-w-xs md:max-w-md transition-colors" />
                 </div>
 
                 <div id="chatHeaderMobileAvatar" onclick="toggleNoteSettingsDropdown(event)" class="order-3 md:hidden w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 items-center justify-center text-xs font-bold text-slate-700 dark:text-white flex-shrink-0 overflow-hidden cursor-pointer"></div>
@@ -1050,7 +1097,7 @@
                     <div id="pendingAttachmentList" class="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1"></div>
                 </div>
 
-                <div class="pt-[3px] pr-2.5 pb-[3px] pl-1 flex items-center gap-2">
+                <div id="composerButtonsRow" class="pt-[3px] pr-2.5 pb-[3px] pl-1 flex items-center gap-2">
                     <div id="attachmentBtnWrapper" class="relative">
                         <button onclick="toggleAttachmentMenu(event)" class="p-2 text-slate-400 dark:text-tg-darkTextMuted hover:text-white rounded-full transition duration-200 transform hover:scale-105 flex-shrink-0">
                             <i data-lucide="paperclip" class="w-5 h-5"></i>
@@ -1098,8 +1145,8 @@
 
             <!-- Emoji picker side panel -->
             <div id="emojiPickerPanel" class="hidden w-72 flex-shrink-0 h-full bg-white dark:bg-tg-darkSidebar border-l border-tg-lightBorder dark:border-tg-darkBorder flex flex-col overflow-hidden z-30">
-                <div class="p-2 flex-shrink-0">
-                    <div class="relative flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
+                <div id="emojiSearchRow" class="p-2 flex-shrink-0">
+                    <div id="emojiSearchBox" class="relative flex items-center bg-[#f1f5f9] dark:bg-[#24303f] rounded-xl px-3 py-1.5 border border-transparent transition-colors">
                         <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 flex-shrink-0 mr-1.5"></i>
                         <input id="emojiSearchInput" type="text" oninput="handleEmojiSearch(this.value)" placeholder="Поиск" class="w-full bg-transparent text-xs outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 pr-6">
                         <button id="clearEmojiSearchBtn" onclick="clearEmojiSearch()" title="Очистить" class="hidden absolute right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white p-0.5 rounded-full transition">
