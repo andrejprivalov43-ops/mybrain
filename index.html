@@ -599,11 +599,11 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.4);
             }
-            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(85,85,85,0.5) !important; }
-            .dark #searchInputBox { background-color: rgba(85,85,85,0.5) !important; }
+            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.5) !important; }
+            .dark #searchInputBox { background-color: rgba(100,100,100,0.5) !important; }
             #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
-            #smartDashboardSearch::placeholder { font-weight: 400 !important; color: #707070 !important; }
-            #mobileSearchIcon { margin-right: 2px !important; transform: translateX(-1px) !important; }
+            #smartDashboardSearch::placeholder { font-weight: 300 !important; color: #8f8f8f !important; }
+            #mobileSearchIcon { margin-right: 2px !important; transform: translateX(-2px) !important; }
             #searchInputBox > div.flex.items-center { align-items: flex-end !important; }
 
             #mobileTopIconsRow {
@@ -625,11 +625,10 @@
             }
 
             #mobileFolderTabsStickyWrap {
-                top: 54px;
+                top: 55px;
                 background: rgba(255,255,255,0.4);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                margin-top: 3px;
             }
             .dark #mobileFolderTabsStickyWrap {
                 background: rgba(23,33,43,0.4);
@@ -637,6 +636,9 @@
 
             .note-list-date {
                 top: -3px !important;
+            }
+            .dark .note-list-date {
+                color: #8a8a8a !important;
             }
 
             #workspaceContentScroll { padding-left: 14px; }
@@ -646,10 +648,11 @@
             #sidebarListContainer h4 { font-size: 16.5px !important; line-height: 1.15 !important; color: #FFFFFF !important; }
             #sidebarListContainer .note-preview-text {
                 font-size: 16.5px !important;
-                font-weight: 400 !important;
+                font-weight: 330 !important;
                 line-height: 1.25 !important;
-                color: #707070 !important;
-                transform: translateY(-1px);
+                color: #8f8f8f !important;
+                position: relative;
+                top: -1px;
                 white-space: normal !important;
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important;
@@ -923,7 +926,7 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[54px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[56px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
                         <div class="flex items-center gap-[4px] h-[43px] rounded-3xl bg-[#363636]/50 border border-[#4A4A4A]">
@@ -2838,7 +2841,7 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#565656]/50 text-white transition'
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/50 text-white transition'
                         : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
