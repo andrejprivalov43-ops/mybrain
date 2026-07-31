@@ -602,7 +602,7 @@
             #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.5) !important; }
             .dark #searchInputBox { background-color: rgba(100,100,100,0.5) !important; }
             #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
-            #smartDashboardSearch::placeholder { font-weight: 300 !important; color: #8f8f8f !important; }
+            #smartDashboardSearch::placeholder { font-weight: 300 !important; color: #999999 !important; }
             #mobileSearchIcon { margin-right: 2px !important; transform: translateX(-2px) !important; }
             #searchInputBox > div.flex.items-center { align-items: flex-end !important; }
 
@@ -620,8 +620,9 @@
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                padding-top: 5px;
-                padding-bottom: 5px;
+                padding-top: 6px;
+                padding-bottom: 6px;
+                background-color: rgba(32,32,32,0.4) !important;
             }
 
             #mobileFolderTabsStickyWrap {
@@ -635,7 +636,7 @@
             }
 
             .note-list-date {
-                top: -3px !important;
+                top: -2px !important;
             }
             .dark .note-list-date {
                 color: #8a8a8a !important;
@@ -647,10 +648,10 @@
             #sidebarListContainer .h-11 { height: 3.85rem !important; }
             #sidebarListContainer h4 { font-size: 16.5px !important; line-height: 1.15 !important; color: #FFFFFF !important; }
             #sidebarListContainer .note-preview-text {
-                font-size: 16.5px !important;
+                font-size: 15.5px !important;
                 font-weight: 330 !important;
                 line-height: 1.25 !important;
-                color: #8f8f8f !important;
+                color: #999999 !important;
                 position: relative;
                 top: -1px;
                 white-space: normal !important;
@@ -662,6 +663,22 @@
             }
             #sidebarListContainer .h-4 { height: auto !important; align-items: flex-start !important; margin-top: -2px !important; }
             #notesAndSubfoldersContainer .gap-3.min-w-0:not(.flex-1) { align-items: flex-start !important; }
+            #notesAndSubfoldersContainer > div.pr-2 {
+                border-bottom: none !important;
+                position: relative;
+            }
+            #notesAndSubfoldersContainer > div.pr-2::after {
+                content: '';
+                position: absolute;
+                left: 58px;
+                right: 0;
+                bottom: 0;
+                height: 1px;
+                background: rgba(223,229,236,0.6);
+            }
+            .dark #notesAndSubfoldersContainer > div.pr-2::after {
+                background: rgba(127,145,164,0.3);
+            }
             #notesAndSubfoldersContainer > div { padding-top: 6px !important; padding-bottom: 6px !important; }
             #sidebarListContainer { padding-bottom: 3px !important; }
             #mobileFolderTabsContainer button.font-bold { font-weight: 585 !important; }
@@ -2841,7 +2858,7 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/50 text-white transition'
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/40 text-white transition'
                         : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
