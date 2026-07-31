@@ -474,9 +474,9 @@
 
             #appShellContainer { height: 100dvh !important; }
 
-            body { background-color: #000000 !important; }
-            #sidebarContainer { background-color: #000000 !important; }
-            .dark .tg-chat-bg::before { background-color: #000000 !important; }
+            body { background-color: #0A0A0C !important; }
+            #sidebarContainer { background-color: #0A0A0C !important; }
+            .dark .tg-chat-bg::before { background-color: #0A0A0C !important; }
 
             #cornerHoverMenu { display: none !important; }
 
@@ -598,10 +598,11 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.55);
             }
-            #searchInputBox { padding-top: 11px; padding-bottom: 11px; justify-content: center; border-radius: 16px; }
-            #smartDashboardSearch { flex: 0 1 auto; width: auto; text-align: center; font-size: 14px !important; font-weight: 649 !important; }
+            #searchInputBox { padding-top: 11px; padding-bottom: 11px; padding-left: 14px; justify-content: flex-start; border-radius: 9999px; background: #1C1C1E !important; }
+            .dark #searchInputBox { background: #1C1C1E !important; }
+            #smartDashboardSearch { flex: 1 1 auto; width: 100%; text-align: left; font-size: 14px !important; font-weight: 649 !important; }
             #smartDashboardSearch::placeholder { font-weight: 649 !important; }
-            #mobileSearchIcon { margin-right: -2px !important; }
+            #mobileSearchIcon { margin-right: 8px !important; margin-left: 0 !important; }
 
             #mobileTopIconsRow {
                 position: sticky;
@@ -640,9 +641,22 @@
 
             #sidebarListContainer .w-11 { width: 3.5rem !important; }
             #sidebarListContainer .h-11 { height: 3.5rem !important; }
-            #sidebarListContainer h4 { font-size: 15px !important; }
-            #sidebarListContainer .note-preview-text { font-size: 15px !important; line-height: 1.4 !important; }
-            #notesAndSubfoldersContainer > div { padding-top: 10px !important; padding-bottom: 10px !important; }
+            #sidebarListContainer h4 { font-size: 15px !important; line-height: 1.35 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; }
+            #sidebarListContainer .note-preview-text { font-size: 15px !important; line-height: 1.55 !important; }
+            #notesAndSubfoldersContainer > div { padding-top: 12px !important; padding-bottom: 12px !important; border-bottom-color: rgba(255,255,255,0.07) !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"] .gap-3 { gap: 14px !important; }
+            #notesAndSubfoldersContainer > div[class*="eff4f9"],
+            .dark #notesAndSubfoldersContainer > div[class*="2b5278"] { background: transparent !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+1) .bg-slate-200,
+            .dark #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+1) .dark\:bg-slate-700 { background-color: #FF9F0A !important; color: #fff !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+2) .bg-slate-200,
+            .dark #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+2) .dark\:bg-slate-700 { background-color: #3390EC !important; color: #fff !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+3) .bg-slate-200,
+            .dark #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+3) .dark\:bg-slate-700 { background-color: #34C759 !important; color: #fff !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+4) .bg-slate-200,
+            .dark #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+4) .dark\:bg-slate-700 { background-color: #AF52DE !important; color: #fff !important; }
+            #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+5) .bg-slate-200,
+            .dark #notesAndSubfoldersContainer > div[class*="pl-3.5"]:nth-of-type(5n+5) .dark\:bg-slate-700 { background-color: #FF3B30 !important; color: #fff !important; }
 
             .post-bubble-framed:not(.post-has-media) { max-width: calc(192.1% - 49.72ch) !important; }
 
@@ -903,16 +917,16 @@
             <!-- Central list hides scrollbar while keeping mouse scroll -->
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
-                    <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-slate-500/20 border border-slate-600/40 text-white transition">
+                    <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-[15px] pt-[10px] pb-[5px] flex-shrink-0">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-10 h-10 flex items-center justify-center rounded-full text-white transition" style="background: rgba(255,255,255,0.08);">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
-                        <div class="flex items-center rounded-2xl bg-slate-500/20 border border-slate-600/40">
-                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
-                                <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.4"></i>
+                        <div class="flex items-center">
+                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-10 h-10 flex items-center justify-center text-white transition">
+                                <i data-lucide="file-plus" class="w-[22px] h-[22px]" stroke-width="2.2"></i>
                             </button>
-                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
-                                <i data-lucide="folder-plus" class="w-5 h-5" stroke-width="1.4"></i>
+                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-10 h-10 flex items-center justify-center text-white transition">
+                                <i data-lucide="folder-plus" class="w-[22px] h-[22px]" stroke-width="2.2"></i>
                             </button>
                         </div>
                     </div>
@@ -930,7 +944,7 @@
                     </div>
 
                     <div id="mobileFolderTabsStickyWrap" class="sticky top-0 z-10 md:hidden flex-shrink-0">
-                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-1 rounded-2xl bg-slate-500/10 border border-slate-600/20 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 px-3 mb-2 overflow-x-auto no-scrollbar flex-shrink-0"></div>
                     </div>
 
                     <div id="notesAndSubfoldersContainer" class="p-0 space-y-0"></div>
@@ -2817,8 +2831,8 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-slate-400/30 text-white transition'
-                        : 'px-4 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-slate-300 transition';
+                        ? 'px-[14px] py-1.5 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[rgba(255,255,255,0.12)] text-white transition'
+                        : 'px-[14px] py-1.5 rounded-full text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-slate-300 transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
                 });
