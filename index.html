@@ -599,12 +599,12 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.4);
             }
-            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(54,54,54,0.5) !important; }
-            .dark #searchInputBox { background-color: rgba(54,54,54,0.5) !important; }
+            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(85,85,85,0.5) !important; }
+            .dark #searchInputBox { background-color: rgba(85,85,85,0.5) !important; }
             #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
-            #smartDashboardSearch::placeholder { font-weight: 586 !important; }
-            .dark #smartDashboardSearch::placeholder { color: #707070 !important; }
-            #mobileSearchIcon { margin-right: 2px !important; }
+            #smartDashboardSearch::placeholder { font-weight: 400 !important; color: #707070 !important; }
+            #mobileSearchIcon { margin-right: 2px !important; transform: translateX(-1px) !important; }
+            #searchInputBox > div.flex.items-center { align-items: flex-end !important; }
 
             #mobileTopIconsRow {
                 position: sticky;
@@ -620,12 +620,12 @@
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                padding-top: 3px;
-                padding-bottom: 3px;
+                padding-top: 5px;
+                padding-bottom: 5px;
             }
 
             #mobileFolderTabsStickyWrap {
-                top: 50px;
+                top: 54px;
                 background: rgba(255,255,255,0.4);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -643,11 +643,13 @@
 
             #sidebarListContainer .w-11 { width: 3.85rem !important; }
             #sidebarListContainer .h-11 { height: 3.85rem !important; }
-            #sidebarListContainer h4 { font-size: 16.5px !important; color: #FFFFFF !important; }
+            #sidebarListContainer h4 { font-size: 16.5px !important; line-height: 1.15 !important; color: #FFFFFF !important; }
             #sidebarListContainer .note-preview-text {
                 font-size: 16.5px !important;
+                font-weight: 400 !important;
                 line-height: 1.25 !important;
-                color: #5C5C5C !important;
+                color: #707070 !important;
+                transform: translateY(-1px);
                 white-space: normal !important;
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important;
@@ -921,14 +923,14 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[52px] h-[41px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[54px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
-                        <div class="flex items-center gap-[4px] h-[41px] rounded-3xl bg-[#363636]/50 border border-[#4A4A4A]">
-                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[40px] h-[40px] flex items-center justify-center text-white transition">
+                        <div class="flex items-center gap-[4px] h-[43px] rounded-3xl bg-[#363636]/50 border border-[#4A4A4A]">
+                            <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[40px] h-[42px] flex items-center justify-center text-white transition">
                                 <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
-                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-[40px] h-[40px] flex items-center justify-center text-white transition">
+                            <button onclick="createNewFolderPrompt()" title="Создать папку" class="w-[40px] h-[42px] flex items-center justify-center text-white transition">
                                 <i data-lucide="folder-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
                         </div>
@@ -2836,7 +2838,7 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#363636]/50 text-white transition'
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#565656]/50 text-white transition'
                         : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
