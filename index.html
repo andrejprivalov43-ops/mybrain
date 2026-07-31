@@ -592,17 +592,17 @@
                 z-index: 30;
                 height: auto;
                 padding: 8px 12px;
-                background: rgba(255,255,255,0.55);
+                background: rgba(255,255,255,0.4);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #sidebarSearchRow {
-                background: rgba(23,33,43,0.55);
+                background: rgba(23,33,43,0.4);
             }
             #searchInputBox { padding-top: 12px; padding-bottom: 12px; justify-content: center; border-radius: 9999px; background-color: rgba(241,245,249,0.6) !important; }
             .dark #searchInputBox { background-color: rgba(80,80,80,0.5) !important; }
-            #smartDashboardSearch { flex: 0 1 auto; width: max-content !important; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
-            #smartDashboardSearch::placeholder { font-weight: 649 !important; }
+            #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
+            #smartDashboardSearch::placeholder { font-weight: 617 !important; }
             .dark #smartDashboardSearch::placeholder { color: #5C5C5C !important; }
             #mobileSearchIcon { margin-right: 2px !important; }
 
@@ -610,29 +610,29 @@
                 position: sticky;
                 top: 0;
                 z-index: 40;
-                background: rgba(255,255,255,0.55);
+                background: rgba(255,255,255,0.4);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #mobileTopIconsRow {
-                background: rgba(23,33,43,0.55);
+                background: rgba(23,33,43,0.4);
             }
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                padding-top: 4px;
-                padding-bottom: 4px;
+                padding-top: 3px;
+                padding-bottom: 3px;
             }
 
             #mobileFolderTabsStickyWrap {
-                top: 53px;
-                background: transparent;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
+                top: 55px;
+                background: rgba(255,255,255,0.4);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 margin-top: 4px;
             }
             .dark #mobileFolderTabsStickyWrap {
-                background: transparent;
+                background: rgba(23,33,43,0.4);
             }
 
             .note-list-date {
@@ -920,10 +920,10 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[46px] h-[38px] flex items-center justify-center rounded-3xl bg-[#363636]/60 border-2 border-[#565656] text-white transition">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[48px] h-[39px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
-                        <div class="flex items-center rounded-3xl bg-[#363636]/60 border border-[#4A4A4A]">
+                        <div class="flex items-center gap-[2px] h-[39px] rounded-3xl bg-[#363636]/50 border border-[#4A4A4A]">
                             <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[38px] h-[38px] flex items-center justify-center text-white transition">
                                 <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
@@ -948,7 +948,7 @@
                     </div>
 
                     <div id="mobileFolderTabsStickyWrap" class="sticky top-0 z-10 md:hidden flex-shrink-0">
-                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-1 rounded-3xl bg-[#202020]/60 border border-slate-400/25 overflow-x-auto no-scrollbar flex-shrink-0"></div>
+                        <div id="mobileFolderTabsContainer" class="flex items-center gap-1 mx-3 mb-2 p-[3px] rounded-3xl bg-[#202020]/50 border border-slate-400/25 overflow-x-auto no-scrollbar flex-shrink-0"></div>
                     </div>
 
                     <div id="notesAndSubfoldersContainer" class="p-0 space-y-0"></div>
@@ -2835,8 +2835,8 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-1.5 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#363636]/60 text-white transition'
-                        : 'px-4 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#363636]/50 text-white transition'
+                        : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
                 });
@@ -2932,6 +2932,9 @@
             } else {
                 const dd = String(noteDateObj.getDate()).padStart(2, '0');
                 const mm = String(noteDateObj.getMonth() + 1).padStart(2, '0');
+                if (noteDateObj.getFullYear() === nowDateObj.getFullYear()) {
+                    return `${dd}.${mm}`;
+                }
                 const yyyy = noteDateObj.getFullYear();
                 return `${dd}.${mm}.${yyyy}`;
             }
