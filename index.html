@@ -498,7 +498,7 @@
                 width: 46px;
                 height: 46px;
                 box-sizing: border-box;
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
             }
 
             #fixedInputBar {
@@ -512,12 +512,15 @@
             }
             #attachmentBtnWrapper > button {
                 background: rgba(54,54,54,0.5);
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 box-sizing: border-box;
                 width: 46px;
                 height: 46px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             #attachmentBtnWrapper > button i {
                 width: 22px;
@@ -525,7 +528,7 @@
             }
             #mobileInputFieldWrap {
                 background: rgba(54,54,54,0.5);
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
                 padding: 4px 4px 4px 14px;
                 box-sizing: border-box;
@@ -535,7 +538,7 @@
             }
             #sendMessageBtn {
                 background: rgba(54,54,54,0.5);
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
                 margin-left: 0;
                 color: #fff !important;
@@ -565,6 +568,7 @@
                 -webkit-backdrop-filter: blur(20px);
                 height: 61px;
                 padding-bottom: 3px;
+                justify-content: space-between;
             }
             .dark #chatHeaderBar {
                 background: rgba(23,33,43,0.3);
@@ -578,7 +582,7 @@
                 justify-content: center;
                 border-radius: 9999px;
                 background: rgba(54,54,54,0.5);
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 color: #fff;
@@ -592,13 +596,13 @@
                 height: 46px;
                 box-sizing: border-box;
                 background: rgba(54,54,54,0.5);
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
-                padding: 0 12px;
+                padding: 0 16px;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 justify-content: center;
-                max-width: 60%;
+                max-width: 64%;
                 flex: 0 1 auto;
             }
             #activeChatTitleInput {
@@ -608,7 +612,7 @@
 
             #pinnedPostTopBar {
                 border-bottom: none;
-                border: 1px solid #565656;
+                border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 24px;
                 margin: 5px 12px 0 12px;
                 width: auto;
@@ -726,18 +730,21 @@
             #sidebarListContainer { padding-bottom: 3px !important; }
             #mobileFolderTabsContainer button.font-bold { font-weight: 585 !important; }
 
-            .post-bubble-framed:not(.post-has-media) { max-width: calc((192.1% - 49.72ch) * 1.15) !important; }
+            .post-bubble-framed:not(.post-has-media) { max-width: calc((192.1% - 49.72ch) * 1.265) !important; }
 
-            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 401px !important; }
-            .post-media-grid.grid-cols-2 { max-width: 401px !important; }
-            .post-media-grid.grid-cols-3 { max-width: 460px !important; }
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 460px !important; }
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 441px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 441px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 506px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 506px !important; }
             .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 401px !important; }
-            .post-bubble-framed.post-has-media { max-width: 93.89% !important; }
-            .post-media-only { max-width: 93.89% !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 441px !important; }
+            .post-bubble-framed.post-has-media { max-width: 103.28% !important; }
+            .post-media-only { max-width: 103.28% !important; }
 
-            .post-bubble-framed { font-size: 15px !important; }
+            .post-bubble-framed { font-size: 16px !important; }
+            .post-text-content, .post-text-content *:not(b):not(strong):not(.font-bold):not([style*="font-weight"]):not(code) {
+                font-weight: 387 !important;
+            }
 
             .dark .post-bubble-framed .time-badge,
             .light .post-bubble-framed .time-badge {
@@ -762,15 +769,26 @@
                 top: auto;
                 bottom: 0;
                 width: 100%;
-                height: 45vh;
+                height: 32vh;
                 z-index: 50;
                 border-left-width: 0;
                 border-top-width: 1px;
                 border-top-style: solid;
                 border-radius: 16px 16px 0 0;
+                background: #1c1c1c !important;
             }
             #emojiPickerGrid button {
-                padding: 2px !important;
+                padding: 1px !important;
+            }
+            #emojiPickerGrid > div > div.grid {
+                grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
+            }
+            #emojiPickerGrid > div > div:first-child {
+                padding-top: 2px !important;
+                padding-bottom: 0 !important;
+            }
+            #emojiPickerGrid > div {
+                margin-bottom: 2px !important;
             }
             #emojiSearchBox {
                 padding-top: 8px !important;
@@ -783,6 +801,9 @@
             }
             .dark #emojiCategoryStrip {
                 border-bottom-color: #101921;
+            }
+            main:has(#emojiPickerPanel:not(.hidden)) #fixedInputBar {
+                transform: translateY(-32vh);
             }
             #fixedInputBar {
                 position: relative;
@@ -1004,10 +1025,10 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[58px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-[#565656] text-white transition">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[58px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-slate-400/25 text-white transition">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
-                        <div class="flex items-center gap-[4px] h-[43px] rounded-3xl bg-[#363636]/50 border border-[#4A4A4A]">
+                        <div class="flex items-center gap-[4px] h-[43px] rounded-3xl bg-[#363636]/50 border border-slate-400/25">
                             <button onclick="createNewNoteInline()" title="Создать заметку" class="w-[40px] h-[42px] flex items-center justify-center text-white transition">
                                 <i data-lucide="file-plus" class="w-5 h-5" stroke-width="1.4"></i>
                             </button>
