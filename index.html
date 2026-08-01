@@ -493,38 +493,67 @@
 
             #settingsDrawer { width: 100% !important; }
 
-            #chatHeaderMobileAvatar { display: flex; }
+            #chatHeaderMobileAvatar {
+                display: flex;
+                width: 46px;
+                height: 46px;
+                box-sizing: border-box;
+                border: 1px solid #565656;
+            }
 
             #fixedInputBar {
                 background: transparent !important;
             }
             #composerButtonsRow {
-                padding-bottom: 6px !important;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                padding-bottom: 12px !important;
+                align-items: center;
             }
             #attachmentBtnWrapper > button {
-                background: rgba(148,163,184,0.18);
+                background: rgba(54,54,54,0.5);
+                border: 1px solid #565656;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                box-sizing: border-box;
+                width: 46px;
+                height: 46px;
+            }
+            #attachmentBtnWrapper > button i {
+                width: 22px;
+                height: 22px;
             }
             #mobileInputFieldWrap {
-                background: rgba(148,163,184,0.15);
+                background: rgba(54,54,54,0.5);
+                border: 1px solid #565656;
                 border-radius: 9999px;
-                padding: 2px 4px 2px 14px;
+                padding: 4px 4px 4px 14px;
+                box-sizing: border-box;
+                height: 46px;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             #sendMessageBtn {
-                background: #3390ec;
+                background: rgba(54,54,54,0.5);
+                border: 1px solid #565656;
                 border-radius: 9999px;
-                margin-left: 6px;
+                margin-left: 0;
                 color: #fff !important;
+                box-sizing: border-box;
+                width: 46px;
+                height: 46px;
             }
             #sendMessageBtn:hover {
                 color: #fff !important;
             }
+            #sendMessageBtn i[data-lucide="send"] {
+                fill: none !important;
+                stroke: #fff !important;
+                width: 22px;
+                height: 22px;
+            }
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
-            #chatHeaderTitleWrapper { align-self: flex-start; margin-top: 8px; }
 
             #noteActionsHeaderArea > button[onclick*="toggleNoteSettingsDropdown"] {
                 display: none !important;
@@ -534,52 +563,64 @@
                 background: rgba(255,255,255,0.3);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                height: 51px;
+                height: 61px;
                 padding-bottom: 3px;
             }
             .dark #chatHeaderBar {
                 background: rgba(23,33,43,0.3);
             }
             #mobileMenuBtn {
-                width: 38px;
-                height: 38px;
+                width: 46px;
+                height: 46px;
+                box-sizing: border-box;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 9999px;
-                background: rgba(148,163,184,0.2);
-                border: 1px solid rgba(148,163,184,0.4);
+                background: rgba(54,54,54,0.5);
+                border: 1px solid #565656;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 color: #fff;
                 margin-left: 0;
             }
+            #mobileMenuBtn i {
+                width: 22px;
+                height: 22px;
+            }
             #chatHeaderTitleWrapper {
-                background: rgba(148,163,184,0.15);
-                border-radius: 16px;
-                padding: 6px 12px;
+                height: 46px;
+                box-sizing: border-box;
+                background: rgba(54,54,54,0.5);
+                border: 1px solid #565656;
+                border-radius: 9999px;
+                padding: 0 12px;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 justify-content: center;
+                max-width: 60%;
+                flex: 0 1 auto;
             }
             #activeChatTitleInput {
-                font-size: 16px !important;
+                font-size: 18px !important;
                 text-align: center;
             }
 
             #pinnedPostTopBar {
                 border-bottom: none;
-                border-radius: 16px;
+                border: 1px solid #565656;
+                border-radius: 24px;
                 margin: 5px 12px 0 12px;
                 width: auto;
-                background: rgba(255,255,255,0.55) !important;
+                background: rgba(54,54,54,0.5) !important;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #pinnedPostTopBar {
-                background: rgba(23,33,43,0.55) !important;
+                background: rgba(54,54,54,0.5) !important;
             }
-            #pinnedPostTopBar i[data-lucide="pin"] {
+            #pinnedPostTopBar i[data-lucide="pin"],
+            #pinnedPostPinIcon {
                 display: none !important;
             }
             #pinnedPostTopBar span:first-of-type {
@@ -685,16 +726,34 @@
             #sidebarListContainer { padding-bottom: 3px !important; }
             #mobileFolderTabsContainer button.font-bold { font-weight: 585 !important; }
 
-            .post-bubble-framed:not(.post-has-media) { max-width: calc(192.1% - 49.72ch) !important; }
+            .post-bubble-framed:not(.post-has-media) { max-width: calc((192.1% - 49.72ch) * 1.15) !important; }
 
-            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 349px !important; }
-            .post-media-grid.grid-cols-2 { max-width: 349px !important; }
-            .post-media-grid.grid-cols-3 { max-width: 400px !important; }
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 400px !important; }
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 401px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 401px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 460px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 460px !important; }
             .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 349px !important; }
-            .post-bubble-framed.post-has-media { max-width: 81.64% !important; }
-            .post-media-only { max-width: 81.64% !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 401px !important; }
+            .post-bubble-framed.post-has-media { max-width: 93.89% !important; }
+            .post-media-only { max-width: 93.89% !important; }
+
+            .post-bubble-framed { font-size: 15px !important; }
+
+            .dark .post-bubble-framed .time-badge,
+            .light .post-bubble-framed .time-badge {
+                color: #999999 !important;
+            }
+
+            .date-divider span {
+                background: rgba(54,54,54,0.5) !important;
+                border: 1px solid #565656 !important;
+                border-radius: 24px !important;
+                color: #999999 !important;
+            }
+            .dark .date-divider span,
+            .light .date-divider span {
+                color: #999999 !important;
+            }
 
             #emojiPickerPanel {
                 position: fixed;
@@ -986,7 +1045,7 @@
             <div id="chatColumnWrapper" class="flex-1 flex flex-col min-w-0 overflow-hidden relative transition-all duration-300">
             <header id="chatHeaderBar" class="h-12 px-4 flex items-center gap-2 bg-white dark:bg-tg-darkSidebar border-b border-tg-lightBorder dark:border-tg-darkBorder z-30 relative flex-shrink-0">
                 <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="order-1 md:hidden p-1.5 -ml-1 text-slate-600 dark:text-tg-darkText hover:text-white rounded-full flex-shrink-0">
-                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </button>
 
                 <div id="chatHeaderTitleWrapper" class="order-2 flex items-center gap-2 min-w-0 flex-1">
@@ -1049,7 +1108,7 @@
             <div id="pinnedPostTopBar" class="hidden flex items-center justify-between px-4 py-2 bg-white/95 dark:bg-tg-darkSidebar/95 backdrop-blur border-b border-tg-lightBorder dark:border-tg-darkBorder w-full rounded-none cursor-pointer hover:bg-slate-100 dark:hover:bg-tg-darkActiveLight transition select-none shadow-sm z-20 flex-shrink-0" onclick="scrollToPinnedPost()">
                 <div class="flex items-center gap-2.5 min-w-0 flex-1">
                     <!-- Requirement 5: pin icon +1px (17px) and rotated facing left (-scale-x-1) -->
-                    <i data-lucide="pin" class="w-[17px] h-[17px] text-tg-lightBlue dark:text-sky-400 flex-shrink-0 fill-current transform -scale-x-1"></i>
+                    <i id="pinnedPostPinIcon" data-lucide="pin" class="w-[17px] h-[17px] text-tg-lightBlue dark:text-sky-400 flex-shrink-0 fill-current transform -scale-x-1"></i>
                     <div class="flex flex-col min-w-0 flex-1">
                         <span class="font-medium text-[13px] md:text-[14px] text-tg-lightBlue dark:text-sky-400">Закрепленное сообщение</span>
                         <span id="pinnedPostSnippet" class="text-xs text-slate-700 dark:text-slate-200 truncate font-medium">Текст закрепленного сообщения...</span>
