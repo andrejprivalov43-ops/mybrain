@@ -599,8 +599,8 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.4);
             }
-            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.4) !important; }
-            .dark #searchInputBox { background-color: rgba(100,100,100,0.4) !important; }
+            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.3) !important; }
+            .dark #searchInputBox { background-color: rgba(100,100,100,0.3) !important; }
             #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
             #smartDashboardSearch::placeholder { font-weight: 300 !important; color: #999999 !important; }
             #mobileSearchIcon { margin-right: 2px !important; transform: translateX(-2px) !important; }
@@ -610,29 +610,30 @@
                 position: sticky;
                 top: 0;
                 z-index: 40;
-                background: rgba(255,255,255,0.3);
+                background: rgba(255,255,255,0.2);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #mobileTopIconsRow {
-                background: rgba(23,33,43,0.3);
+                background: rgba(23,33,43,0.2);
             }
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                padding-top: 8px;
-                padding-bottom: 6px;
-                background-color: rgba(32,32,32,0.3) !important;
+                padding-top: 7px;
+                padding-bottom: 5px;
+                background-color: rgba(32,32,32,0.2) !important;
             }
 
             #mobileFolderTabsStickyWrap {
                 top: 55px;
-                background: rgba(255,255,255,0.3);
+                padding-top: 2px;
+                background: rgba(255,255,255,0.2);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #mobileFolderTabsStickyWrap {
-                background: rgba(23,33,43,0.3);
+                background: rgba(23,33,43,0.2);
             }
 
             .note-list-date {
@@ -670,7 +671,7 @@
             #notesAndSubfoldersContainer > div.pr-2::after {
                 content: '';
                 position: absolute;
-                left: 76px;
+                left: 88px;
                 right: 0;
                 bottom: 0;
                 height: 1px;
@@ -680,6 +681,7 @@
                 background: rgba(127,145,164,0.3);
             }
             #notesAndSubfoldersContainer > div { padding-top: 6px !important; padding-bottom: 6px !important; }
+            #notesAndSubfoldersContainer { margin-top: 8px !important; }
             #sidebarListContainer { padding-bottom: 3px !important; }
             #mobileFolderTabsContainer button.font-bold { font-weight: 585 !important; }
 
@@ -2858,7 +2860,7 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/30 text-white transition'
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/20 text-white transition'
                         : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
