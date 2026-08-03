@@ -149,6 +149,10 @@
             align-items: flex-start !important;
         }
 
+        #noteBottomSpacer {
+            height: 0;
+        }
+
         /* Post frame for text posts */
         .post-bubble-framed {
             position: relative;
@@ -506,7 +510,8 @@
             }
 
             #fixedInputBar {
-                background: transparent !important;
+                background: rgba(0,0,0,0.15) !important;
+                border-top: none !important;
                 position: absolute;
                 bottom: 0;
                 left: 0;
@@ -517,13 +522,15 @@
                 padding-right: 10px !important;
                 padding-bottom: 12px !important;
                 align-items: flex-end;
+                position: relative;
+                top: 1px;
             }
             #attachmentBtnWrapper > button {
-                background: rgba(54,54,54,0.5);
+                background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
                 box-sizing: border-box;
                 width: 46px;
-                height: 46px;
+                height: 45px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -535,12 +542,12 @@
                 stroke: #fff !important;
             }
             #mobileInputFieldWrap {
-                background: rgba(54,54,54,0.5);
+                background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 23px;
                 padding: 4px 4px 4px 14px;
                 box-sizing: border-box;
-                min-height: 46px;
+                min-height: 45px;
                 height: auto;
                 max-height: 160px;
             }
@@ -556,14 +563,14 @@
                 height: 0 !important;
             }
             #sendMessageBtn {
-                background: rgba(54,54,54,0.5);
+                background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
                 margin-left: 0;
                 color: #fff !important;
                 box-sizing: border-box;
                 width: 46px;
-                height: 46px;
+                height: 45px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -577,7 +584,7 @@
                 stroke: #fff !important;
                 width: 22px;
                 height: 22px;
-                transform: rotate(45deg) translate(-2px, 0px) !important;
+                transform: rotate(45deg) translate(-3px, 2px) !important;
             }
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
@@ -587,7 +594,8 @@
             }
 
             #chatHeaderBar {
-                background: transparent !important;
+                background: rgba(0,0,0,0.15) !important;
+                border-bottom: none !important;
                 height: 61px;
                 padding-bottom: 3px;
                 justify-content: space-between;
@@ -595,6 +603,25 @@
                 top: 0;
                 left: 0;
                 right: 0;
+            }
+            #appShellContainer.note-open #chatHeaderBar {
+                background: rgba(0,0,0,0.25) !important;
+                box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+            }
+            #appShellContainer.note-open #fixedInputBar {
+                background: rgba(0,0,0,0.25) !important;
+                box-shadow: 0 -6px 16px rgba(0,0,0,0.35);
+            }
+            #appShellContainer.note-open #chatHeaderTitleWrapper,
+            #appShellContainer.note-open #mobileMenuBtn,
+            #appShellContainer.note-open #attachmentBtnWrapper > button,
+            #appShellContainer.note-open #sendMessageBtn,
+            #appShellContainer.note-open #mobileInputFieldWrap,
+            #appShellContainer.note-open #pinnedPostTopBar {
+                background: rgba(54,54,54,0.65) !important;
+            }
+            .dark #appShellContainer.note-open #pinnedPostTopBar {
+                background: rgba(54,54,54,0.65) !important;
             }
             #mobileMenuBtn {
                 width: 46px;
@@ -604,7 +631,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 9999px;
-                background: rgba(54,54,54,0.5);
+                background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
                 color: #fff;
                 margin-left: 0;
@@ -616,7 +643,7 @@
             #chatHeaderTitleWrapper {
                 height: 45px;
                 box-sizing: border-box;
-                background: rgba(54,54,54,0.5);
+                background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
                 padding: 0 16px;
@@ -639,14 +666,14 @@
                 border-radius: 24px;
                 margin: 3px 12px 0 12px;
                 width: auto;
-                background: rgba(54,54,54,0.5) !important;
+                background: rgba(54,54,54,0.55) !important;
                 position: absolute;
-                top: 61px;
+                top: 59px;
                 left: 0;
                 right: 0;
             }
             .dark #pinnedPostTopBar {
-                background: rgba(54,54,54,0.5) !important;
+                background: rgba(54,54,54,0.55) !important;
             }
             #pinnedPostTopBar i[data-lucide="pin"],
             #pinnedPostPinIcon {
@@ -680,12 +707,13 @@
                 position: sticky;
                 top: 0;
                 z-index: 40;
-                background: rgba(255,255,255,0.05);
+                background: rgba(255,255,255,0.1);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             }
             .dark #mobileTopIconsRow {
-                background: rgba(23,33,43,0.05);
+                background: rgba(23,33,43,0.1);
             }
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
@@ -701,6 +729,7 @@
                 background: rgba(255,255,255,0.1);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             }
             .dark #mobileFolderTabsStickyWrap {
                 background: rgba(23,33,43,0.1);
@@ -721,6 +750,10 @@
                 right: 0;
                 bottom: 0;
                 padding-top: 61px;
+                padding-bottom: 150px;
+            }
+            #appShellContainer.note-open #noteBottomSpacer {
+                height: 66px;
             }
 
             #sidebarListContainer .w-11 { width: 3.85rem !important; }
@@ -788,7 +821,7 @@
             }
 
             .date-divider span {
-                background: rgba(54,54,54,0.5) !important;
+                background: rgba(54,54,54,0.55) !important;
                 border: 1px solid #565656 !important;
                 border-radius: 24px !important;
                 color: #999999 !important;
@@ -1098,7 +1131,7 @@
             <div class="flex flex-col flex-1 min-h-0">
                 <div class="flex-1 overflow-y-auto animate-pop-up no-scrollbar" id="sidebarListContainer">
                     <div id="mobileTopIconsRow" class="flex md:hidden items-center justify-between px-3 pt-2 pb-1 flex-shrink-0">
-                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[58px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-slate-400/25 text-white transition">
+                        <button onclick="toggleSettingsDrawer()" title="Настройки" class="w-[60px] h-[43px] flex items-center justify-center rounded-3xl bg-[#363636]/50 border border-slate-400/25 text-white transition">
                             <i data-lucide="settings" class="w-5 h-5" stroke-width="1.4"></i>
                         </button>
                         <div class="flex items-center gap-[4px] h-[43px] rounded-3xl bg-[#363636]/50 border border-slate-400/25">
@@ -1216,6 +1249,7 @@
                     <div id="chatMessageFeedArea" class="hidden flex-1 flex flex-col h-full">
                         <div id="editorWorkspace" class="flex-1 pr-1 mb-4 relative min-h-[350px]">
                             <div id="writerContent" class="py-2 flex flex-col gap-2.5"></div>
+                            <div id="noteBottomSpacer" class="w-full"></div>
                         </div>
                     </div>
 
