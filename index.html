@@ -496,25 +496,31 @@
             #chatHeaderMobileAvatar {
                 display: flex;
                 width: 46px;
-                height: 46px;
+                height: 45px;
                 box-sizing: border-box;
                 border: 1px solid rgba(148,163,184,0.25);
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
             }
 
             #fixedInputBar {
                 background: transparent !important;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
             }
             #composerButtonsRow {
                 padding-left: 10px !important;
                 padding-right: 10px !important;
                 padding-bottom: 12px !important;
-                align-items: center;
+                align-items: flex-end;
             }
             #attachmentBtnWrapper > button {
                 background: rgba(54,54,54,0.5);
                 border: 1px solid rgba(148,163,184,0.25);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
                 box-sizing: border-box;
                 width: 46px;
                 height: 46px;
@@ -522,19 +528,32 @@
                 align-items: center;
                 justify-content: center;
             }
-            #attachmentBtnWrapper > button i {
+            #attachmentBtnWrapper > button svg {
                 width: 22px;
                 height: 22px;
+                color: #fff !important;
+                stroke: #fff !important;
             }
             #mobileInputFieldWrap {
                 background: rgba(54,54,54,0.5);
                 border: 1px solid rgba(148,163,184,0.25);
-                border-radius: 9999px;
+                border-radius: 23px;
                 padding: 4px 4px 4px 14px;
                 box-sizing: border-box;
-                height: 46px;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
+                min-height: 46px;
+                height: auto;
+                max-height: 160px;
+            }
+            #chatMessageInputField {
+                max-height: 152px !important;
+                overflow-y: auto !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+            #chatMessageInputField::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
             }
             #sendMessageBtn {
                 background: rgba(54,54,54,0.5);
@@ -545,15 +564,20 @@
                 box-sizing: border-box;
                 width: 46px;
                 height: 46px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             #sendMessageBtn:hover {
                 color: #fff !important;
             }
-            #sendMessageBtn i[data-lucide="send"] {
+            #sendMessageBtn svg[data-lucide="send"],
+            #sendMessageBtn svg {
                 fill: none !important;
                 stroke: #fff !important;
                 width: 22px;
                 height: 22px;
+                transform: rotate(45deg) translate(-2px, 0px) !important;
             }
 
             #activeChatTitleInput { transform: translate(4px, -1px) !important; }
@@ -563,19 +587,18 @@
             }
 
             #chatHeaderBar {
-                background: rgba(255,255,255,0.3);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
+                background: transparent !important;
                 height: 61px;
                 padding-bottom: 3px;
                 justify-content: space-between;
-            }
-            .dark #chatHeaderBar {
-                background: rgba(23,33,43,0.3);
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
             }
             #mobileMenuBtn {
                 width: 46px;
-                height: 46px;
+                height: 45px;
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
@@ -583,8 +606,6 @@
                 border-radius: 9999px;
                 background: rgba(54,54,54,0.5);
                 border: 1px solid rgba(148,163,184,0.25);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
                 color: #fff;
                 margin-left: 0;
             }
@@ -593,17 +614,19 @@
                 height: 22px;
             }
             #chatHeaderTitleWrapper {
-                height: 46px;
+                height: 45px;
                 box-sizing: border-box;
                 background: rgba(54,54,54,0.5);
                 border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 9999px;
                 padding: 0 16px;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
                 justify-content: center;
                 max-width: 64%;
-                flex: 0 1 auto;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;
             }
             #activeChatTitleInput {
                 font-size: 18px !important;
@@ -614,11 +637,13 @@
                 border-bottom: none;
                 border: 1px solid rgba(148,163,184,0.25);
                 border-radius: 24px;
-                margin: 5px 12px 0 12px;
+                margin: 3px 12px 0 12px;
                 width: auto;
                 background: rgba(54,54,54,0.5) !important;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
+                position: absolute;
+                top: 61px;
+                left: 0;
+                right: 0;
             }
             .dark #pinnedPostTopBar {
                 background: rgba(54,54,54,0.5) !important;
@@ -637,12 +662,12 @@
                 z-index: 30;
                 height: auto;
                 padding: 8px 12px;
-                background: rgba(255,255,255,0.4);
+                background: rgba(255,255,255,0.22);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #sidebarSearchRow {
-                background: rgba(23,33,43,0.4);
+                background: rgba(23,33,43,0.22);
             }
             #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.2) !important; }
             .dark #searchInputBox { background-color: rgba(100,100,100,0.2) !important; }
@@ -655,19 +680,19 @@
                 position: sticky;
                 top: 0;
                 z-index: 40;
-                background: rgba(255,255,255,0.1);
+                background: rgba(255,255,255,0.05);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
             }
             .dark #mobileTopIconsRow {
-                background: rgba(23,33,43,0.1);
+                background: rgba(23,33,43,0.05);
             }
             #mobileFolderTabsContainer {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
                 padding-top: 6px;
                 padding-bottom: 5px;
-                background-color: rgba(32,32,32,0.2) !important;
+                background-color: rgba(32,32,32,0.1) !important;
             }
 
             #mobileFolderTabsStickyWrap {
@@ -688,7 +713,15 @@
                 color: #8a8a8a !important;
             }
 
-            #workspaceContentScroll { padding-left: 14px; }
+            #workspaceContentScroll {
+                padding-left: 14px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding-top: 61px;
+            }
 
             #sidebarListContainer .w-11 { width: 3.85rem !important; }
             #sidebarListContainer .h-11 { height: 3.85rem !important; }
@@ -725,21 +758,24 @@
             .dark #notesAndSubfoldersContainer > div.pr-2::after {
                 background: rgba(127,145,164,0.3);
             }
+            #notesAndSubfoldersContainer > div.pr-2:last-child::after {
+                display: none;
+            }
             #notesAndSubfoldersContainer > div { padding-top: 6px !important; padding-bottom: 6px !important; }
             #notesAndSubfoldersContainer { margin-top: 8px !important; }
             #sidebarListContainer { padding-bottom: 3px !important; }
             #mobileFolderTabsContainer button.font-bold { font-weight: 585 !important; }
 
-            .post-bubble-framed:not(.post-has-media) { max-width: calc((192.1% - 49.72ch) * 1.265) !important; }
+            .post-bubble-framed:not(.post-has-media) { max-width: calc((192.1% - 49.72ch) * 1.455) !important; }
 
-            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 441px !important; }
-            .post-media-grid.grid-cols-2 { max-width: 441px !important; }
-            .post-media-grid.grid-cols-3 { max-width: 506px !important; }
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 506px !important; }
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 507px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 507px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 582px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 582px !important; }
             .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
-            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 441px !important; }
-            .post-bubble-framed.post-has-media { max-width: 103.28% !important; }
-            .post-media-only { max-width: 103.28% !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 507px !important; }
+            .post-bubble-framed.post-has-media { max-width: 118.77% !important; }
+            .post-media-only { max-width: 118.77% !important; }
 
             .post-bubble-framed { font-size: 16px !important; }
             .post-text-content, .post-text-content *:not(b):not(strong):not(.font-bold):not([style*="font-weight"]):not(code) {
@@ -769,16 +805,22 @@
                 top: auto;
                 bottom: 0;
                 width: 100%;
-                height: 32vh;
+                height: 38vh;
                 z-index: 50;
                 border-left-width: 0;
                 border-top-width: 1px;
                 border-top-style: solid;
                 border-radius: 16px 16px 0 0;
                 background: #1c1c1c !important;
+                overflow-y: auto !important;
             }
             #emojiPickerGrid button {
                 padding: 1px !important;
+            }
+            #emojiPickerGrid {
+                overflow-y: visible !important;
+                flex: none !important;
+                padding-top: 2px !important;
             }
             #emojiPickerGrid > div > div.grid {
                 grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
@@ -790,29 +832,56 @@
             #emojiPickerGrid > div {
                 margin-bottom: 2px !important;
             }
+            #emojiSearchRow {
+                padding-top: 3px !important;
+                padding-bottom: 3px !important;
+                flex-shrink: 0;
+            }
             #emojiSearchBox {
                 padding-top: 8px !important;
                 padding-bottom: 8px !important;
+                background-color: rgba(100,100,100,0.2) !important;
+                border-radius: 9999px !important;
+                border-color: transparent !important;
             }
             #emojiCategoryStrip {
                 order: -1;
                 border-top: none !important;
                 border-bottom: 1px solid #dfe5ec;
+                position: sticky;
+                top: 0;
+                z-index: 5;
+                background: #1c1c1c !important;
             }
             .dark #emojiCategoryStrip {
                 border-bottom-color: #101921;
             }
             main:has(#emojiPickerPanel:not(.hidden)) #fixedInputBar {
-                transform: translateY(-32vh);
+                transform: translateY(-38vh);
             }
             #fixedInputBar {
-                position: relative;
                 z-index: 55;
             }
         }
         @media (min-width: 768px) {
             #chatHeaderMobileAvatar { display: none !important; }
             .time-badge { position: relative; top: 2px; font-size: 11px; }
+            #searchInputBox {
+                background-color: #242F3D !important;
+                justify-content: flex-start !important;
+            }
+            #smartDashboardSearch::placeholder {
+                color: #c2c6cc !important;
+                font-weight: 360 !important;
+            }
+            #workspaceContentScroll {
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+            #workspaceContentScroll::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+            }
         }
     </style>
 </head>
@@ -876,6 +945,10 @@
         <button onclick="contextActionCopyLink()" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#202b36] rounded-xl transition text-left">
             <i data-lucide="link-2" class="w-4 h-4 text-slate-600 dark:text-white"></i>
             <span>Ссылка на сообщение</span>
+        </button>
+        <button onclick="contextActionCopyText()" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#202b36] rounded-xl transition text-left">
+            <i data-lucide="copy" class="w-4 h-4 text-slate-600 dark:text-white"></i>
+            <span>Скопировать</span>
         </button>
         <button onclick="contextActionPin()" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#202b36] rounded-xl transition text-left">
             <!-- Requirement 5: pin icon +1px (17px) and rotated facing left (-scale-x-1) -->
@@ -2065,7 +2138,7 @@
             }
         }
 
-        function copyFallback(text) {
+        function copyFallback(text, successMsg) {
             const textarea = document.createElement("textarea");
             textarea.value = text;
             textarea.style.position = "fixed";
@@ -2074,11 +2147,31 @@
             textarea.select();
             try {
                 document.execCommand("copy");
-                showNotification("Ссылка на сообщение скопирована 📋");
+                showNotification(successMsg || "Ссылка на сообщение скопирована 📋");
             } catch (err) {
-                showNotification("Не удалось скопировать ссылку");
+                showNotification("Не удалось скопировать");
             }
             document.body.removeChild(textarea);
+        }
+
+        function contextActionCopyText() {
+            closePostContextMenu();
+            if (!activeSelectedPostId) return;
+            const postEl = document.getElementById(activeSelectedPostId);
+            if (!postEl) return;
+
+            const textElem = postEl.querySelector('.post-text-content') || postEl;
+            let text = textElem.innerText.trim().replace(/\d{1,2}:\d{2}$/, '').trim();
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification("Текст скопирован 📋");
+                }).catch(() => {
+                    copyFallback(text, "Текст скопирован 📋");
+                });
+            } else {
+                copyFallback(text, "Текст скопирован 📋");
+            }
         }
 
         function contextActionPin() {
@@ -3088,11 +3181,24 @@
                         ? `<img src="${f.customAvatar}" class="w-11 h-11 rounded-full object-cover flex-shrink-0">`
                         : `<div class="w-11 h-11 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center flex-shrink-0"><i data-lucide="folder" class="w-5.5 h-5.5"></i></div>`;
 
-                    item.innerHTML = `
+                    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+                    item.innerHTML = isMobileViewport ? `
                         <div class="flex items-center gap-3 min-w-0 flex-1">
                             ${folderAvatar}
                             <div class="flex-1 min-w-0">
-                                <h4 class="font-bold text-[13px] text-slate-800 dark:text-white truncate">${escapeHtml(f.name)}</h4>
+                                <div class="flex items-center min-w-0 mb-0.5">
+                                    <h4 class="font-bold text-[12px] text-slate-800 dark:text-white truncate">${escapeHtml(f.name)}</h4>
+                                </div>
+                                <div class="flex items-center min-w-0 h-4 overflow-hidden">
+                                    <p class="note-preview-text text-[13px] text-[#707579] dark:text-[#7f91a4] truncate leading-tight">Папка</p>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            ${folderAvatar}
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-[12px] text-slate-800 dark:text-white truncate">${escapeHtml(f.name)}</h4>
                                 <p class="note-preview-text text-[13px] text-[#707579] dark:text-[#7f91a4] truncate leading-tight">Папка</p>
                             </div>
                         </div>
@@ -5576,7 +5682,11 @@
         }
 
         function handleMessageInputKey(e) {
+            const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
             if (e.key === 'Enter' && !e.shiftKey) {
+                if (isMobileViewport) {
+                    return;
+                }
                 e.preventDefault();
                 handlePrimarySubmitAction();
             }
