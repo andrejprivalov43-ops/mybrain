@@ -472,7 +472,28 @@
         }
 
         /* Mobile phone layout: notes list is the home screen, opening a note shows the chat panel full-screen */
+        .mobile-only-context-btn { display: none; }
+
+        @media (min-width: 768px) {
+            #mobileContextBackdrop { display: none !important; }
+        }
+
         @media (max-width: 767px) {
+            .mobile-only-context-btn { display: flex; }
+
+            #mobileContextBackdrop {
+                background: rgba(0,0,0,0.45);
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+            }
+
+            .post-context-active {
+                position: relative;
+                z-index: 160;
+                transform: scale(1.04) translateY(-10px);
+                transition: transform 0.18s ease;
+            }
+
             #leftmostIconBar { display: none !important; }
             #mobileSidebarBackdrop { display: none !important; }
 
@@ -480,7 +501,14 @@
 
             body { background-color: #000000 !important; }
             #sidebarContainer { background-color: #000000 !important; }
-            .dark .tg-chat-bg::before { background-color: #000000 !important; }
+            .dark .tg-chat-bg::before {
+                background-color: #000000 !important;
+                background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('bg-pattern.jpg') !important;
+                background-size: auto, cover !important;
+                background-position: center, center !important;
+                background-repeat: repeat, no-repeat !important;
+                opacity: 1 !important;
+            }
 
             #cornerHoverMenu { display: none !important; }
 
@@ -500,11 +528,11 @@
             #chatHeaderMobileAvatar {
                 display: flex;
                 width: 46px;
-                height: 45px;
+                height: 46px;
                 box-sizing: border-box;
                 border: 1px solid rgba(148,163,184,0.25);
                 position: absolute;
-                right: 12px;
+                right: 17px;
                 top: 50%;
                 transform: translateY(-50%);
             }
@@ -530,7 +558,7 @@
                 border: 1px solid rgba(148,163,184,0.25);
                 box-sizing: border-box;
                 width: 46px;
-                height: 45px;
+                height: 46px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -547,7 +575,7 @@
                 border-radius: 23px;
                 padding: 4px 4px 4px 14px;
                 box-sizing: border-box;
-                min-height: 45px;
+                min-height: 40px;
                 height: auto;
                 max-height: 160px;
             }
@@ -570,7 +598,7 @@
                 color: #fff !important;
                 box-sizing: border-box;
                 width: 46px;
-                height: 45px;
+                height: 46px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -596,8 +624,8 @@
             #chatHeaderBar {
                 background: rgba(0,0,0,0.15) !important;
                 border-bottom: none !important;
-                height: 61px;
-                padding-bottom: 3px;
+                height: 59px;
+                padding-bottom: 1px;
                 justify-content: space-between;
                 position: absolute;
                 top: 0;
@@ -605,11 +633,11 @@
                 right: 0;
             }
             #appShellContainer.note-open #chatHeaderBar {
-                background: rgba(0,0,0,0.25) !important;
+                background: rgba(0,0,0,0.35) !important;
                 box-shadow: 0 6px 16px rgba(0,0,0,0.35);
             }
             #appShellContainer.note-open #fixedInputBar {
-                background: rgba(0,0,0,0.25) !important;
+                background: rgba(0,0,0,0.35) !important;
                 box-shadow: 0 -6px 16px rgba(0,0,0,0.35);
             }
             #appShellContainer.note-open #chatHeaderTitleWrapper,
@@ -618,14 +646,14 @@
             #appShellContainer.note-open #sendMessageBtn,
             #appShellContainer.note-open #mobileInputFieldWrap,
             #appShellContainer.note-open #pinnedPostTopBar {
-                background: rgba(54,54,54,0.65) !important;
+                background: rgba(54,54,54,0.75) !important;
             }
             .dark #appShellContainer.note-open #pinnedPostTopBar {
-                background: rgba(54,54,54,0.65) !important;
+                background: rgba(54,54,54,0.75) !important;
             }
             #mobileMenuBtn {
                 width: 46px;
-                height: 45px;
+                height: 46px;
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
@@ -641,7 +669,7 @@
                 height: 22px;
             }
             #chatHeaderTitleWrapper {
-                height: 45px;
+                height: 43px;
                 box-sizing: border-box;
                 background: rgba(54,54,54,0.55);
                 border: 1px solid rgba(148,163,184,0.25);
@@ -668,9 +696,11 @@
                 width: auto;
                 background: rgba(54,54,54,0.55) !important;
                 position: absolute;
-                top: 59px;
+                top: 55px;
                 left: 0;
                 right: 0;
+                padding-top: 3px;
+                padding-bottom: 4px;
             }
             .dark #pinnedPostTopBar {
                 background: rgba(54,54,54,0.55) !important;
@@ -681,6 +711,12 @@
             }
             #pinnedPostTopBar span:first-of-type {
                 color: #fff !important;
+            }
+
+            #postContextMenu {
+                background: rgba(54,54,54,0.55) !important;
+                border: 1px solid rgba(148,163,184,0.25) !important;
+                border-radius: 24px !important;
             }
 
             #sidebarSearchRow {
@@ -696,8 +732,8 @@
             .dark #sidebarSearchRow {
                 background: rgba(23,33,43,0.22);
             }
-            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(100,100,100,0.2) !important; }
-            .dark #searchInputBox { background-color: rgba(100,100,100,0.2) !important; }
+            #searchInputBox { padding-top: 11.5px; padding-bottom: 11.5px; justify-content: center; border-radius: 9999px; background-color: rgba(120,120,120,0.35) !important; }
+            .dark #searchInputBox { background-color: rgba(120,120,120,0.35) !important; }
             #smartDashboardSearch { flex: 0 1 auto; width: 56px; max-width: 100%; text-align: left !important; padding-right: 0 !important; font-size: 17px !important; font-weight: 649 !important; }
             #smartDashboardSearch::placeholder { font-weight: 300 !important; color: #999999 !important; }
             #mobileSearchIcon { margin-right: 2px !important; width: 17px !important; height: 17px !important; transform: translateX(-2px) translateY(-2px) !important; }
@@ -749,7 +785,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                padding-top: 61px;
+                padding-top: 59px;
                 padding-bottom: 150px;
             }
             #appShellContainer.note-open #noteBottomSpacer {
@@ -811,6 +847,7 @@
             .post-media-only { max-width: 118.77% !important; }
 
             .post-bubble-framed { font-size: 16px !important; }
+            .post-text-content span[style*="font-size:1.1em"] { font-size: 1.35em !important; }
             .post-text-content, .post-text-content *:not(b):not(strong):not(.font-bold):not([style*="font-weight"]):not(code) {
                 font-weight: 387 !important;
             }
@@ -954,6 +991,9 @@
             <i data-lucide="remove-formatting" class="w-3.5 h-3.5"></i>
         </button>
     </div>
+
+    <!-- Mobile long-press context menu backdrop blur -->
+    <div id="mobileContextBackdrop" class="hidden fixed inset-0 z-[150]"></div>
 
     <!-- Reactions bar: separate rounded floating bar, positioned above the context menu (Requirement 11) -->
     <div id="postReactionBar" class="fixed z-[181] hidden bg-white dark:bg-[#17212b] border border-tg-lightBorder dark:border-[#202b36] rounded-full shadow-2xl p-1.5 animate-pop-up select-none">
@@ -1295,10 +1335,10 @@
                 
                 <div id="editingPostBanner" class="hidden flex items-center justify-between px-3.5 py-2 bg-sky-500/10 border-b border-sky-500/20 text-xs">
                     <div class="flex items-center gap-2 min-w-0 flex-1">
-                        <i data-lucide="pencil" class="w-4 h-4 text-[#5eb5f7] flex-shrink-0"></i>
-                        <div class="flex flex-col min-w-0 flex-1">
+                        <i data-lucide="pencil" class="hidden md:block w-4 h-4 text-[#5eb5f7] flex-shrink-0"></i>
+                        <div class="flex flex-col min-w-0 flex-1 border-l-2 border-[#5eb5f7] pl-2 md:border-0 md:pl-0">
                             <span class="text-[#5eb5f7] font-bold"><span class="md:hidden">Редактирование</span><span class="hidden md:inline">Редактирование поста</span></span>
-                            <span id="editingPostPreviewText" class="md:hidden text-slate-500 dark:text-slate-300 font-normal text-[11px] truncate"></span>
+                            <span id="editingPostPreviewText" class="md:hidden text-slate-500 dark:text-slate-300 font-normal text-[14px] truncate"></span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -1593,6 +1633,9 @@
         let savedColorSelectionRange = null;
 
         let activeSelectedPostId = null;
+        let contextActivePostElem = null;
+        let contextActivePostOriginalParent = null;
+        let contextActivePostPlaceholder = null;
         let currentReplyingToPostId = null;
         
         let currentPinnedIndexMap = {}; 
@@ -1857,6 +1900,23 @@
             if (menu) menu.classList.add('hidden');
             if (reactionBar) reactionBar.classList.add('hidden');
             closeReactionEmojiPicker();
+            const backdrop = document.getElementById('mobileContextBackdrop');
+            if (backdrop) backdrop.classList.add('hidden');
+            document.querySelectorAll('.post-context-active').forEach(el => el.classList.remove('post-context-active'));
+
+            if (contextActivePostElem && contextActivePostOriginalParent) {
+                contextActivePostElem.style.position = '';
+                contextActivePostElem.style.left = '';
+                contextActivePostElem.style.top = '';
+                contextActivePostElem.style.width = '';
+                contextActivePostElem.style.margin = '';
+                contextActivePostElem.style.zIndex = '';
+                contextActivePostOriginalParent.insertBefore(contextActivePostElem, contextActivePostPlaceholder);
+                if (contextActivePostPlaceholder) contextActivePostPlaceholder.remove();
+                contextActivePostElem = null;
+                contextActivePostOriginalParent = null;
+                contextActivePostPlaceholder = null;
+            }
         }
 
         // Requirement 6: track reaction usage so the 7 most-used reactions show in the context menu
@@ -2322,7 +2382,61 @@
                 longPressStartY = touch.clientY;
                 longPressTimer = setTimeout(() => {
                     longPressTimer = null;
+                    const backdrop = document.getElementById('mobileContextBackdrop');
+                    if (backdrop) backdrop.classList.remove('hidden');
+
+                    const rect = postElem.getBoundingClientRect();
+                    const placeholder = document.createElement('div');
+                    placeholder.style.width = rect.width + 'px';
+                    placeholder.style.height = rect.height + 'px';
+                    placeholder.style.flexShrink = '0';
+                    postElem.parentNode.insertBefore(placeholder, postElem);
+                    contextActivePostPlaceholder = placeholder;
+                    contextActivePostOriginalParent = postElem.parentNode;
+                    contextActivePostElem = postElem;
+
+                    postElem.style.position = 'fixed';
+                    postElem.style.left = rect.left + 'px';
+                    postElem.style.top = rect.top + 'px';
+                    postElem.style.width = rect.width + 'px';
+                    postElem.style.margin = '0';
+                    postElem.style.zIndex = '200';
+                    document.body.appendChild(postElem);
+
+                    postElem.classList.add('post-context-active');
                     openPostContextMenu({ clientX: longPressStartX, clientY: longPressStartY, preventDefault: () => {}, stopPropagation: () => {} }, postElem.id);
+
+                    const menu = document.getElementById('postContextMenu');
+                    const reactionBar = document.getElementById('postReactionBar');
+                    if (menu) {
+                        const gapPostToBar = 8;
+                        const gapBarToMenu = 8;
+                        const bottomMargin = 40;
+                        const rightMargin = 25;
+                        const topMargin = 10;
+                        const barHeight = reactionBar ? reactionBar.getBoundingClientRect().height : 0;
+                        const menuHeight = menu.getBoundingClientRect().height;
+                        const menuWidth = menu.getBoundingClientRect().width;
+
+                        const menuTop = window.innerHeight - menuHeight - bottomMargin;
+                        const menuLeft = window.innerWidth - menuWidth - rightMargin;
+                        const barTop = menuTop - gapBarToMenu - barHeight;
+
+                        let liftedTop = Math.min(rect.top, barTop - gapPostToBar - rect.height);
+                        liftedTop = Math.max(liftedTop, topMargin);
+                        postElem.style.top = `${liftedTop}px`;
+
+                        menu.style.left = `${menuLeft}px`;
+                        menu.style.top = `${menuTop}px`;
+
+                        if (reactionBar) {
+                            const barWidth = reactionBar.getBoundingClientRect().width;
+                            let barLeft = window.innerWidth - barWidth - rightMargin;
+                            if (barLeft < 10) barLeft = 10;
+                            reactionBar.style.left = `${barLeft}px`;
+                            reactionBar.style.top = `${barTop}px`;
+                        }
+                    }
                 }, 500);
             }, { passive: true });
 
@@ -3067,7 +3181,7 @@
                     const tab = document.createElement('button');
                     tab.onclick = () => selectFolder(f.id);
                     tab.className = isSelected
-                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#666666]/30 text-white transition'
+                        ? 'px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-[#777777]/40 text-white transition'
                         : 'px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 bg-transparent text-white transition';
                     tab.innerText = f.name;
                     mobileTabsContainer.appendChild(tab);
@@ -4812,8 +4926,13 @@
         function insertEmojiIntoInput(emoji) {
             const inputField = document.getElementById('chatMessageInputField');
             if (!inputField) return;
-            inputField.focus();
-            document.execCommand('insertHTML', false, `<span style="font-size:1.1em;">${emoji}</span>`);
+            const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+            if (isMobileViewport) {
+                inputField.insertAdjacentHTML('beforeend', `<span style="font-size:1.1em;">${emoji}</span>`);
+            } else {
+                inputField.focus();
+                document.execCommand('insertHTML', false, `<span style="font-size:1.1em;">${emoji}</span>`);
+            }
             handleInputContentChange();
 
             recentEmojiList = [emoji, ...recentEmojiList.filter(e => e !== emoji)].slice(0, 24);
@@ -4837,9 +4956,14 @@
         function insertCustomEmojiIntoInput(url, blobId) {
             const inputField = document.getElementById('chatMessageInputField');
             if (!inputField) return;
-            inputField.focus();
             const blobAttr = blobId ? ` data-blob-id="${blobId}"` : '';
-            document.execCommand('insertHTML', false, `<img src="${url}"${blobAttr} style="height:1.485em;width:auto;vertical-align:middle;display:inline-block;">`);
+            const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+            if (isMobileViewport) {
+                inputField.insertAdjacentHTML('beforeend', `<img src="${url}"${blobAttr} style="height:20px;width:auto;vertical-align:middle;display:inline-block;">`);
+            } else {
+                inputField.focus();
+                document.execCommand('insertHTML', false, `<img src="${url}"${blobAttr} style="height:1.485em;width:auto;vertical-align:middle;display:inline-block;">`);
+            }
             handleInputContentChange();
         }
 
