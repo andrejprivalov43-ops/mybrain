@@ -534,7 +534,7 @@
                 position: absolute;
                 right: 17px;
                 top: 50%;
-                transform: translateY(-50%);
+                transform: translateY(calc(-50% - 2px));
             }
 
             #fixedInputBar {
@@ -633,7 +633,7 @@
                 right: 0;
             }
             #appShellContainer.note-open #chatHeaderBar {
-                background: rgba(0,0,0,0.35) !important;
+                background: rgba(0,0,0,0.45) !important;
                 box-shadow: 0 6px 16px rgba(0,0,0,0.35);
             }
             #appShellContainer.note-open #fixedInputBar {
@@ -641,15 +641,23 @@
                 box-shadow: 0 -6px 16px rgba(0,0,0,0.35);
             }
             #appShellContainer.note-open #chatHeaderTitleWrapper,
-            #appShellContainer.note-open #mobileMenuBtn,
+            #appShellContainer.note-open #mobileMenuBtn {
+                background: rgba(40,40,40,0.8) !important;
+            }
             #appShellContainer.note-open #attachmentBtnWrapper > button,
             #appShellContainer.note-open #sendMessageBtn,
             #appShellContainer.note-open #mobileInputFieldWrap,
             #appShellContainer.note-open #pinnedPostTopBar {
-                background: rgba(54,54,54,0.75) !important;
+                background: rgba(40,40,40,0.8) !important;
             }
             .dark #appShellContainer.note-open #pinnedPostTopBar {
-                background: rgba(54,54,54,0.75) !important;
+                background: rgba(40,40,40,0.8) !important;
+            }
+            #appShellContainer.note-open #chatHeaderMobileAvatar {
+                background-color: rgba(40,40,40,0.8) !important;
+            }
+            #editingPostBanner {
+                display: none !important;
             }
             #mobileMenuBtn {
                 width: 46px;
@@ -663,6 +671,7 @@
                 border: 1px solid rgba(148,163,184,0.25);
                 color: #fff;
                 margin-left: 0;
+                transform: translateY(-2px);
             }
             #mobileMenuBtn i {
                 width: 22px;
@@ -680,7 +689,7 @@
                 position: absolute;
                 left: 50%;
                 top: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, calc(-50% - 2px));
                 margin: 0;
             }
             #activeChatTitleInput {
@@ -1338,7 +1347,6 @@
                         <i data-lucide="pencil" class="hidden md:block w-4 h-4 text-[#5eb5f7] flex-shrink-0"></i>
                         <div class="flex flex-col min-w-0 flex-1 border-l-2 border-[#5eb5f7] pl-2 md:border-0 md:pl-0">
                             <span class="text-[#5eb5f7] font-bold"><span class="md:hidden">Редактирование</span><span class="hidden md:inline">Редактирование поста</span></span>
-                            <span id="editingPostPreviewText" class="md:hidden text-slate-500 dark:text-slate-300 font-normal text-[14px] truncate"></span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -1383,12 +1391,23 @@
                         <input type="file" id="inlineImgInput" accept="image/*" multiple class="hidden" onchange="handleImageSelection(event)">
                     </div>
 
-                    <div id="mobileInputFieldWrap" class="flex-1 flex items-center min-w-0">
-                        <div id="chatMessageInputField" contenteditable="true" oninput="handleInputContentChange()" onkeydown="handleMessageInputKey(event)" class="flex-1 -ml-[5px] min-h-[20px] max-h-36 overflow-y-auto bg-transparent border-0 text-slate-800 dark:text-white outline-none text-[14px] py-0.5 pl-0 pr-2"></div>
+                    <div id="mobileInputFieldWrap" class="flex-1 flex flex-col min-w-0">
+                        <div id="editingPostInlineHeader" class="hidden md:hidden flex flex-col min-w-0 border-l-2 border-[#5eb5f7] pl-2 mt-1 mb-0.5">
+                            <div class="flex items-center justify-between gap-2 -translate-y-[3px]">
+                                <span class="text-[#5eb5f7] font-bold text-xs">Редактирование</span>
+                                <button onclick="cancelPostEdit()" title="Отмена" class="p-1 -mr-1 -translate-x-[5px] text-slate-400 hover:text-white transition flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <span id="editingPostPreviewText" class="block min-w-0 pointer-events-none select-none text-slate-500 dark:text-slate-300 font-normal text-[14px] truncate -mt-[7px]"></span>
+                        </div>
+                        <div class="flex-1 flex items-center min-w-0 w-full">
+                            <div id="chatMessageInputField" contenteditable="true" oninput="handleInputContentChange()" onkeydown="handleMessageInputKey(event)" class="flex-1 -ml-[5px] min-h-[20px] max-h-36 overflow-y-auto bg-transparent border-0 text-slate-800 dark:text-white outline-none text-[14px] py-0.5 pl-0 pr-2"></div>
 
-                        <button id="emojiPickerBtn" onclick="toggleEmojiPickerPanel()" title="Эмодзи" class="p-2 text-slate-400 dark:text-tg-darkTextMuted hover:text-white rounded-full transition duration-200 transform hover:scale-110 flex-shrink-0">
-                            <i data-lucide="smile" class="w-[23px] h-[23px]"></i>
-                        </button>
+                            <button id="emojiPickerBtn" onclick="toggleEmojiPickerPanel()" title="Эмодзи" class="p-2 text-slate-400 dark:text-tg-darkTextMuted hover:text-white rounded-full transition duration-200 transform hover:scale-110 flex-shrink-0">
+                                <i data-lucide="smile" class="w-[23px] h-[23px]"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <button id="sendMessageBtn" onclick="handlePrimarySubmitAction()" title="Отправить" class="md:-ml-3 p-1.5 text-[rgb(92,108,124)] hover:text-white transition duration-200 transform hover:scale-110 active:scale-90 flex-shrink-0">
@@ -5359,6 +5378,9 @@
             const banner = document.getElementById('editingPostBanner');
             if (banner) banner.classList.remove('hidden');
 
+            const inlineHeader = document.getElementById('editingPostInlineHeader');
+            if (inlineHeader) inlineHeader.classList.remove('hidden');
+
             const previewSpan = document.getElementById('editingPostPreviewText');
             if (previewSpan) {
                 let previewText = textContent ? textContent.innerText.trim() : '';
@@ -5371,6 +5393,10 @@
             currentEditingBubble = null;
             const banner = document.getElementById('editingPostBanner');
             if (banner) banner.classList.add('hidden');
+            const inlineHeader = document.getElementById('editingPostInlineHeader');
+            if (inlineHeader) inlineHeader.classList.add('hidden');
+            const previewSpan = document.getElementById('editingPostPreviewText');
+            if (previewSpan) previewSpan.innerText = '';
             const inputField = document.getElementById('chatMessageInputField');
             if (inputField) inputField.innerHTML = '';
             pendingImageAttachments = [];
