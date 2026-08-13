@@ -1003,7 +1003,7 @@
         }
         #customWsScrollTrack {
             position: fixed;
-            width: 6px;
+            width: 8px;
             border-radius: 3px;
             background: transparent;
             transition: background 0.15s ease;
@@ -1013,7 +1013,7 @@
         #customWsScrollThumb {
             position: absolute;
             left: 0;
-            width: 6px;
+            width: 8px;
             border-radius: 3px;
             background: transparent;
             transition: background 0.15s ease;
@@ -1672,6 +1672,54 @@
                 }
             }
             return result;
+        }
+
+        function linkifyHtml(html) {
+            if (!html) return html;
+            const urlPattern = /((https?:\/\/|www\.)[^\s<>"']+)/gi;
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            function walk(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.nodeValue;
+                    if (!urlPattern.test(text)) return;
+                    urlPattern.lastIndex = 0;
+                    const frag = document.createDocumentFragment();
+                    let lastIndex = 0;
+                    let match;
+                    while ((match = urlPattern.exec(text)) !== null) {
+                        if (match.index > lastIndex) {
+                            frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                        }
+                        let rawUrl = match[0];
+                        let trailing = '';
+                        while (rawUrl.length && /[.,!?;:)\]]$/.test(rawUrl)) {
+                            trailing = rawUrl.slice(-1) + trailing;
+                            rawUrl = rawUrl.slice(0, -1);
+                        }
+                        const href = /^https?:\/\//i.test(rawUrl) ? rawUrl : 'https://' + rawUrl;
+                        const a = document.createElement('a');
+                        a.href = href;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.className = 'text-[#298be3] dark:text-[#298be3] underline';
+                        a.textContent = rawUrl;
+                        frag.appendChild(a);
+                        if (trailing) frag.appendChild(document.createTextNode(trailing));
+                        lastIndex = urlPattern.lastIndex;
+                    }
+                    if (lastIndex < text.length) {
+                        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'A') {
+                    Array.from(node.childNodes).forEach(walk);
+                }
+            }
+
+            Array.from(temp.childNodes).forEach(walk);
+            return temp.innerHTML;
         }
 
         let justLongPressed = false;
@@ -3400,7 +3448,7 @@
                     <div class="grid grid-cols-2 gap-2 text-[11px]">
                         <div>
                             <span class="block text-slate-400 font-semibold mb-0.5">Родительская папка:</span>
-                            <select ${isSystem ? 'disabled' : ''} onchange="updateFolderParent('${f.id}', this.value)" class="w-full p-1 bg-white dark:bg-tg-darkSidebar border border-tg-lightBorder dark:border-tg-darkBorder rounded-lg outline-none text-slate-800 dark:text-white">
+                            <select onchange="updateFolderParent('${f.id}', this.value)" class="w-full p-1 bg-white dark:bg-tg-darkSidebar border border-tg-lightBorder dark:border-tg-darkBorder rounded-lg outline-none text-slate-800 dark:text-white">
                                 ${parentOptions}
                             </select>
                         </div>
@@ -5618,7 +5666,7 @@
             const inputField = document.getElementById('chatMessageInputField');
             if (!inputField || !currentEditingNoteId) return;
 
-            const rawHtml = stripTrailingEmptyLines(inputField.innerHTML.trim());
+            const rawHtml = linkifyHtml(stripTrailingEmptyLines(inputField.innerHTML.trim()));
             const rawText = inputField.innerText.trim();
 
             if (!rawText && pendingImageAttachments.length === 0 && !rawHtml) return;
@@ -5801,7 +5849,7 @@
 
             document.getElementById('postEmojiSuggestPopup')?.classList.add('hidden');
 
-            const rawHtml = stripTrailingEmptyLines(inputField.innerHTML.trim());
+            const rawHtml = linkifyHtml(stripTrailingEmptyLines(inputField.innerHTML.trim()));
             const rawText = inputField.innerText.trim();
 
             const existingReplyHtml = currentEditingBubble.querySelector('.reply-preview-box-in-post')?.outerHTML || '';
@@ -6327,6 +6375,8 @@
                 }
             });
             container.addEventListener('mouseleave', scheduleHide);
+            track.addEventListener('mouseenter', showScroll);
+            track.addEventListener('mouseleave', scheduleHide);
             window.addEventListener('resize', updateThumb);
             window.addEventListener('scroll', positionTrack, true);
             if (window.ResizeObserver) {
