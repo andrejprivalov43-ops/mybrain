@@ -100,6 +100,29 @@
             border-radius: 10px;
         }
         
+        @media (min-width: 768px) {
+            #leftmostFoldersContainer::-webkit-scrollbar {
+                width: 6px !important;
+            }
+            #leftmostFoldersContainer::-webkit-scrollbar-track {
+                background: #333333 !important;
+                border-radius: 10px !important;
+            }
+            #leftmostFoldersContainer::-webkit-scrollbar-thumb {
+                background: #5A5A5A !important;
+                border-radius: 10px !important;
+            }
+            #leftmostFoldersContainer::-webkit-scrollbar-button {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+            #leftmostFoldersContainer {
+                scrollbar-width: thin;
+                scrollbar-color: #5A5A5A #333333;
+            }
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
@@ -461,6 +484,25 @@
             background: #ffffff;
             border: 1px solid #dfe5ec;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .recent-colors-row {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: 2px;
+        }
+        .recent-colors-row:empty {
+            display: none;
+        }
+        .recent-color-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
         }
 
         .reply-preview-box-in-post {
@@ -949,6 +991,39 @@
                 z-index: 55;
             }
         }
+        /* Native scrollbar fully disabled for workspaceContentScroll — replaced with a custom-drawn scrollbar (see #customWsScrollTrack) to guarantee no native arrow buttons in any browser. */
+        #workspaceContentScroll {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+        #workspaceContentScroll::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        #customWsScrollTrack {
+            position: fixed;
+            width: 6px;
+            border-radius: 3px;
+            background: transparent;
+            transition: background 0.15s ease;
+            z-index: 60;
+            display: none;
+        }
+        #customWsScrollThumb {
+            position: absolute;
+            left: 0;
+            width: 6px;
+            border-radius: 3px;
+            background: transparent;
+            transition: background 0.15s ease;
+        }
+        #customWsScrollTrack.ws-scroll-visible {
+            background: #333333;
+        }
+        #customWsScrollTrack.ws-scroll-visible #customWsScrollThumb {
+            background: #5A5A5A;
+        }
         @media (min-width: 768px) {
             #chatHeaderMobileAvatar { display: none !important; }
             .time-badge { position: relative; top: 2px; font-size: 11px; }
@@ -960,14 +1035,18 @@
                 color: #c2c6cc !important;
                 font-weight: 360 !important;
             }
-            #workspaceContentScroll {
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-            #workspaceContentScroll::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-            }
+
+            /* Requirement: expand max post width and max in-post photo height by 10% on desktop */
+            .post-bubble-framed:not(.post-has-media) { max-width: calc((85% - 22ch) * 1.1) !important; }
+            .post-media-grid.grid-cols-1, .post-media-grid.single-media { max-width: 400.4px !important; }
+            .post-media-grid.grid-cols-2 { max-width: 400.4px !important; }
+            .post-media-grid.grid-cols-3 { max-width: 457.6px !important; }
+            .post-media-grid.single-media img { max-height: 400.4px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-3) { max-width: 457.6px !important; }
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-1),
+            .post-bubble-framed.post-has-media:has(.post-media-grid.grid-cols-2) { max-width: 400.4px !important; }
+            .post-bubble-framed.post-has-media { max-width: 93.5% !important; }
+            .post-media-only { max-width: 93.5% !important; }
         }
     </style>
 </head>
@@ -990,15 +1069,23 @@
         <div class="relative group flex items-center">
             <label title="Цвет текста" class="p-1.5 hover:bg-slate-700/50 dark:hover:bg-tg-darkActive rounded-md cursor-pointer flex items-center justify-center text-xs font-bold text-sky-400">
                 A
-                <input type="color" onmousedown="saveSelectionBeforeColorPicker()" onfocus="saveSelectionBeforeColorPicker()" onchange="applyFormat('foreColor', this.value)" class="absolute opacity-0 w-full h-full cursor-pointer inset-0">
+                <input type="color" id="selectionForeColorInput" onmousedown="saveSelectionBeforeColorPicker()" onfocus="saveSelectionBeforeColorPicker()" onchange="applyFormat('foreColor', this.value); addRecentColor(this.value);" class="absolute opacity-0 w-full h-full cursor-pointer inset-0">
             </label>
+            <button type="button" onclick="applySavedColorFormat('selectionForeColorInput', 'foreColor')" title="Перекрасить в этот цвет" class="p-1.5 hover:bg-slate-700/50 dark:hover:bg-tg-darkActive rounded-md text-slate-200 dark:text-white w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check" class="w-3 h-3"></i>
+            </button>
+            <div class="recent-colors-row" data-for="selectionForeColorInput"></div>
         </div>
 
         <div class="relative group flex items-center">
             <label title="Цвет маркера" class="p-1.5 hover:bg-slate-700/50 dark:hover:bg-tg-darkActive rounded-md cursor-pointer flex items-center justify-center text-xs font-bold text-amber-300">
                 <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
-                <input type="color" value="#fef08a" onmousedown="saveSelectionBeforeColorPicker()" onfocus="saveSelectionBeforeColorPicker()" onchange="applyFormat('hiliteColor', this.value)" class="absolute opacity-0 w-full h-full cursor-pointer inset-0">
+                <input type="color" id="selectionHiliteColorInput" value="#fef08a" onmousedown="saveSelectionBeforeColorPicker()" onfocus="saveSelectionBeforeColorPicker()" onchange="applyFormat('hiliteColor', this.value); addRecentColor(this.value);" class="absolute opacity-0 w-full h-full cursor-pointer inset-0">
             </label>
+            <button type="button" onclick="applySavedColorFormat('selectionHiliteColorInput', 'hiliteColor')" title="Перекрасить в этот цвет" class="p-1.5 hover:bg-slate-700/50 dark:hover:bg-tg-darkActive rounded-md text-slate-200 dark:text-white w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check" class="w-3 h-3"></i>
+            </button>
+            <div class="recent-colors-row" data-for="selectionHiliteColorInput"></div>
         </div>
 
         <div class="w-px h-4 bg-slate-600 dark:bg-slate-700 mx-1"></div>
@@ -1087,6 +1174,14 @@
                 </div>
 
                 <div class="space-y-2">
+                    <h4 class="font-bold text-[11px] text-slate-400 uppercase tracking-wider">Профили</h4>
+                    <div id="profileSwitcherList" class="space-y-1.5"></div>
+                    <button onclick="promptCreateNewProfile()" class="w-full py-2.5 px-3 bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder hover:opacity-90 rounded-xl flex items-center justify-center gap-2 text-slate-700 dark:text-white font-semibold">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Создать пустой профиль
+                    </button>
+                </div>
+
+                <div class="space-y-2">
                     <h4 class="font-bold text-[11px] text-slate-400 uppercase tracking-wider">Локальное Хранилище</h4>
                     <div class="bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder p-3 rounded-xl flex items-center justify-between font-semibold text-slate-600 dark:text-slate-300">
                         <div class="flex items-center gap-2">
@@ -1116,7 +1211,7 @@
                             <i data-lucide="download" class="w-4 h-4"></i> Экспортировать JSON
                         </button>
                         <div class="p-3 bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder rounded-xl space-y-1.5">
-                            <span class="block text-[11px] text-slate-400 uppercase tracking-wider">Импортировать базу</span>
+                            <span class="block text-[11px] text-slate-400 uppercase tracking-wider">Импортировать как новый профиль</span>
                             <input type="file" accept=".json" onchange="importDataFromJSON(event)" class="text-[11px] text-slate-500 w-full outline-none">
                         </div>
                     </div>
@@ -1159,6 +1254,18 @@
     </div>
     <div id="settingsDrawerBackdrop" onclick="toggleSettingsDrawer()" class="fixed inset-0 bg-black/40 z-[115] hidden transition-opacity duration-300"></div>
 
+    <div id="profileModalBackdrop" class="fixed inset-0 bg-black/40 z-[210] hidden items-center justify-center p-4" onclick="closeProfileModal(event)">
+        <div id="profileModalBox" class="bg-white dark:bg-tg-darkSidebar rounded-2xl shadow-2xl w-full max-w-xs p-5" onclick="event.stopPropagation()">
+            <h3 id="profileModalTitle" class="font-bold text-slate-800 dark:text-white text-base mb-2"></h3>
+            <p id="profileModalMessage" class="text-sm text-slate-500 dark:text-slate-300 mb-3 hidden"></p>
+            <input id="profileModalInput" type="text" class="w-full px-3 py-2 rounded-xl border border-tg-lightBorder dark:border-tg-darkBorder bg-slate-50 dark:bg-tg-darkBg text-slate-800 dark:text-white mb-4 hidden" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmProfileModal();}">
+            <div class="flex items-center justify-end gap-2">
+                <button type="button" onclick="closeProfileModal()" class="py-2 px-3 rounded-xl text-slate-600 dark:text-slate-300 font-semibold">Отмена</button>
+                <button type="button" onclick="confirmProfileModal()" class="py-2 px-3 rounded-xl bg-tg-lightActive dark:bg-tg-darkBlue text-white font-semibold">ОК</button>
+            </div>
+        </div>
+    </div>
+
     <!-- App Shell Frame Container -->
     <div id="appShellContainer" class="flex h-screen w-full overflow-hidden z-10 relative">
         <div id="mobileSidebarBackdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden transition-opacity duration-300"></div>
@@ -1175,7 +1282,7 @@
                 </button>
                 
                 <!-- Dynamic folder columns -->
-                <div id="leftmostFoldersContainer" class="flex flex-col items-center gap-0 w-full overflow-y-auto no-scrollbar max-h-[82vh] px-1 -mt-2">
+                <div id="leftmostFoldersContainer" class="flex flex-col items-center gap-0 w-full overflow-y-auto max-h-[82vh] px-1 -mt-2">
                     <!-- Main folders rendered here -->
                 </div>
             </div>
@@ -1274,8 +1381,9 @@
                             <label class="block text-[11px] text-slate-400 uppercase tracking-wider">Тег заметки</label>
                             <div class="flex items-center gap-2">
                                 <input type="text" id="writerNoteTagInput" oninput="handleNoteTagChange(this.value)" placeholder="Название тега" class="flex-1 px-2.5 py-1.5 bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder rounded-lg outline-none text-xs text-slate-800 dark:text-white">
-                                <input type="color" id="writerNoteTagColorInput" onchange="handleNoteTagColorChange(this.value)" value="#4f46e5" class="w-8 h-8 rounded-lg border border-tg-lightBorder dark:border-tg-darkBorder bg-transparent cursor-pointer p-0.5">
+                                <input type="color" id="writerNoteTagColorInput" onchange="handleNoteTagColorChange(this.value); addRecentColor(this.value);" value="#4f46e5" class="w-8 h-8 rounded-lg border border-tg-lightBorder dark:border-tg-darkBorder bg-transparent cursor-pointer p-0.5">
                             </div>
+                            <div class="recent-colors-row" data-for="writerNoteTagColorInput"></div>
                         </div>
 
                         <div class="border-t border-slate-100 dark:border-slate-800 pt-3">
@@ -1329,7 +1437,8 @@
                             <button onclick="setDrawingTool('brush')" id="toolBrushBtn" class="p-1.5 text-slate-700 dark:text-white rounded-lg flex items-center justify-center"><i data-lucide="brush" class="w-4 h-4"></i></button>
                             <button onclick="setDrawingTool('eraser')" id="toolEraserBtn" class="p-1.5 text-slate-700 dark:text-white rounded-lg flex items-center justify-center"><i data-lucide="eraser" class="w-4 h-4"></i></button>
                             <button onclick="undoLastDrawing()" class="p-1.5 text-slate-700 dark:text-white hover:bg-slate-200 dark:hover:bg-tg-darkButtonHover rounded-lg flex items-center justify-center"><i data-lucide="undo-2" class="w-4 h-4"></i></button>
-                            <input type="color" id="brushColor" value="#3b82f6" class="w-5 h-5 cursor-pointer border-0 p-0 rounded bg-transparent">
+                            <input type="color" id="brushColor" value="#3b82f6" onchange="addRecentColor(this.value)" class="w-5 h-5 cursor-pointer border-0 p-0 rounded bg-transparent">
+                            <div class="recent-colors-row" data-for="brushColor"></div>
                             <select id="brushSize" class="text-xs bg-white dark:bg-tg-darkSidebar border border-tg-lightBorder dark:border-tg-darkBorder px-1.5 py-0.5 rounded-lg outline-none text-slate-800 dark:text-white">
                                 <option value="2">2px</option>
                                 <option value="4" selected>4px</option>
@@ -1590,6 +1699,47 @@
             return (prefix ? prefix + '-' : '') + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
         }
 
+        const RECENT_COLORS_STORAGE_KEY = 'brain_recentColors';
+        const RECENT_COLORS_MAX = 5;
+
+        function getRecentColors() {
+            try {
+                const raw = localStorage.getItem(RECENT_COLORS_STORAGE_KEY);
+                const arr = raw ? JSON.parse(raw) : [];
+                return Array.isArray(arr) ? arr : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function addRecentColor(color) {
+            if (!color) return;
+            let colors = getRecentColors().filter(c => c.toLowerCase() !== color.toLowerCase());
+            colors.unshift(color);
+            colors = colors.slice(0, RECENT_COLORS_MAX);
+            try {
+                localStorage.setItem(RECENT_COLORS_STORAGE_KEY, JSON.stringify(colors));
+            } catch (e) {}
+            renderRecentColorSwatches();
+        }
+
+        function renderRecentColorSwatches() {
+            const colors = getRecentColors();
+            document.querySelectorAll('.recent-colors-row').forEach(row => {
+                const targetInputId = row.getAttribute('data-for');
+                row.innerHTML = colors.map(c =>
+                    `<button type="button" class="recent-color-swatch" title="${escapeHtml(c)}" style="background:${escapeHtml(c)}" onclick="applyRecentColor('${targetInputId}', '${c}')"></button>`
+                ).join('');
+            });
+        }
+
+        function applyRecentColor(inputId, color) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.value = color;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
         function initIndexedDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -1639,8 +1789,27 @@
             });
         }
 
+        function dbDelete(storeName, key) {
+            return new Promise((resolve, reject) => {
+                if (!dbInstance) return reject("Database not initialized");
+                const transaction = dbInstance.transaction([storeName], "readwrite");
+                const store = transaction.objectStore(storeName);
+                const request = store.delete(key);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
         let notes = [];
         let folders = [];
+
+        // Multiple site "profiles" support: several independent loaded databases (e.g. your JSON and someone else's) that can be switched between.
+        let profilesList = [];
+        let activeProfileId = 'default';
+
+        function profileStateKey(field) {
+            return activeProfileId === 'default' ? field : ('profile_' + activeProfileId + '_' + field);
+        }
 
         let currentEditingNoteId = null;
         let activeFolderId = 'fol-all'; 
@@ -2544,12 +2713,14 @@
         }
 
         function applyFormat(command, value = null) {
-            if (command === 'hiliteColor') {
+            if (command === 'hiliteColor' || command === 'foreColor') {
                 if (savedColorSelectionRange) {
                     const sel = window.getSelection();
                     sel.removeAllRanges();
                     sel.addRange(savedColorSelectionRange);
                 }
+            }
+            if (command === 'hiliteColor') {
                 try { 
                     document.execCommand('hiliteColor', false, value); 
                 } catch (e) { 
@@ -2560,6 +2731,13 @@
             }
             window.getSelection()?.removeAllRanges();
             document.getElementById('selectionFormatToolbar')?.classList.add('hidden');
+        }
+
+        function applySavedColorFormat(inputId, command) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            applyFormat(command, input.value);
+            addRecentColor(input.value);
         }
 
         function applyMonospaceFormat() {
@@ -2813,6 +2991,8 @@
 
             selectFolder(activeFolderId);
             checkUrlMessageDeepLink();
+            renderRecentColorSwatches();
+            renderProfileSwitcher();
         };
 
         async function restoreBlobUrlsForState() {
@@ -2887,21 +3067,37 @@
 
         async function loadDatabase() {
             try {
-                const savedNotes = await dbGet("state", "notes");
-                const savedFolders = await dbGet("state", "folders");
-                const savedFolderId = await dbGet("state", "activeFolderId");
-                const savedPacks = await dbGet("state", "customEmojiPacks");
+                const savedProfilesList = await dbGet("state", "profilesList");
+                profilesList = Array.isArray(savedProfilesList) && savedProfilesList.length
+                    ? savedProfilesList
+                    : [{ id: 'default', name: 'Мой Second Brain' }];
 
-                notes = savedNotes && savedNotes.length ? savedNotes : defaultNotes;
-                folders = savedFolders && savedFolders.length ? savedFolders : defaultFolders;
-                if (savedFolderId) activeFolderId = savedFolderId;
-                customEmojiPacks = savedPacks && savedPacks.length ? savedPacks : [];
+                const savedActiveProfileId = await dbGet("state", "activeProfileId");
+                activeProfileId = (savedActiveProfileId && profilesList.some(p => p.id === savedActiveProfileId))
+                    ? savedActiveProfileId
+                    : 'default';
 
-                await restoreBlobUrlsForState();
+                await loadActiveProfileData();
             } catch (err) {
+                profilesList = [{ id: 'default', name: 'Мой Second Brain' }];
+                activeProfileId = 'default';
                 notes = defaultNotes;
                 folders = defaultFolders;
             }
+        }
+
+        async function loadActiveProfileData() {
+            const savedNotes = await dbGet("state", profileStateKey("notes"));
+            const savedFolders = await dbGet("state", profileStateKey("folders"));
+            const savedFolderId = await dbGet("state", profileStateKey("activeFolderId"));
+            const savedPacks = await dbGet("state", profileStateKey("customEmojiPacks"));
+
+            notes = savedNotes && savedNotes.length ? savedNotes : (activeProfileId === 'default' ? defaultNotes : []);
+            folders = savedFolders && savedFolders.length ? savedFolders : (activeProfileId === 'default' ? defaultFolders : defaultFolders.filter(f => f.system));
+            activeFolderId = savedFolderId || 'fol-all';
+            customEmojiPacks = savedPacks && savedPacks.length ? savedPacks : [];
+
+            await restoreBlobUrlsForState();
         }
 
         async function saveDatabase() {
@@ -2931,13 +3127,193 @@
                     })
                 }));
 
-                await dbSet("state", "notes", cleanNotes);
-                await dbSet("state", "folders", cleanFolders);
-                await dbSet("state", "activeFolderId", activeFolderId);
-                await dbSet("state", "customEmojiPacks", cleanEmojiPacks);
+                await dbSet("state", profileStateKey("notes"), cleanNotes);
+                await dbSet("state", profileStateKey("folders"), cleanFolders);
+                await dbSet("state", profileStateKey("activeFolderId"), activeFolderId);
+                await dbSet("state", profileStateKey("customEmojiPacks"), cleanEmojiPacks);
+                await dbSet("state", "profilesList", profilesList);
+                await dbSet("state", "activeProfileId", activeProfileId);
             } catch (err) {
                 console.error("Ошибка сохранения в IndexedDB:", err);
             }
+        }
+
+        async function switchProfile(profileId) {
+            if (profileId === activeProfileId) return;
+            if (!profilesList.some(p => p.id === profileId)) return;
+
+            await saveDatabase();
+
+            activeProfileId = profileId;
+            await loadActiveProfileData();
+            await dbSet("state", "activeProfileId", activeProfileId);
+
+            currentEditingNoteId = null;
+            renderLeftmostFolderPanel();
+            renderProfileSwitcher();
+            selectFolder(activeFolderId);
+            showNotification("Профиль переключен: " + (profilesList.find(p => p.id === profileId)?.name || ''));
+        }
+
+        let profileModalResolve = null;
+
+        function openProfileModal({ title, message, showInput, inputValue }) {
+            return new Promise(resolve => {
+                profileModalResolve = resolve;
+                document.getElementById('profileModalTitle').innerText = title || '';
+
+                const msgEl = document.getElementById('profileModalMessage');
+                if (message) {
+                    msgEl.innerText = message;
+                    msgEl.classList.remove('hidden');
+                } else {
+                    msgEl.classList.add('hidden');
+                }
+
+                const inputEl = document.getElementById('profileModalInput');
+                if (showInput) {
+                    inputEl.classList.remove('hidden');
+                    inputEl.value = inputValue || '';
+                } else {
+                    inputEl.classList.add('hidden');
+                }
+
+                const backdrop = document.getElementById('profileModalBackdrop');
+                backdrop.classList.remove('hidden');
+                backdrop.classList.add('flex');
+
+                if (showInput) setTimeout(() => inputEl.focus(), 50);
+            });
+        }
+
+        function closeProfileModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            const backdrop = document.getElementById('profileModalBackdrop');
+            backdrop.classList.add('hidden');
+            backdrop.classList.remove('flex');
+            if (profileModalResolve) {
+                profileModalResolve(null);
+                profileModalResolve = null;
+            }
+        }
+
+        function confirmProfileModal() {
+            const inputEl = document.getElementById('profileModalInput');
+            const isInputVisible = !inputEl.classList.contains('hidden');
+            const result = isInputVisible ? inputEl.value : true;
+
+            const backdrop = document.getElementById('profileModalBackdrop');
+            backdrop.classList.add('hidden');
+            backdrop.classList.remove('flex');
+
+            if (profileModalResolve) {
+                profileModalResolve(result);
+                profileModalResolve = null;
+            }
+        }
+
+        async function promptCreateNewProfile() {
+            const name = await openProfileModal({ title: 'Название нового профиля', showInput: true, inputValue: '' });
+            if (!name || !name.trim()) return;
+            createNewProfile(name.trim());
+        }
+
+        async function deleteProfile(profileId) {
+            if (profilesList.length <= 1) return;
+            const profile = profilesList.find(p => p.id === profileId);
+            if (!profile) return;
+
+            const confirmed = await openProfileModal({
+                title: 'Удалить профиль?',
+                message: `Профиль "${profile.name}" и все его данные будут удалены безвозвратно.`
+            });
+            if (!confirmed) return;
+
+            const keySuffix = id => (id === 'default' ? '' : ('profile_' + id + '_'));
+            const prefix = keySuffix(profileId);
+            await dbDelete("state", prefix + "notes");
+            await dbDelete("state", prefix + "folders");
+            await dbDelete("state", prefix + "activeFolderId");
+            await dbDelete("state", prefix + "customEmojiPacks");
+
+            const wasActive = profileId === activeProfileId;
+            profilesList = profilesList.filter(p => p.id !== profileId);
+            await dbSet("state", "profilesList", profilesList);
+
+            if (wasActive) {
+                activeProfileId = profilesList[0].id;
+                await loadActiveProfileData();
+                await dbSet("state", "activeProfileId", activeProfileId);
+                currentEditingNoteId = null;
+                renderLeftmostFolderPanel();
+                selectFolder(activeFolderId);
+            }
+
+            renderProfileSwitcher();
+            showNotification("Профиль \"" + profile.name + "\" удалён");
+        }
+
+        async function createNewProfile(name, dataOverride) {
+            const id = generateUniqueId('profile');
+            profilesList.push({ id, name });
+
+            await saveDatabase();
+
+            activeProfileId = id;
+            if (dataOverride) {
+                notes = dataOverride.notes || [];
+                folders = dataOverride.folders || defaultFolders.filter(f => f.system);
+                customEmojiPacks = dataOverride.customEmojiPacks || [];
+                activeFolderId = dataOverride.activeFolderId || 'fol-all';
+                await restoreBlobUrlsForState();
+            } else {
+                notes = [];
+                folders = defaultFolders.filter(f => f.system);
+                customEmojiPacks = [];
+                activeFolderId = 'fol-all';
+            }
+
+            await saveDatabase();
+
+            currentEditingNoteId = null;
+            renderLeftmostFolderPanel();
+            renderProfileSwitcher();
+            selectFolder(activeFolderId);
+            showNotification("Профиль \"" + name + "\" создан 🎉");
+        }
+
+        function renderProfileSwitcher() {
+            const container = document.getElementById('profileSwitcherList');
+            if (!container) return;
+            container.innerHTML = '';
+            profilesList.forEach(p => {
+                const isActive = p.id === activeProfileId;
+
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-1.5';
+
+                const switchBtn = document.createElement('button');
+                switchBtn.type = 'button';
+                switchBtn.onclick = () => switchProfile(p.id);
+                switchBtn.className = isActive
+                    ? 'flex-1 min-w-0 py-2 px-3 bg-tg-lightActive dark:bg-tg-darkBlue text-white rounded-xl flex items-center justify-between font-semibold text-left'
+                    : 'flex-1 min-w-0 py-2 px-3 bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder hover:opacity-90 rounded-xl flex items-center justify-between text-slate-700 dark:text-white font-semibold text-left';
+                switchBtn.innerHTML = `<span class="truncate">${escapeHtml(p.name)}</span>${isActive ? '<span class="text-[10px] font-bold flex-shrink-0 ml-2">Активен</span>' : ''}`;
+                row.appendChild(switchBtn);
+
+                if (profilesList.length > 1) {
+                    const delBtn = document.createElement('button');
+                    delBtn.type = 'button';
+                    delBtn.title = 'Удалить профиль';
+                    delBtn.className = 'flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-xl bg-slate-50 dark:bg-tg-darkBg border border-tg-lightBorder dark:border-tg-darkBorder text-red-500 hover:opacity-90';
+                    delBtn.onclick = (e) => { e.stopPropagation(); deleteProfile(p.id); };
+                    delBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+                    row.appendChild(delBtn);
+                }
+
+                container.appendChild(row);
+            });
+            lucide.createIcons();
         }
 
         function checkUrlMessageDeepLink() {
@@ -3127,7 +3503,7 @@
 
         function selectFolder(folderId) {
             activeFolderId = folderId;
-            dbSet("state", "activeFolderId", folderId);
+            dbSet("state", profileStateKey("activeFolderId"), folderId);
 
             const folder = folders.find(f => f.id === folderId);
 
@@ -3496,7 +3872,7 @@
             if (folderSelect) {
                 folderSelect.innerHTML = '<option value="">Без папки</option>';
                 folders.forEach(f => {
-                    if (!f.system) {
+                    if (f.system !== 'all_notes') {
                         const sel = note.folderId === f.id ? 'selected' : '';
                         folderSelect.innerHTML += `<option value="${f.id}" ${sel}>${escapeHtml(f.name)}</option>`;
                     }
@@ -5743,16 +6119,18 @@
                             }
                         }
 
-                        folders = parsed.folders;
-                        notes = parsed.notes;
-                        customEmojiPacks = Array.isArray(parsed.customEmojiPacks) ? parsed.customEmojiPacks : [];
-                        if (parsed.activeFolderId) activeFolderId = parsed.activeFolderId;
+                        const defaultName = file.name ? file.name.replace(/\.json$/i, '') : 'Импортированный профиль';
+                        const enteredName = await openProfileModal({ title: 'Название нового профиля для этой базы', showInput: true, inputValue: defaultName });
+                        const profileName = (enteredName && enteredName.trim()) || defaultName;
 
-                        await restoreBlobUrlsForState();
-                        await saveDatabase();
-                        renderLeftmostFolderPanel();
-                        renderSidebarListContext();
-                        showNotification("База данных успешно импортирована! 🎉");
+                        await createNewProfile(profileName, {
+                            folders: parsed.folders,
+                            notes: parsed.notes,
+                            customEmojiPacks: Array.isArray(parsed.customEmojiPacks) ? parsed.customEmojiPacks : [],
+                            activeFolderId: parsed.activeFolderId || 'fol-all'
+                        });
+
+                        showNotification("База данных импортирована как новый профиль! 🎉");
                     } else {
                         showNotification("Неверный формат файла JSON");
                     }
@@ -5762,6 +6140,7 @@
                 }
             };
             reader.readAsText(file);
+            event.target.value = '';
         }
 
         function findMatchingPostText(note, q) {
@@ -5890,6 +6269,100 @@
                 handlePrimarySubmitAction();
             }
         }
+    </script>
+    <div id="customWsScrollTrack"><div id="customWsScrollThumb"></div></div>
+    <script>
+        (function() {
+            const container = document.getElementById('workspaceContentScroll');
+            const track = document.getElementById('customWsScrollTrack');
+            const thumb = document.getElementById('customWsScrollThumb');
+            if (!container || !track || !thumb) return;
+
+            let hideTimer = null;
+            let dragging = false, dragStartY = 0, dragStartScrollTop = 0;
+
+            function positionTrack() {
+                const rect = container.getBoundingClientRect();
+                track.style.top = rect.top + 'px';
+                track.style.left = (rect.right - 8) + 'px';
+                track.style.height = rect.height + 'px';
+            }
+
+            function updateThumb() {
+                const trackHeight = container.clientHeight;
+                const scrollHeight = container.scrollHeight;
+                if (scrollHeight <= trackHeight + 1 || window.innerWidth < 768) {
+                    track.style.display = 'none';
+                    return;
+                }
+                track.style.display = 'block';
+                positionTrack();
+                const thumbHeight = Math.max(30, (trackHeight / scrollHeight) * trackHeight);
+                const maxThumbTop = trackHeight - thumbHeight;
+                const scrollRatio = container.scrollTop / (scrollHeight - trackHeight);
+                thumb.style.height = thumbHeight + 'px';
+                thumb.style.top = (scrollRatio * maxThumbTop) + 'px';
+            }
+
+            function showScroll() {
+                clearTimeout(hideTimer);
+                track.classList.add('ws-scroll-visible');
+            }
+            function scheduleHide() {
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(function() {
+                    if (!dragging) track.classList.remove('ws-scroll-visible');
+                }, 120);
+            }
+
+            container.addEventListener('scroll', updateThumb);
+            container.addEventListener('mousemove', function(e) {
+                const rect = container.getBoundingClientRect();
+                const distFromRight = rect.right - e.clientX;
+                if (distFromRight >= 0 && distFromRight <= 24) {
+                    updateThumb();
+                    showScroll();
+                } else {
+                    scheduleHide();
+                }
+            });
+            container.addEventListener('mouseleave', scheduleHide);
+            window.addEventListener('resize', updateThumb);
+            window.addEventListener('scroll', positionTrack, true);
+            if (window.ResizeObserver) {
+                new ResizeObserver(updateThumb).observe(container);
+            }
+
+            thumb.addEventListener('mousedown', function(e) {
+                dragging = true;
+                dragStartY = e.clientY;
+                dragStartScrollTop = container.scrollTop;
+                showScroll();
+                document.body.style.userSelect = 'none';
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', function(e) {
+                if (!dragging) return;
+                const trackHeight = container.clientHeight;
+                const scrollHeight = container.scrollHeight;
+                const thumbHeight = thumb.offsetHeight;
+                const maxThumbTop = trackHeight - thumbHeight;
+                if (maxThumbTop <= 0) return;
+                const deltaY = e.clientY - dragStartY;
+                const scrollableDistance = scrollHeight - trackHeight;
+                container.scrollTop = dragStartScrollTop + (deltaY / maxThumbTop) * scrollableDistance;
+            });
+            document.addEventListener('mouseup', function() {
+                if (dragging) {
+                    dragging = false;
+                    document.body.style.userSelect = '';
+                    scheduleHide();
+                }
+            });
+
+            updateThumb();
+            setInterval(updateThumb, 800);
+        })();
     </script>
 </body>
 </html>
