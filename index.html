@@ -562,8 +562,36 @@
                 z-index: 40;
             }
 
-            #appShellContainer.note-open #sidebarContainer { display: none !important; }
-            #appShellContainer:not(.note-open) > main { display: none !important; }
+            /* Requirement (плавный переход в заметку): вместо жёсткого display:none — плавный слайд */
+            #sidebarContainer,
+            #appShellContainer > main {
+                transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            #appShellContainer.note-open #sidebarContainer {
+                transform: translateX(-100%) !important;
+                pointer-events: none;
+            }
+            #appShellContainer:not(.note-open) #sidebarContainer {
+                transform: translateX(0) !important;
+            }
+            #appShellContainer:not(.note-open) > main {
+                transform: translateX(100%);
+                pointer-events: none;
+            }
+            #appShellContainer.note-open > main {
+                transform: translateX(0);
+            }
+
+            /* Requirement (анимации нажатия кнопок): плавный "press"-эффект на телефоне */
+            button,
+            .cursor-pointer {
+                transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.15s ease;
+            }
+            button:active,
+            .cursor-pointer:active {
+                transform: scale(0.96);
+                opacity: 0.85;
+            }
 
             #settingsDrawer { width: 100% !important; }
 
@@ -1130,6 +1158,10 @@
             <!-- Requirement 5: pin icon +1px (17px) and rotated facing left (-scale-x-1) -->
             <i data-lucide="pin" class="w-[17px] h-[17px] text-slate-600 dark:text-white transform -scale-x-1"></i>
             <span id="contextPinText">Закрепить</span>
+        </button>
+        <button onclick="contextActionArchive()" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#202b36] rounded-xl transition text-left">
+            <i data-lucide="archive" class="w-4 h-4 text-slate-600 dark:text-white"></i>
+            <span>В архив</span>
         </button>
         <div class="my-1 border-t border-slate-200 dark:border-slate-800"></div>
         <button onclick="contextActionDelete()" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-500/10 rounded-xl transition text-left">
@@ -1886,6 +1918,7 @@
         const defaultFolders = [
             { id: 'fol-all', name: 'Все заметки', color: '#4f46e5', system: 'all_notes', icon: 'message-square', parentId: '', hiddenFromLeftPanel: false },
             { id: 'fol-todo', name: 'Список дел', color: '#d97706', system: 'todo', icon: 'check-square', parentId: '', hiddenFromLeftPanel: false },
+            { id: 'fol-archive', name: 'Архив', color: '#64748b', system: 'archive', icon: 'archive', parentId: '', hiddenFromLeftPanel: false },
             { id: 'fol-projects', name: 'Проекты', color: '#7c3aed', icon: 'folder', parentId: '', hiddenFromLeftPanel: false },
             { id: 'fol-sub-design', name: 'Дизайн UI', color: '#059669', icon: 'folder', parentId: 'fol-projects', hiddenFromLeftPanel: false }
         ];
@@ -1909,6 +1942,49 @@
                 avatar: '🧠'
             }
         ];
+
+        // Requirement (архив): id заметки, в которую складываются заархивированные отдельные сообщения
+        const ARCHIVE_NOTE_ID = 'note-archive';
+
+        function ensureArchiveNoteExists() {
+            if (!notes.find(n => n.id === ARCHIVE_NOTE_ID)) {
+                notes.push({
+                    id: ARCHIVE_NOTE_ID,
+                    title: 'Архив',
+                    content: '',
+                    folderId: 'fol-archive',
+                    tags: [],
+                    date: '',
+                    updatedAt: Date.now(),
+                    isPinned: false,
+                    pinnedPostIds: [],
+                    avatar: '🗄️'
+                });
+            }
+        }
+
+        function getTodayDateDividerLabel() {
+            const label = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            return `${label} г.`;
+        }
+
+        function buildDateDividerElement(label) {
+            const divider = document.createElement('div');
+            divider.className = 'date-divider flex justify-center my-3 select-none w-full';
+            divider.setAttribute('data-date', label);
+            divider.innerHTML = `<span class="bg-slate-200/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-semibold text-[11px] px-3.5 py-1 rounded-full backdrop-blur-sm shadow-sm border border-slate-300/30 dark:border-slate-700/50">${escapeHtml(label)}</span>`;
+            return divider;
+        }
+
+        function ensureDateDividerBeforeNewPost(feed) {
+            if (!feed) return;
+            const todayLabel = getTodayDateDividerLabel();
+            const dividers = feed.querySelectorAll('.date-divider');
+            const lastDivider = dividers.length ? dividers[dividers.length - 1] : null;
+            if (!lastDivider || lastDivider.getAttribute('data-date') !== todayLabel) {
+                feed.appendChild(buildDateDividerElement(todayLabel));
+            }
+        }
 
         let currentConfirmCallback = null;
         function showConfirm(message, onConfirm, isDanger = true) {
@@ -2114,7 +2190,7 @@
             let y = e.clientY;
 
             const menuWidth = 195;
-            const menuHeight = 210;
+            const menuHeight = 250;
             if (x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 10;
             if (y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 10;
 
@@ -2521,6 +2597,55 @@
             deletePostUnderEdit();
         }
 
+        function contextActionArchive() {
+            closePostContextMenu();
+            archiveSelectedPost();
+        }
+
+        function archiveSelectedPost() {
+            if (!activeSelectedPostId || !currentEditingNoteId) return;
+
+            if (currentEditingNoteId === ARCHIVE_NOTE_ID) {
+                showNotification("Сообщение уже в архиве");
+                return;
+            }
+
+            const postElem = document.getElementById(activeSelectedPostId);
+            if (!postElem) return;
+
+            ensureArchiveNoteExists();
+            const archiveNote = notes.find(n => n.id === ARCHIVE_NOTE_ID);
+            const sourceNote = notes.find(n => n.id === currentEditingNoteId);
+
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = archiveNote.content || '';
+
+            const todayLabel = getTodayDateDividerLabel();
+            const dividers = wrapper.querySelectorAll('.date-divider');
+            const lastDivider = dividers.length ? dividers[dividers.length - 1] : null;
+            if (!lastDivider || lastDivider.getAttribute('data-date') !== todayLabel) {
+                wrapper.appendChild(buildDateDividerElement(todayLabel));
+            }
+
+            wrapper.appendChild(postElem.cloneNode(true));
+            archiveNote.content = wrapper.innerHTML;
+            archiveNote.updatedAt = Date.now();
+
+            if (sourceNote && sourceNote.pinnedPostIds) {
+                sourceNote.pinnedPostIds = sourceNote.pinnedPostIds.filter(id => id !== activeSelectedPostId);
+            }
+            if (archiveNote.pinnedPostIds) {
+                archiveNote.pinnedPostIds = archiveNote.pinnedPostIds.filter(id => id !== activeSelectedPostId);
+            }
+
+            postElem.remove();
+
+            saveCurrentNoteContent();
+            updatePinnedPostTopBar();
+            renderSidebarListContext();
+            showNotification("Сообщение перемещено в архив 🗄️");
+        }
+
         function togglePinSelectedPost() {
             if (!activeSelectedPostId || !currentEditingNoteId) return;
             const note = notes.find(n => n.id === currentEditingNoteId);
@@ -2752,8 +2877,12 @@
                 const rect = range.getBoundingClientRect();
 
                 if (rect.width > 0 && toolbar) {
+                    // Requirement (мобильная менюшка форматирования): поднимаем повыше на телефоне,
+                    // чтобы её не перекрывало стандартное андроид-меню выделения текста
+                    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+                    const verticalOffset = isMobileViewport ? 70 : 10;
                     toolbar.style.left = `${Math.max(10, rect.left + (rect.width / 2) - 130)}px`;
-                    toolbar.style.top = `${rect.top + window.scrollY - 10}px`;
+                    toolbar.style.top = `${rect.top + window.scrollY - verticalOffset}px`;
                     toolbar.classList.remove('hidden');
                     lucide.createIcons();
                 }
@@ -3131,6 +3260,7 @@
                 activeProfileId = 'default';
                 notes = defaultNotes;
                 folders = defaultFolders;
+                ensureArchiveNoteExists();
             }
         }
 
@@ -3144,6 +3274,7 @@
             folders = savedFolders && savedFolders.length ? savedFolders : (activeProfileId === 'default' ? defaultFolders : defaultFolders.filter(f => f.system));
             activeFolderId = savedFolderId || 'fol-all';
             customEmojiPacks = savedPacks && savedPacks.length ? savedPacks : [];
+            ensureArchiveNoteExists();
 
             await restoreBlobUrlsForState();
         }
@@ -3320,6 +3451,7 @@
                 customEmojiPacks = [];
                 activeFolderId = 'fol-all';
             }
+            ensureArchiveNoteExists();
 
             await saveDatabase();
 
@@ -3602,7 +3734,7 @@
                     iconHolder.innerHTML = `<img src="${f.customAvatar}" class="w-9 h-9 rounded-full object-cover ${avatarStyle}">`;
                 } else {
                     const isAllNotes = f.system === 'all_notes';
-                    const iconName = isAllNotes ? 'message-square' : (f.system === 'todo' ? 'check-square' : 'folder');
+                    const iconName = isAllNotes ? 'message-square' : (f.system === 'todo' ? 'check-square' : (f.system === 'archive' ? 'archive' : 'folder'));
                     
                     const colorStyle = isSelected ? 'rgb(94, 181, 247)' : 'rgb(92, 108, 124)';
 
@@ -5742,6 +5874,7 @@
                 `;
             }
 
+            ensureDateDividerBeforeNewPost(feed);
             feed.appendChild(postBubble);
             relocateTimeBadgeIntoLastLine(postBubble);
 
